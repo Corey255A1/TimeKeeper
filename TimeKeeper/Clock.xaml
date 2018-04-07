@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="TimeKeeper.Clock"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TimeKeeper"
+             mc:Ignorable="d" Height="33.751" Width="304.598">
+    <Grid x:Name="theGrid">
+        <local:ClockNum x:Name="hour1Clk" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="30" NumberLimit="One"/>
+        <local:ClockNum x:Name="hour2Clk" HorizontalAlignment="Left" Height="30" Margin="33,0,0,0" VerticalAlignment="Top" Width="30" MyNumber="Two" NumberLimit="Nine"/>
+        <local:ClockNum x:Name="minute1Clk" HorizontalAlignment="Left" Height="30" Margin="83,0,0,0" VerticalAlignment="Top" Width="30" MyNumber="Five" NumberLimit="Five"/>
+        <local:ClockNum x:Name="minute2Clk" HorizontalAlignment="Left" Height="30" Margin="115,0,0,0" VerticalAlignment="Top" Width="30" MyNumber="Nine" NumberLimit="Nine"/>
+        <local:ClockNum x:Name="second1Clk" HorizontalAlignment="Left" Height="30" Margin="165,0,0,0" VerticalAlignment="Top" Width="30" MyNumber="Three" NumberLimit="Five"/>
+        <local:ClockNum x:Name="second2Clk" HorizontalAlignment="Left" Height="30" Margin="196,0,0,0" VerticalAlignment="Top" Width="30" MyNumber="Six" NumberLimit="Nine"/>
+        <local:ClockNum x:Name="apClk" HorizontalAlignment="Left" Height="30" Margin="238,0,0,0" VerticalAlignment="Top" Width="30" MyNumber="A"/>
+        <local:ClockNum HorizontalAlignment="Left" Height="30" Margin="270,0,0,0" VerticalAlignment="Top" Width="30" MyNumber="M"/>
+        <Rectangle Fill="Black" HorizontalAlignment="Left" Height="10" Margin="68,20,0,0" Stroke="Black" VerticalAlignment="Top" Width="10"/>
+        <Rectangle Fill="Black" HorizontalAlignment="Left" Height="10" Margin="68,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="10"/>
+        <Rectangle Fill="Black" HorizontalAlignment="Left" Height="10" Margin="150,20,0,0" Stroke="Black" VerticalAlignment="Top" Width="10"/>
+        <Rectangle Fill="Black" HorizontalAlignment="Left" Height="10" Margin="150,0,0,0" Stroke="Black" VerticalAlignment="Top" Width="10"/>
+
+    </Grid>
+</UserControl>

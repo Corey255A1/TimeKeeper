@@ -24,6 +24,7 @@ namespace TimeKeeper
         public MainWindow()
         {
             InitializeComponent();
+            currentTimeClk.SetTime(DateTime.Now);
             theTicker = new TimeTicker();
             theTicker.TickEvent += Tick;
 
@@ -32,7 +33,7 @@ namespace TimeKeeper
         {
             Dispatcher.Invoke(new Action(() =>
             {
-                testTimeLbl.Text = t.ToLongTimeString();
+                currentTimeClk.SetTime(DateTime.Now);
             }));
             
         }

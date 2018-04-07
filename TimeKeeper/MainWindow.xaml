@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TimeKeeper"
         mc:Ignorable="d"
-        Title="Time Keeper: X-Treme" Height="350" Width="525">
+        Title="Time Keeper: X-Treme" Height="409.81" Width="574.841">
     <Grid>
-        <TextBox x:Name="testTimeLbl" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-
+        <local:Clock x:Name="currentTimeClk" HorizontalAlignment="Left" Height="37" Margin="10,10,0,0" VerticalAlignment="Top" Width="311"/>
+        <local:Clock x:Name="startTimeClk" HorizontalAlignment="Left" Height="40" Margin="10,52,0,0" VerticalAlignment="Top" Width="321"/>
     </Grid>
 </Window>
