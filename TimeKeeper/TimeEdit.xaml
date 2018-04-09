@@ -1,0 +1,14 @@
+﻿<UserControl x:Class="TimeKeeper.TimeEdit"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TimeKeeper"
+             mc:Ignorable="d" Height="59" Width="181.333">
+    <Grid>
+        <TextBox x:Name="hoursBox" HorizontalAlignment="Left" Height="53" TextWrapping="Wrap" Text="999" VerticalAlignment="Top" Width="75" MaxLines="1" MaxLength="3" TabIndex="0" FontFamily="Segoe UI Black" FontSize="36" PreviewTextInput="numsOnly_PreviewTextInput" LostFocus="hoursBox_LostFocus" PreviewKeyDown="hoursBox_PreviewKeyDown"/>
+        <TextBox x:Name="minutesBox" HorizontalAlignment="Left" Height="53" TextWrapping="Wrap" Text="59" VerticalAlignment="Top" Width="52" MaxLines="1" MaxLength="2" TabIndex="0" FontFamily="Segoe UI Black" FontSize="36" Margin="75,0,0,0" PreviewTextInput="numsOnly_PreviewTextInput" LostFocus="minutesBox_LostFocus" PreviewKeyDown="minutesBox_PreviewKeyDown"/>
+        <TextBox x:Name="secondsBox" HorizontalAlignment="Left" Height="53" TextWrapping="Wrap" Text="59" VerticalAlignment="Top" Width="52" MaxLines="1" MaxLength="2" TabIndex="0" FontFamily="Segoe UI Black" FontSize="36" Margin="127,0,0,0" PreviewTextInput="numsOnly_PreviewTextInput" LostFocus="secondsBox_LostFocus" PreviewKeyDown="secondsBox_PreviewKeyDown"/>
+
+    </Grid>
+</UserControl>

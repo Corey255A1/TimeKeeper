@@ -5,9 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TimeKeeper"
         mc:Ignorable="d"
-        Title="Time Keeper: X-Treme" Height="409.81" Width="574.841">
+        Title="Time Keeper: X-Treme" Height="484.81" Width="604.841">
     <Grid>
-        <local:Clock x:Name="currentTimeClk" HorizontalAlignment="Left" Height="37" Margin="10,10,0,0" VerticalAlignment="Top" Width="311"/>
-        <local:Clock x:Name="startTimeClk" HorizontalAlignment="Left" Height="40" Margin="10,52,0,0" VerticalAlignment="Top" Width="321"/>
+        <Rectangle Fill="Black" Height="47" Margin="10,10,10,0" Stroke="Black" VerticalAlignment="Top"/>
+        <local:Clock x:Name="currentTimeClk" HorizontalAlignment="Left" Height="40" Margin="151,13,0,0" VerticalAlignment="Top" Width="321" Background="{x:Null}" NumberColor="Red"/>
+        <local:Clock x:Name="startTimeClk" HorizontalAlignment="Left" Height="40" Margin="151,57,0,0" VerticalAlignment="Top" Width="321" IsAClock="True"/>
+        <Button x:Name="setstartBtn" Content="SET" HorizontalAlignment="Left" Margin="477,60,0,0" VerticalAlignment="Top" Width="80" FontFamily="Segoe UI Black" FontSize="22" Background="#FF13CF00" BorderThickness="0" Height="35" VerticalContentAlignment="Center" Click="startBtn_Click"/>
+        <local:Clock x:Name="totalTimeClk" HorizontalAlignment="Left" Height="25" Margin="268,100,0,0" VerticalAlignment="Top" Width="204" IsAClock="False"/>
+        <Label Content="START TIME" HorizontalAlignment="Left" Margin="10,62,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Black" FontSize="16" Width="136" HorizontalContentAlignment="Right"/>
+        <Label Content="CURRENT TIME" HorizontalAlignment="Left" Margin="10,19,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Black" FontSize="16" Width="136" HorizontalContentAlignment="Right" Foreground="White"/>
+        <Label Content="DELTA" HorizontalAlignment="Left" Margin="151,97,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Black" FontSize="16" Width="117" HorizontalContentAlignment="Right"/>
+        <Button x:Name="addBtn" Content="ADD" HorizontalAlignment="Left" Margin="10,139,0,0" VerticalAlignment="Top" Width="80" FontFamily="Segoe UI Black" FontSize="22" Background="#FF00CFC6" BorderThickness="0" Height="35" VerticalContentAlignment="Center" Click="addBtn_Click"/>
+        <ScrollViewer Margin="10,179,10,5">
+            <StackPanel x:Name="chargeNumberStack" Margin="0,0,0,0">
+                <local:TimerElement x:Name="testTimerElm" Height="Auto" Width="Auto"/>
+            </StackPanel>
+        </ScrollViewer>
+        <local:Clock x:Name="chargedTimeClk" HorizontalAlignment="Left" Height="25" Margin="268,142,0,0" VerticalAlignment="Top" Width="202" IsAClock="False" NumberColor="#FF1A8D00"/>
+        <Label Content="CHARGED" HorizontalAlignment="Left" Margin="151,139,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Black" FontSize="16" Width="117" HorizontalContentAlignment="Right"/>
+
     </Grid>
 </Window>

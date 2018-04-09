@@ -37,7 +37,7 @@ namespace TimeKeeper
                 numGrid.Background = BrushDictionary[myNumber];
             }
         }
-        [Description("Set the Current Number"), Category("Clock Data")]
+        [Description("Set the Number Limit"), Category("Clock Data")]
         public ClockNumbers NumberLimit
         {
             get
@@ -47,6 +47,23 @@ namespace TimeKeeper
             set
             {
                 myLimit = value;
+            }
+        }
+        Brush myColor;
+        [Description("Set the Number Color"), Category("Clock Data")]
+        public Brush MyColor
+        {
+            get
+            {
+                return myColor;
+            }
+            set
+            {
+                myColor = value;
+                foreach (var n in BrushDictionary.Keys) {
+                    ((GeometryDrawing)((DrawingGroup)BrushDictionary[n].Drawing).Children[0]).Brush = MyColor;
+                }
+
             }
         }
 

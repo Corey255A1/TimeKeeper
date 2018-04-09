@@ -19,7 +19,7 @@ namespace TimeKeeper
         private void Tick(object obj)
         {
             //If(TickEvent != null) TickEvent(DateTime.UtcNow);
-            TickEvent?.Invoke(DateTime.UtcNow);
+            TickEvent?.Invoke(DateTime.Now);
         }
     }
 }

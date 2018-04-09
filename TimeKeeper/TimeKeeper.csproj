@@ -60,6 +60,12 @@
     <Compile Include="ClockNum.xaml.cs">
       <DependentUpon>ClockNum.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TimeEdit.xaml.cs">
+      <DependentUpon>TimeEdit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TimerElement.xaml.cs">
+      <DependentUpon>TimerElement.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TimeTicker.cs" />
     <Page Include="Clock.xaml">
       <SubType>Designer</SubType>
@@ -82,6 +88,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Numbers.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TimeEdit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TimerElement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
