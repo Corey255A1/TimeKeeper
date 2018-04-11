@@ -38,12 +38,12 @@ namespace TimeKeeper
 
         public void IncrementTime(TimeSpan ts)
         {
-            AddSeconds((int)ts.TotalSeconds);
+            AddSeconds((int)Math.Round(ts.TotalSeconds));
         }
 
         public TimeSpan GetTime()
         {
-            return new TimeSpan(hours, minutes, seconds);
+            return new TimeSpan(0,hours, minutes, (int)seconds, (int)(seconds - (int)seconds)*1000);
         }
 
 
@@ -62,11 +62,11 @@ namespace TimeKeeper
         {
             if (s > 59)
             {                
-                SetMinutes(minutes + (s / 60));
-                s = s % 60;
+                SetMinutes(minutes + (int)(s / 60));
+               s = s % 60;
             }
             seconds = s;
-            secondsBox.Text = s.ToString("D2");
+            secondsBox.Text = seconds.ToString("D2");
         }
         private void SetMinutes(int m)
         {

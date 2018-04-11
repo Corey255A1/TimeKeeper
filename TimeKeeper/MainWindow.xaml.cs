@@ -32,9 +32,6 @@ namespace TimeKeeper
             theTicker = new TimeTicker();
             theTicker.TickEvent += Tick;
             startTimeClk.SetTime(new DateTime()); //00:00:00
-            Timers.Add(testTimerElm);
-            CurrentTimer = testTimerElm;
-            testTimerElm.TimerActionPerformed += TimerActionCallback;
 
         }
         public void Tick(DateTime t)
@@ -56,10 +53,12 @@ namespace TimeKeeper
 
         private void startBtn_Click(object sender, RoutedEventArgs e)
         {
-            StartTime = DateTime.Now;
+            var t = DateTime.Now;
+            StartTime = new DateTime(t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second); //truncate off any milliseconds
             startTimeClk.SetTime(StartTime);
             chargedTimeClk.SetTime(new TimeSpan(0,0,0));
-            foreach(var telm in Timers)
+            totalTimeClk.SetTime(new TimeSpan(0, 0, 0));
+            foreach (var telm in Timers)
             {
                 telm.Clear();
             }
@@ -69,12 +68,17 @@ namespace TimeKeeper
         {
             switch(e)
             {
-                case TimerElementActionEnum.WorkOn: CurrentTimer?.Pause();  CurrentTimer = t; WorkTimerPaused = false; break;
-                case TimerElementActionEnum.Pause: WorkTimerPaused = true; break;
+                case TimerElementActionEnum.WorkOn: CurrentTimer = t; WorkTimerPaused = false; break;
+                //case TimerElementActionEnum.Pause:  break;
                 case TimerElementActionEnum.Remove:
                     Timers.Remove(t);
                     chargeNumberStack.Children.Remove(t);
-                    if (t == CurrentTimer) WorkTimerPaused = true; CurrentTimer = null;
+                    if (t == CurrentTimer)
+                    {
+                        WorkTimerPaused = true;
+                        CurrentTimer = null;
+                    }
+                    
                     break;
             }
             
@@ -86,6 +90,11 @@ namespace TimeKeeper
             Timers.Add(telm);
             telm.TimerActionPerformed += TimerActionCallback;
             chargeNumberStack.Children.Add(telm);
+        }
+
+        private void pauseBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WorkTimerPaused = true;
         }
     }
 }

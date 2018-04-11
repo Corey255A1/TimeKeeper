@@ -24,7 +24,6 @@ namespace TimeKeeper
     {
         public event TimerElementAction TimerActionPerformed;
         DateTime LastTimeReceived;
-        bool bHasStarted = false;
         public TimerElement()
         {
             InitializeComponent();
@@ -37,7 +36,6 @@ namespace TimeKeeper
         }
         public void SetTime(DateTime t)
         {
-            if(!bHasStarted) { bHasStarted = true;  LastTimeReceived = t; return; }
             timerEdit.IncrementTime(t - LastTimeReceived);
             LastTimeReceived = t;
         }
@@ -45,20 +43,13 @@ namespace TimeKeeper
         {
             return timerEdit.GetTime();
         }
-        public void Pause()
-        {
-            bHasStarted = false;
-        }
 
         private void workOnBtn_Click(object sender, RoutedEventArgs e)
         {
+            //Set my last time received to Right now when the button was clicked. Start Time from now
+            var t = DateTime.Now;
+            LastTimeReceived = new DateTime(t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second); //truncate off any milliseconds
             TimerActionPerformed?.Invoke(this, TimerElementActionEnum.WorkOn);
-        }
-
-        private void pauseBtn_Click(object sender, RoutedEventArgs e)
-        {
-            TimerActionPerformed?.Invoke(this, TimerElementActionEnum.Pause);
-            bHasStarted = false;
         }
 
         private void removeBtn_Click(object sender, RoutedEventArgs e)

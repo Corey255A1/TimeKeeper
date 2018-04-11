@@ -98,7 +98,6 @@ namespace TimeKeeper
         public void SetTime(TimeSpan ts)
         {
             SetTime(ts.Hours, ts.Minutes, ts.Seconds);
-
         }
 
         public void SetTime(int h, int m, int s)
