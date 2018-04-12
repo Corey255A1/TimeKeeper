@@ -81,9 +81,9 @@ namespace TimeKeeper
             {
                 
                 //Not 24 Hour time.. maybe make it an option?
-                if (h > 12)
+                if (h >= 12)
                 {
-                    h = h - 12;
+                    if(h>12) h = h - 12;
                     apClk.MyNumber = ClockNumbers.P;
                 }
                 else
