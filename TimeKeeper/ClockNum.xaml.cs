@@ -19,12 +19,15 @@ namespace TimeKeeper
     /// Interaction logic for ClockNum.xaml
     /// </summary>
     public enum ClockNumbers { Zero, One, Two, Three, Four, Five, Six, Seven, Eight, Nine, A, P, M, Colon };
-    public delegate void ClockNumberRollOverCallback();
+    public delegate void ChangeEvent();
     public partial class ClockNum : UserControl
     {
-        public event ClockNumberRollOverCallback ClockNumberRollOver;
-        public ClockNumbers myNumber;
-        public ClockNumbers myLimit;
+        public event ChangeEvent NumberRollOver;
+        public event ChangeEvent NumberModified;
+        private ClockNumbers myNumber;
+        private ClockNumbers myUpperLimit = ClockNumbers.Nine;
+        private ClockNumbers myLowerLimit = ClockNumbers.Zero;
+        private bool isModifiable = true;
         [Description("Set the Current Number"), Category("Clock Data")]
         public ClockNumbers MyNumber
         {
@@ -37,16 +40,28 @@ namespace TimeKeeper
                 numGrid.Background = BrushDictionary[myNumber];
             }
         }
-        [Description("Set the Number Limit"), Category("Clock Data")]
-        public ClockNumbers NumberLimit
+        [Description("Set the Number Upper Limit"), Category("Clock Data")]
+        public ClockNumbers NumberUpperLimit
         {
             get
             {
-                return myLimit;
+                return myUpperLimit;
             }
             set
             {
-                myLimit = value;
+                myUpperLimit = value;
+            }
+        }
+        [Description("Set the Number Lower Limit"), Category("Clock Data")]
+        public ClockNumbers NumberLowerLimit
+        {
+            get
+            {
+                return myLowerLimit;
+            }
+            set
+            {
+                myLowerLimit = value;
             }
         }
         Brush myColor;
@@ -65,6 +80,13 @@ namespace TimeKeeper
                 }
 
             }
+        }
+
+        [Description("Can this be modified?"), Category("Clock Data")]
+        public bool IsModifiable
+        {
+            get { return isModifiable; }
+            set { isModifiable = value; }
         }
 
         Dictionary<ClockNumbers, DrawingBrush> BrushDictionary;
@@ -102,19 +124,66 @@ namespace TimeKeeper
                 MyNumber = ClockNumbers.Zero;
             }
         }
+        public int GetInteger()
+        {
+            return (int)MyNumber;
+        }
         public void IncrementNum()
         {
-            if (Enum.IsDefined(typeof(ClockNumbers), MyNumber+1))
+            var n = MyNumber + 1;
+            if (Enum.IsDefined(typeof(ClockNumbers), n) && n<=myUpperLimit)
             {
-                MyNumber = MyNumber + 1;
-                if(MyNumber > myLimit)
-                {
-                    MyNumber = ClockNumbers.Zero;
-                    ClockNumberRollOver?.Invoke();
-                }
-                numGrid.Background = BrushDictionary[MyNumber];
+                MyNumber = n;
+            }
+            else
+            {
+                MyNumber = myLowerLimit;
+                NumberRollOver?.Invoke();
+            }
+            numGrid.Background = BrushDictionary[MyNumber];
+            NumberModified?.Invoke();
+        }
+        public void DecrementNum()
+        {
+            var n = MyNumber - 1;
+            if (Enum.IsDefined(typeof(ClockNumbers), n) && n >= myLowerLimit)
+            {
+                MyNumber = n;                
+            }
+            else
+            {
+                MyNumber = myUpperLimit;
+            }
+            numGrid.Background = BrushDictionary[MyNumber];
+            NumberModified?.Invoke();
+        }
+
+        private void incBtn_Click(object sender, RoutedEventArgs e)
+        {
+            IncrementNum();
+        }
+
+        private void decBtn_Click(object sender, RoutedEventArgs e)
+        {
+            DecrementNum();
+        }
+
+        private void numGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (isModifiable)
+            {
+                incBtn.Visibility = Visibility.Visible;
+                decBtn.Visibility = Visibility.Visible;
             }
         }
 
+        private void numGrid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            if (isModifiable)
+            {
+                incBtn.Visibility = Visibility.Hidden;
+                decBtn.Visibility = Visibility.Hidden;
+            }
+        }
     }
 }

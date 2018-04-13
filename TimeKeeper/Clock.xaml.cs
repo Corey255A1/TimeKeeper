@@ -15,13 +15,16 @@ using System.Windows.Shapes;
 using System.ComponentModel;
 namespace TimeKeeper
 {
+
+    public delegate void ClockModifiedEvent(Clock obj, int h, int m, int s);
     /// <summary>
     /// Interaction logic for Clock.xaml
     /// </summary>
     public partial class Clock : UserControl
-    {        
+    {
+        public event ClockModifiedEvent ClockModified;
         bool isClockType = true;
-
+        bool isModifiable = true;
         [Description("Timer or Clock?"), Category("Clock Data")]
         public bool IsAClock
         {
@@ -62,16 +65,51 @@ namespace TimeKeeper
                 }
             }
         }
+        [Description("Can this be modified?"), Category("Clock Data")]
+        public bool IsModifiable
+        {
+            get { return isModifiable; }
+            set { isModifiable = value;
+            ClockNumberList.ForEach((t) => t.IsModifiable = isModifiable);
+            }
+        }
 
+        List<ClockNum> ClockNumberList;
         public Clock()
         {
             InitializeComponent();
-            //Not sure if this is really even needed.
-            hour2Clk.ClockNumberRollOver += hour1Clk.IncrementNum;
-            minute1Clk.ClockNumberRollOver += hour2Clk.IncrementNum;
-            minute2Clk.ClockNumberRollOver += minute1Clk.IncrementNum;
-            second1Clk.ClockNumberRollOver += minute2Clk.IncrementNum;
-            second2Clk.ClockNumberRollOver += second1Clk.IncrementNum;
+            
+            //Make a list of the modifiable elements
+            ClockNumberList = new List<ClockNum>()
+            {
+                hour1Clk,hour2Clk,minute1Clk,minute2Clk,second1Clk,second2Clk,apClk
+            };
+
+            //Connect all of the individual clock numbers controls into a clock
+            hour2Clk.NumberRollOver += hour1Clk.IncrementNum;
+            minute1Clk.NumberRollOver += hour2Clk.IncrementNum;
+            minute2Clk.NumberRollOver += minute1Clk.IncrementNum;
+            second1Clk.NumberRollOver += minute2Clk.IncrementNum;
+            second2Clk.NumberRollOver += second1Clk.IncrementNum;
+
+            foreach(var cn in ClockNumberList)
+            {
+                cn.NumberModified += ClockChanged;
+            }
+
+            
+
+        }
+
+        private void ClockChanged()
+        {
+            bool isPM = apClk.MyNumber == ClockNumbers.P;
+            int h = hour1Clk.GetInteger() * 10 + hour2Clk.GetInteger();
+            if (isPM) h = h + 12;
+            int m = minute1Clk.GetInteger() * 10 + minute2Clk.GetInteger();
+            int s = second1Clk.GetInteger() * 10 + second2Clk.GetInteger();
+            ClockModified?.Invoke(this, h, m, s);
+
         }
 
         public void SetTime(DateTime time)

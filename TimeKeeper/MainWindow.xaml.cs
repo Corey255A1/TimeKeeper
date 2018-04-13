@@ -32,8 +32,14 @@ namespace TimeKeeper
             theTicker = new TimeTicker();
             theTicker.TickEvent += Tick;
             startTimeClk.SetTime(new DateTime()); //00:00:00
-
+            startTimeClk.ClockModified += ClockModified;
         }
+
+        public void ClockModified(Clock obj, int h, int m, int s)
+        {
+            if (obj == startTimeClk) StartTime = new DateTime(StartTime.Year, StartTime.Month, StartTime.Day, h, m, s);
+        }
+
         public void Tick(DateTime t)
         {
             Dispatcher.Invoke(new Action(() =>
@@ -56,12 +62,6 @@ namespace TimeKeeper
             var t = DateTime.Now;
             StartTime = new DateTime(t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second); //truncate off any milliseconds
             startTimeClk.SetTime(StartTime);
-            chargedTimeClk.SetTime(new TimeSpan(0,0,0));
-            totalTimeClk.SetTime(new TimeSpan(0, 0, 0));
-            foreach (var telm in Timers)
-            {
-                telm.Clear();
-            }
         }
 
         private void TimerActionCallback(TimerElement t, TimerElementActionEnum e)
@@ -95,6 +95,25 @@ namespace TimeKeeper
         private void pauseBtn_Click(object sender, RoutedEventArgs e)
         {
             WorkTimerPaused = true;
+        }
+
+        private void resetBtn_Click(object sender, RoutedEventArgs e)
+        {
+            chargedTimeClk.SetTime(new TimeSpan(0, 0, 0));
+            foreach (var telm in Timers)
+            {
+                telm.Clear();
+            }
+        }
+
+        private void loadBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void saveBtn_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

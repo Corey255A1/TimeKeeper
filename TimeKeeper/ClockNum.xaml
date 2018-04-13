@@ -13,7 +13,14 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid x:Name="numGrid" Background="{Binding Mode=OneWay, Source={StaticResource Num0}}">
-            
+    <Grid x:Name="numGrid" Background="{Binding Mode=OneWay, Source={StaticResource Num0}}" MouseEnter="numGrid_MouseEnter" MouseLeave="numGrid_MouseLeave">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="5*"/>
+        </Grid.RowDefinitions>
+        <Button x:Name="incBtn" Content="" Grid.Row="0" VerticalContentAlignment="Center" FontSize="16" Click="incBtn_Click" Opacity="0.5" Background="White" BorderBrush="Black" Visibility="Hidden"/>
+        <Button x:Name="decBtn" Content="" Grid.Row="2" VerticalContentAlignment="Center" FontSize="16" Click="decBtn_Click" Opacity="0.5" Background="White" BorderBrush="Black" Visibility="Hidden"/>
+
     </Grid>
 </UserControl>
