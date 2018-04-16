@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using System.IO;
 namespace TimeKeeper
 {
     /// <summary>
@@ -33,11 +33,28 @@ namespace TimeKeeper
             theTicker.TickEvent += Tick;
             startTimeClk.SetTime(new DateTime()); //00:00:00
             startTimeClk.ClockModified += ClockModified;
+
+            var file = System.AppDomain.CurrentDomain.BaseDirectory + "\\default.chg";
+            if (File.Exists(file))
+            {
+                var ccf = ChargeCodeFile.ReadFile(file);
+                Timers.Clear();
+                chargeNumberStack.Children.Clear();
+                CurrentTimer = null;
+                foreach (var ccode in ccf.ChargeCode)
+                {
+                    var telement = new TimerElement(ccode.Code, ccode.Description);
+                    Timers.Add(telement);
+                    chargeNumberStack.Children.Add(telement);
+                    telement.TimerActionPerformed += TimerActionCallback;
+                }
+            }
+
         }
 
         public void ClockModified(Clock obj, int h, int m, int s)
         {
-            if (obj == startTimeClk) StartTime = new DateTime(StartTime.Year, StartTime.Month, StartTime.Day, h, m, s);
+            if (obj == startTimeClk && h<24) StartTime = new DateTime(StartTime.Year, StartTime.Month, StartTime.Day, h, m, s);
         }
 
         public void Tick(DateTime t)
@@ -108,12 +125,72 @@ namespace TimeKeeper
 
         private void loadBtn_Click(object sender, RoutedEventArgs e)
         {
+            var ofd = new Microsoft.Win32.OpenFileDialog
+            {
+                FileName = "ChargeCodes",
+                DefaultExt = "chg",
+                Filter = "Charge Codes (.chg)|*.chg"
+            };
 
+            if (ofd.ShowDialog() == true)
+            {
+                var name = ofd.FileName;
+                var ccf = ChargeCodeFile.ReadFile(name);
+                Timers.Clear();
+                chargeNumberStack.Children.Clear();
+                CurrentTimer = null;
+                foreach(var ccode in ccf.ChargeCode)
+                {
+                    var telement = new TimerElement(ccode.Code, ccode.Description);
+                    Timers.Add(telement);
+                    chargeNumberStack.Children.Add(telement);
+                    telement.TimerActionPerformed += TimerActionCallback;
+                }
+
+            }
         }
 
         private void saveBtn_Click(object sender, RoutedEventArgs e)
         {
+            var sfd = new Microsoft.Win32.SaveFileDialog
+            {
+                FileName = "ChargeCodes",
+                DefaultExt = "chg",
+                Filter = "Charge Codes (.chg)|*.chg"
+            };
 
+            if (sfd.ShowDialog()==true)
+            {
+                var name = sfd.FileName;
+                var ccf = new ChargeCodeFile();
+                foreach(var timer in Timers)
+                {
+                    ccf.ChargeCode.Add(new ChargeCode()
+                    {
+                        Code = timer.Code,
+                        Description = timer.Description
+                    });
+                }
+                ccf.WriteFile(name);
+                
+            }
+
+
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var file = System.AppDomain.CurrentDomain.BaseDirectory + "\\default.chg";
+            var ccf = new ChargeCodeFile();
+            foreach (var timer in Timers)
+            {
+                ccf.ChargeCode.Add(new ChargeCode()
+                {
+                    Code = timer.Code,
+                    Description = timer.Description
+                });
+            }
+            ccf.WriteFile(file);
         }
     }
 }

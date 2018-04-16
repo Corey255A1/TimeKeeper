@@ -6,8 +6,8 @@
              xmlns:local="clr-namespace:TimeKeeper"
              mc:Ignorable="d" Height="92.936" Width="555.525">
     <Grid Margin="5">
-        <TextBox HorizontalAlignment="Left" Height="29" TextWrapping="Wrap" Text="1234567890-AAA" VerticalAlignment="Top" Width="248" FontFamily="Segoe UI Black" FontSize="20"/>
-        <TextBox HorizontalAlignment="Left" Height="46" Margin="0,34,0,0" TextWrapping="Wrap" Text="This is a brief description on what this charge number is for" VerticalAlignment="Top" Width="248"/>
+        <TextBox x:Name="chargeCodeField" HorizontalAlignment="Left" Height="29" TextWrapping="Wrap" Text="1234567890-AAA" VerticalAlignment="Top" Width="248" FontFamily="Segoe UI Black" FontSize="20"/>
+        <TextBox x:Name="descriptionField" HorizontalAlignment="Left" Height="46" Margin="0,34,0,0" TextWrapping="Wrap" Text="This is a brief description on what this charge number is for" VerticalAlignment="Top" Width="248"/>
         <local:TimeEdit x:Name="timerEdit" HorizontalAlignment="Left" Height="55" Margin="253,0,0,0" VerticalAlignment="Top" Width="181"/>
         <Button x:Name="workOnBtn" Content="WORK ON" HorizontalAlignment="Left" Margin="457,0,0,0" VerticalAlignment="Top" Width="85" FontFamily="Segoe UI Black" Background="#FF006A00" Foreground="White" Height="36" FontSize="14" Click="workOnBtn_Click"/>
         <Button x:Name="removeBtn" Content="remove" HorizontalAlignment="Left" Margin="253,55,0,0" Width="54" FontFamily="Segoe UI Semibold" Background="#FF6A0000" Foreground="White" Height="23" VerticalAlignment="Top" VerticalContentAlignment="Top" Click="removeBtn_Click"/>

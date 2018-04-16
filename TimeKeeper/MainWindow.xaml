@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TimeKeeper"
         mc:Ignorable="d"
-        Title="Time Keeper: X-Treme" Height="704.81" Width="616.841">
+        Title="Time Keeper: X-Treme" Height="704.81" Width="616.841" Closing="Window_Closing">
     <Grid>
         <Rectangle Fill="Black" Height="47" Margin="10,10,10,0" Stroke="Black" VerticalAlignment="Top"/>
         <local:Clock x:Name="currentTimeClk" HorizontalAlignment="Left" Height="40" Margin="151,13,0,0" VerticalAlignment="Top" Width="321" Background="{x:Null}" NumberColor="Red" IsModifiable="False"/>
@@ -22,8 +22,8 @@
         <local:Clock x:Name="chargedTimeClk" HorizontalAlignment="Left" Height="25" Margin="256,155,0,0" VerticalAlignment="Top" Width="202" IsAClock="False" NumberColor="#FF1A8D00" IsModifiable="False"/>
         <Label Content="CHARGED" HorizontalAlignment="Left" Margin="166,152,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Black" FontSize="16" Width="90" HorizontalContentAlignment="Right"/>
         <Button x:Name="pauseBtn" Content="PAUSE" HorizontalAlignment="Left" Margin="507,145,0,0" VerticalAlignment="Top" Width="80" FontFamily="Segoe UI Black" Background="#FFC5E400" Foreground="Black" Height="35" FontSize="16" Click="pauseBtn_Click"/>
-        <Button x:Name="loadBtn" Content="Load" HorizontalAlignment="Left" Margin="85,0,0,10" VerticalAlignment="Bottom" Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FF00CF71" Height="30" VerticalContentAlignment="Center" Click="loadBtn_Click" IsEnabled="False"/>
-        <Button x:Name="saveBtn" Content="Save" HorizontalAlignment="Left" Margin="160,0,0,10" VerticalAlignment="Bottom" Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FF00A9CF" Height="30" VerticalContentAlignment="Center" Click="saveBtn_Click" IsEnabled="False"/>
+        <Button x:Name="loadBtn" Content="Load" HorizontalAlignment="Left" Margin="85,0,0,10" VerticalAlignment="Bottom" Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FF00CF71" Height="30" VerticalContentAlignment="Center" Click="loadBtn_Click"/>
+        <Button x:Name="saveBtn" Content="Save" HorizontalAlignment="Left" Margin="160,0,0,10" VerticalAlignment="Bottom" Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FF00A9CF" Height="30" VerticalContentAlignment="Center" Click="saveBtn_Click"/>
         <Button x:Name="resetBtn" Content="RESET" HorizontalAlignment="Left" Margin="422,145,0,0" VerticalAlignment="Top" Width="80" FontFamily="Segoe UI Black" Background="#FFE46800" Foreground="Black" Height="35" FontSize="16" Click="resetBtn_Click"/>
     </Grid>
 </Window>

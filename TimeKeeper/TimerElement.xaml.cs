@@ -24,7 +24,27 @@ namespace TimeKeeper
     {
         public event TimerElementAction TimerActionPerformed;
         DateTime LastTimeReceived;
+
+        public string Code
+        {
+            get { return chargeCodeField.Text; }
+        }
+        public string Description
+        {
+            get { return descriptionField.Text; }
+        }
+
         public TimerElement()
+        {
+            initialize();
+        }
+        public TimerElement(string code, string description)
+        {
+            initialize();
+            chargeCodeField.Text = code;
+            descriptionField.Text = description;
+        }
+        private void initialize()
         {
             InitializeComponent();
             timerEdit.Clear();
