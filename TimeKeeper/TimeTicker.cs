@@ -1,4 +1,8 @@
-﻿using System;
+﻿//Corey Wunderlich 2018
+//A simple class to tick all of the elements and keep the clocks in sync
+//Even between computer sleeps or lock ups. It uses time stamps in the callback
+//to allow for time offsets
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

@@ -1,4 +1,8 @@
-﻿using System;
+﻿//Corey Wunderlich 2018
+//A Single Clock Digit Control.
+//Implemented this way so that it can use vector 
+//rendered numbers rather than fonts
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

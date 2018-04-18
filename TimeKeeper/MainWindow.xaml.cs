@@ -1,4 +1,11 @@
-﻿using System;
+﻿//Corey Wunderlich 2018
+//The "Main" of the TimeKeeper.
+//Ties all of the pieces of together and creates
+//The user interface.
+//
+//NOTE: Should probably move a lot of this
+//business logic out of the window class
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +20,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
+
+using CSCSV;
 namespace TimeKeeper
 {
     /// <summary>
@@ -191,6 +200,70 @@ namespace TimeKeeper
                 });
             }
             ccf.WriteFile(file);
+        }
+
+        private void logBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var file = System.AppDomain.CurrentDomain.BaseDirectory + "\\timelog.csv";
+            var timeDict = new Dictionary<string, TimerElement>();
+            foreach (var timer in Timers)
+            {
+                if(!timeDict.ContainsKey(timer.Code))
+                {
+                    timeDict.Add(timer.Code, timer);
+                }
+                
+            }
+            DateTime currTime = DateTime.Now;
+            string todaysColumn = currTime.ToShortDateString();
+            if (File.Exists(file))
+            {
+                //If I have the file already, we must add our time for today
+                CSCSV.Table lasttable = CSCSV.Table.LoadFromFile(file);
+                //If this table doesn't have a column for today, add one
+                if (!lasttable.ContainsHeader(todaysColumn))
+                {
+                    lasttable.AddColumn(todaysColumn);
+                }
+                List<string> chargecodes = lasttable.GetColumn("Charge Codes").ToList();
+                int ccCount = chargecodes.Count();
+                foreach (string code in timeDict.Keys)
+                {
+                    int idx = chargecodes.IndexOf(code);
+                    //If the code is already in the list, set the time.
+                    if (idx >= 0)
+                    {
+                        lasttable.SetValue(todaysColumn, idx, timeDict[code].GetTime().ToString());
+                    }
+                    else // We will have to add the code..
+                    {
+                        lasttable.RowCount += 1;
+                        lasttable.SetValue("Charge Codes", ccCount, code);
+                        lasttable.SetValue(todaysColumn, ccCount, timeDict[code].GetTime().ToString());
+
+                        ++ccCount;
+                    }
+                }
+
+                lasttable.WriteToFile(file);
+
+            }
+            else
+            {
+                var newtable = new CSCSV.Table();
+                newtable.RowCount = timeDict.Count();
+                newtable.AddColumn("Charge Codes");
+                newtable.AddColumn(todaysColumn);
+                int ccCount = 0;
+                foreach (string code in timeDict.Keys)
+                {
+                    newtable.SetValue("Charge Codes", ccCount, code);
+                    newtable.SetValue(todaysColumn, ccCount, timeDict[code].GetTime().ToString());
+
+                    ++ccCount;
+                }
+                newtable.WriteToFile(file);
+            }
         }
     }
 }

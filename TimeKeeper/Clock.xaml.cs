@@ -1,4 +1,8 @@
-﻿using System;
+﻿//Corey Wunderlich 2018
+//A combination of the clock numbers into a clock control
+//Can be Timer Style or Clock Style
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

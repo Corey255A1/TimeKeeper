@@ -1,4 +1,8 @@
-﻿using System;
+﻿//Corey Wunderlich 2018
+//The Timer Element allows for labeling, describing and displaying 
+//an editable time for a charge code.
+//These are what gets added to the list.
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

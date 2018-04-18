@@ -1,4 +1,6 @@
-﻿using System;
+﻿//Corey Wunderlich
+//A control that uses edit boxes to allow for quickly modifying a time element
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

@@ -1,4 +1,6 @@
-﻿using System;
+﻿//Corey Wunderlich 2018
+//Serialize and Deserialize the Charge Code XML File
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

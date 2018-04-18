@@ -6,6 +6,12 @@
         xmlns:local="clr-namespace:TimeKeeper"
         mc:Ignorable="d"
         Title="Time Keeper: X-Treme" Height="704.81" Width="616.841" Closing="Window_Closing">
+    <Window.Background>
+        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+            <GradientStop Color="White" Offset="1"/>
+            <GradientStop Color="White"/>
+        </LinearGradientBrush>
+    </Window.Background>
     <Grid>
         <Rectangle Fill="Black" Height="47" Margin="10,10,10,0" Stroke="Black" VerticalAlignment="Top"/>
         <local:Clock x:Name="currentTimeClk" HorizontalAlignment="Left" Height="40" Margin="151,13,0,0" VerticalAlignment="Top" Width="321" Background="{x:Null}" NumberColor="Red" IsModifiable="False"/>
@@ -16,7 +22,7 @@
         <Label Content="CURRENT TIME" HorizontalAlignment="Left" Margin="10,19,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Black" FontSize="16" Width="136" HorizontalContentAlignment="Right" Foreground="White"/>
         <Label Content="DELTA" HorizontalAlignment="Left" Margin="139,109,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Black" FontSize="16" Width="117" HorizontalContentAlignment="Right"/>
         <Button x:Name="addBtn" Content="Add" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FF00CFC6" Height="30" VerticalContentAlignment="Center" Click="addBtn_Click"/>
-        <ScrollViewer Margin="10,185,0,45" HorizontalAlignment="Left" Width="577">
+        <ScrollViewer Margin="10,185,0,45" HorizontalAlignment="Left" Width="577" Background="#FFC7C7C7">
             <StackPanel x:Name="chargeNumberStack" Margin="0,0,0,0"/>
         </ScrollViewer>
         <local:Clock x:Name="chargedTimeClk" HorizontalAlignment="Left" Height="25" Margin="256,155,0,0" VerticalAlignment="Top" Width="202" IsAClock="False" NumberColor="#FF1A8D00" IsModifiable="False"/>
@@ -25,5 +31,6 @@
         <Button x:Name="loadBtn" Content="Load" HorizontalAlignment="Left" Margin="85,0,0,10" VerticalAlignment="Bottom" Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FF00CF71" Height="30" VerticalContentAlignment="Center" Click="loadBtn_Click"/>
         <Button x:Name="saveBtn" Content="Save" HorizontalAlignment="Left" Margin="160,0,0,10" VerticalAlignment="Bottom" Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FF00A9CF" Height="30" VerticalContentAlignment="Center" Click="saveBtn_Click"/>
         <Button x:Name="resetBtn" Content="RESET" HorizontalAlignment="Left" Margin="422,145,0,0" VerticalAlignment="Top" Width="80" FontFamily="Segoe UI Black" Background="#FFE46800" Foreground="Black" Height="35" FontSize="16" Click="resetBtn_Click"/>
+        <Button x:Name="logBtn" Content="Log" HorizontalAlignment="Left" Margin="517,0,0,10" VerticalAlignment="Bottom" Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FFCD00FB" Height="30" VerticalContentAlignment="Center" Foreground="Black" Click="logBtn_Click"/>
     </Grid>
 </Window>
