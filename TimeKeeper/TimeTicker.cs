@@ -3,10 +3,6 @@
 //Even between computer sleeps or lock ups. It uses time stamps in the callback
 //to allow for time offsets
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
 namespace TimeKeeper
 {
@@ -19,8 +15,8 @@ namespace TimeKeeper
         public TimeTicker()
         {
             //wait until the nearst second for the first tick
-            theTicker = new Timer(Tick, this, 1000- DateTime.Now.Millisecond, 1000);
-            
+            theTicker = new Timer(Tick, this, 1000 - DateTime.Now.Millisecond, 1000);
+
         }
         private void Tick(object obj)
         {

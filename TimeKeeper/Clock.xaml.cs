@@ -4,19 +4,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.ComponentModel;
 namespace TimeKeeper
 {
 
@@ -39,7 +30,7 @@ namespace TimeKeeper
             set
             {
                 isClockType = value;
-                if(isClockType==false)
+                if (isClockType == false)
                 {
                     apClk.Visibility = Visibility.Hidden;
                     mClk.Visibility = Visibility.Hidden;
@@ -63,9 +54,9 @@ namespace TimeKeeper
             set
             {
                 numberColor = value;
-                foreach(var e in theGrid.Children)
+                foreach (var e in theGrid.Children)
                 {
-                   if (e.GetType() == typeof(ClockNum)) ((ClockNum)e).MyColor = numberColor;
+                    if (e.GetType() == typeof(ClockNum)) ((ClockNum)e).MyColor = numberColor;
                 }
             }
         }
@@ -73,8 +64,10 @@ namespace TimeKeeper
         public bool IsModifiable
         {
             get { return isModifiable; }
-            set { isModifiable = value;
-            ClockNumberList.ForEach((t) => t.IsModifiable = isModifiable);
+            set
+            {
+                isModifiable = value;
+                ClockNumberList.ForEach((t) => t.IsModifiable = isModifiable);
             }
         }
 
@@ -82,7 +75,7 @@ namespace TimeKeeper
         public Clock()
         {
             InitializeComponent();
-            
+
             //Make a list of the modifiable elements
             ClockNumberList = new List<ClockNum>()
             {
@@ -96,12 +89,12 @@ namespace TimeKeeper
             second1Clk.NumberRollOver += minute2Clk.IncrementNum;
             second2Clk.NumberRollOver += second1Clk.IncrementNum;
 
-            foreach(var cn in ClockNumberList)
+            foreach (var cn in ClockNumberList)
             {
                 cn.NumberModified += ClockChanged;
             }
 
-            
+
 
         }
 
@@ -121,11 +114,11 @@ namespace TimeKeeper
             int h = time.Hour;
             if (IsAClock)
             {
-                
+
                 //Not 24 Hour time.. maybe make it an option?
                 if (h >= 12)
                 {
-                    if(h>12) h = h - 12;
+                    if (h > 12) h = h - 12;
                     apClk.MyNumber = ClockNumbers.P;
                 }
                 else

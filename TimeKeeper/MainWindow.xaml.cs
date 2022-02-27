@@ -7,21 +7,9 @@
 //business logic out of the window class
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.IO;
-
-using CSCSV;
+using System.Linq;
+using System.Windows;
 namespace TimeKeeper
 {
     /// <summary>
@@ -63,7 +51,7 @@ namespace TimeKeeper
 
         public void ClockModified(Clock obj, int h, int m, int s)
         {
-            if (obj == startTimeClk && h<24) StartTime = new DateTime(StartTime.Year, StartTime.Month, StartTime.Day, h, m, s);
+            if (obj == startTimeClk && h < 24) StartTime = new DateTime(StartTime.Year, StartTime.Month, StartTime.Day, h, m, s);
         }
 
         public void Tick(DateTime t)
@@ -72,15 +60,15 @@ namespace TimeKeeper
             {
                 currentTimeClk.SetTime(t);
                 totalTimeClk.SetTime(t - StartTime);
-                if(!WorkTimerPaused) CurrentTimer?.SetTime(t);
+                if (!WorkTimerPaused) CurrentTimer?.SetTime(t);
                 TimeSpan total = new TimeSpan();
-                foreach(var telm in Timers)
+                foreach (var telm in Timers)
                 {
                     total += telm.GetTime();
                 }
                 chargedTimeClk.SetTime(total);
             }));
-            
+
         }
 
         private void startBtn_Click(object sender, RoutedEventArgs e)
@@ -92,7 +80,7 @@ namespace TimeKeeper
 
         private void TimerActionCallback(TimerElement t, TimerElementActionEnum e)
         {
-            switch(e)
+            switch (e)
             {
                 case TimerElementActionEnum.WorkOn: CurrentTimer = t; WorkTimerPaused = false; break;
                 //case TimerElementActionEnum.Pause:  break;
@@ -104,10 +92,10 @@ namespace TimeKeeper
                         WorkTimerPaused = true;
                         CurrentTimer = null;
                     }
-                    
+
                     break;
             }
-            
+
         }
 
         private void addBtn_Click(object sender, RoutedEventArgs e)
@@ -148,7 +136,7 @@ namespace TimeKeeper
                 Timers.Clear();
                 chargeNumberStack.Children.Clear();
                 CurrentTimer = null;
-                foreach(var ccode in ccf.ChargeCode)
+                foreach (var ccode in ccf.ChargeCode)
                 {
                     var telement = new TimerElement(ccode.Code, ccode.Description);
                     Timers.Add(telement);
@@ -168,102 +156,86 @@ namespace TimeKeeper
                 Filter = "Charge Codes (.chg)|*.chg"
             };
 
-            if (sfd.ShowDialog()==true)
+            if (sfd.ShowDialog() == true)
             {
                 var name = sfd.FileName;
-                var ccf = new ChargeCodeFile();
-                foreach(var timer in Timers)
+                var charge_code_file = new ChargeCodeFile();
+                foreach (var timer in Timers)
                 {
-                    ccf.ChargeCode.Add(new ChargeCode()
+                    charge_code_file.ChargeCode.Add(new ChargeCode()
                     {
                         Code = timer.Code,
                         Description = timer.Description
                     });
                 }
-                ccf.WriteFile(name);
-                
+                charge_code_file.WriteFile(name);
             }
-
-
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             var file = System.AppDomain.CurrentDomain.BaseDirectory + "\\default.chg";
-            var ccf = new ChargeCodeFile();
+            var charge_code_file = new ChargeCodeFile();
             foreach (var timer in Timers)
             {
-                ccf.ChargeCode.Add(new ChargeCode()
+                charge_code_file.ChargeCode.Add(new ChargeCode()
                 {
                     Code = timer.Code,
                     Description = timer.Description
                 });
             }
-            ccf.WriteFile(file);
+            charge_code_file.WriteFile(file);
         }
 
         private void logBtn_Click(object sender, RoutedEventArgs e)
         {
             var file = System.AppDomain.CurrentDomain.BaseDirectory + "\\timelog.csv";
-            var timeDict = new Dictionary<string, TimerElement>();
+            var time_dict = new Dictionary<string, TimerElement>();
             foreach (var timer in Timers)
             {
-                if(!timeDict.ContainsKey(timer.Code))
+                if (!time_dict.ContainsKey(timer.Code))
                 {
-                    timeDict.Add(timer.Code, timer);
+                    time_dict.Add(timer.Code, timer);
                 }
-                
+
             }
-            DateTime currTime = DateTime.Now;
-            string todaysColumn = currTime.ToShortDateString();
+            DateTime current_time = DateTime.Now;
+            string todays_column = current_time.ToShortDateString();
+            CSCSV.Table table = null;
             if (File.Exists(file))
             {
-                //If I have the file already, we must add our time for today
-                CSCSV.Table lasttable = CSCSV.Table.LoadFromFile(file);
-                //If this table doesn't have a column for today, add one
-                if (!lasttable.ContainsHeader(todaysColumn))
-                {
-                    lasttable.AddColumn(todaysColumn);
-                }
-                List<string> chargecodes = lasttable.GetColumn("Charge Codes").ToList();
-                int ccCount = chargecodes.Count();
-                foreach (string code in timeDict.Keys)
-                {
-                    int idx = chargecodes.IndexOf(code);
-                    //If the code is already in the list, set the time.
-                    if (idx >= 0)
-                    {
-                        lasttable.SetValue(todaysColumn, idx, timeDict[code].GetTime().ToString());
-                    }
-                    else // We will have to add the code..
-                    {
-                        lasttable.RowCount += 1;
-                        lasttable.SetValue("Charge Codes", ccCount, code);
-                        lasttable.SetValue(todaysColumn, ccCount, timeDict[code].GetTime().ToString());
-
-                        ++ccCount;
-                    }
-                }
-
-                lasttable.WriteToFile(file);
-
+                table = CSCSV.Table.LoadFromFile(file);
             }
             else
             {
-                var newtable = new CSCSV.Table();
-                newtable.RowCount = timeDict.Count();
-                newtable.AddColumn("Charge Codes");
-                newtable.AddColumn(todaysColumn);
-                int ccCount = 0;
-                foreach (string code in timeDict.Keys)
-                {
-                    newtable.SetValue("Charge Codes", ccCount, code);
-                    newtable.SetValue(todaysColumn, ccCount, timeDict[code].GetTime().ToString());
-
-                    ++ccCount;
-                }
-                newtable.WriteToFile(file);
+                table = new CSCSV.Table();
             }
+            if (!table.ContainsHeader("Charge Codes"))
+            {
+                table.AddColumn("Charge Codes");
+            }
+            //If this table doesn't have a column for today, add one
+            if (!table.ContainsHeader(todays_column))
+            {
+                table.AddColumn(todays_column);
+            }
+            List<string> chargecodes = table.GetColumn("Charge Codes").ToList();
+            foreach (string code in time_dict.Keys)
+            {
+                int idx = chargecodes.IndexOf(code);
+                //If the code is already in the list, set the time.
+                if (idx >= 0)
+                {
+                    table.SetValue(todays_column, idx, time_dict[code].GetTime().ToString());
+                }
+                else // We will have to add the code..
+                {
+                    int row_idx = table.NewRow();
+                    table.SetValue("Charge Codes", row_idx, code);
+                    table.SetValue(todays_column, row_idx, time_dict[code].GetTime().ToString());
+                }
+            }
+            table.WriteToFile(file);
         }
     }
 }

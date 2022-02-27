@@ -4,19 +4,11 @@
 //rendered numbers rather than fonts
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.ComponentModel;
 namespace TimeKeeper
 {
     /// <summary>
@@ -35,7 +27,8 @@ namespace TimeKeeper
         [Description("Set the Current Number"), Category("Clock Data")]
         public ClockNumbers MyNumber
         {
-            get {
+            get
+            {
                 return myNumber;
             }
             set
@@ -79,7 +72,8 @@ namespace TimeKeeper
             set
             {
                 myColor = value;
-                foreach (var n in BrushDictionary.Keys) {
+                foreach (var n in BrushDictionary.Keys)
+                {
                     ((GeometryDrawing)((DrawingGroup)BrushDictionary[n].Drawing).Children[0]).Brush = MyColor;
                 }
 
@@ -119,7 +113,7 @@ namespace TimeKeeper
         }
         public void SetNumber(int num)
         {
-            if(Enum.IsDefined(typeof(ClockNumbers), num))
+            if (Enum.IsDefined(typeof(ClockNumbers), num))
             {
                 MyNumber = (ClockNumbers)num;
             }
@@ -135,7 +129,7 @@ namespace TimeKeeper
         public void IncrementNum()
         {
             var n = MyNumber + 1;
-            if (Enum.IsDefined(typeof(ClockNumbers), n) && n<=myUpperLimit)
+            if (Enum.IsDefined(typeof(ClockNumbers), n) && n <= myUpperLimit)
             {
                 MyNumber = n;
             }
@@ -152,7 +146,7 @@ namespace TimeKeeper
             var n = MyNumber - 1;
             if (Enum.IsDefined(typeof(ClockNumbers), n) && n >= myLowerLimit)
             {
-                MyNumber = n;                
+                MyNumber = n;
             }
             else
             {

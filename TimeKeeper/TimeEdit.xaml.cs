@@ -1,20 +1,10 @@
 ﻿//Corey Wunderlich
 //A control that uses edit boxes to allow for quickly modifying a time element
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Text.RegularExpressions;
 namespace TimeKeeper
 {
     /// <summary>
@@ -45,7 +35,7 @@ namespace TimeKeeper
 
         public TimeSpan GetTime()
         {
-            return new TimeSpan(0,hours, minutes, (int)seconds, (int)(seconds - (int)seconds)*1000);
+            return new TimeSpan(0, hours, minutes, (int)seconds, (int)(seconds - (int)seconds) * 1000);
         }
 
 
@@ -63,17 +53,17 @@ namespace TimeKeeper
         private void SetSeconds(int s)
         {
             if (s > 59)
-            {                
+            {
                 SetMinutes(minutes + (int)(s / 60));
-               s = s % 60;
+                s = s % 60;
             }
             seconds = s;
             secondsBox.Text = seconds.ToString("D2");
         }
         private void SetMinutes(int m)
         {
-            if(m>59)
-            {                
+            if (m > 59)
+            {
                 SetHours(hours + (m / 60));
                 m = m % 60;
             }
@@ -125,7 +115,7 @@ namespace TimeKeeper
 
         private void secondsBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Enter)
+            if (e.Key == Key.Enter)
             {
                 ApplySeconds();
             }
