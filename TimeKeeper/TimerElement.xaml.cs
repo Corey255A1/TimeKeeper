@@ -5,6 +5,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.ComponentModel;
 
 namespace TimeKeeper
 {
@@ -13,32 +14,41 @@ namespace TimeKeeper
     /// </summary>
     public enum TimerElementActionEnum { WorkOn, Pause, Remove, Edit }
     public delegate void TimerElementAction(TimerElement t, TimerElementActionEnum e);
-    public partial class TimerElement : UserControl
+    public partial class TimerElement : UserControl, INotifyPropertyChanged
     {
         public event TimerElementAction TimerActionPerformed;
-        DateTime LastTimeReceived;
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyChange(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
+        private DateTime _last_time_received;
+
+        private string _code;
         public string Code
         {
-            get { return chargeCodeField.Text; }
+            get => _code;
+            set { _code = value; NotifyChange(nameof(Code)); }
         }
+
+        private string _description;
         public string Description
         {
-            get { return descriptionField.Text; }
+            get => _description;
+            set { _code = value; NotifyChange(nameof(Description)); }
         }
 
         public TimerElement()
         {
-            initialize();
+            Initialize();
         }
         public TimerElement(string code, string description)
         {
-            initialize();
-            chargeCodeField.Text = code;
-            descriptionField.Text = description;
+            _code = code;
+            _description = description;
+            Initialize();
         }
-        private void initialize()
+        private void Initialize()
         {
+            DataContext = this;
             InitializeComponent();
             timerEdit.Clear();
         }
@@ -49,8 +59,8 @@ namespace TimeKeeper
         }
         public void SetTime(DateTime t)
         {
-            timerEdit.IncrementTime(t - LastTimeReceived);
-            LastTimeReceived = t;
+            timerEdit.IncrementTime(t - _last_time_received);
+            _last_time_received = t;
         }
         public TimeSpan GetTime()
         {
@@ -61,7 +71,7 @@ namespace TimeKeeper
         {
             //Set my last time received to Right now when the button was clicked. Start Time from now
             var t = DateTime.Now;
-            LastTimeReceived = new DateTime(t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second); //truncate off any milliseconds
+            _last_time_received = new DateTime(t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second); //truncate off any milliseconds
             TimerActionPerformed?.Invoke(this, TimerElementActionEnum.WorkOn);
         }
 

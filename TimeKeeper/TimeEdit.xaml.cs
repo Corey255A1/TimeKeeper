@@ -12,10 +12,10 @@ namespace TimeKeeper
     /// </summary>
     public partial class TimeEdit : UserControl
     {
-        Regex charFilter = new Regex("[^0-9.-]+");
-        int hours;
-        int minutes;
-        int seconds;
+        private Regex _char_filter = new Regex("[^0-9.-]+");
+        private int _hours;
+        private int _minutes;
+        private int _seconds;
         public TimeEdit()
         {
             InitializeComponent();
@@ -35,44 +35,44 @@ namespace TimeKeeper
 
         public TimeSpan GetTime()
         {
-            return new TimeSpan(0, hours, minutes, (int)seconds, (int)(seconds - (int)seconds) * 1000);
+            return new TimeSpan(0, _hours, _minutes, (int)_seconds, (int)(_seconds - (int)_seconds) * 1000);
         }
 
 
         private void numsOnly_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            if (charFilter.IsMatch(e.Text))
+            if (_char_filter.IsMatch(e.Text))
             {
                 e.Handled = true;
             }
         }
         private void AddSeconds(int s)
         {
-            SetSeconds(seconds + s);
+            SetSeconds(_seconds + s);
         }
         private void SetSeconds(int s)
         {
             if (s > 59)
             {
-                SetMinutes(minutes + (int)(s / 60));
+                SetMinutes(_minutes + (int)(s / 60));
                 s = s % 60;
             }
-            seconds = s;
-            secondsBox.Text = seconds.ToString("D2");
+            _seconds = s;
+            secondsBox.Text = _seconds.ToString("D2");
         }
         private void SetMinutes(int m)
         {
             if (m > 59)
             {
-                SetHours(hours + (m / 60));
+                SetHours(_hours + (m / 60));
                 m = m % 60;
             }
-            minutes = m;
+            _minutes = m;
             minutesBox.Text = m.ToString("D2");
         }
         private void SetHours(int h)
         {
-            hours = h;
+            _hours = h;
             hoursBox.Text = h.ToString("D3");
         }
 

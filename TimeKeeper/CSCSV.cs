@@ -103,7 +103,7 @@ namespace CSCSV
                 }
                 output += _header_list[h] + "\n";
             }
-            int rows = RowCount;
+            int rows = _table.Count;
             for (int r = 0; r < rows; ++r)
             {
                 int h = 0;

@@ -17,17 +17,17 @@ namespace TimeKeeper
     /// </summary>
     public partial class MainWindow : Window
     {
-        TimeTicker theTicker;
-        DateTime StartTime;
-        bool WorkTimerPaused = true;
-        TimerElement CurrentTimer;
-        List<TimerElement> Timers = new List<TimerElement>();
+        private TimeTicker _time_ticker;
+        private DateTime _start_time;
+        private bool _work_timer_paused = true;
+        private TimerElement _current_timer;
+        private List<TimerElement> _timers = new List<TimerElement>();
         public MainWindow()
         {
             InitializeComponent();
             currentTimeClk.SetTime(DateTime.Now);
-            theTicker = new TimeTicker();
-            theTicker.TickEvent += Tick;
+            _time_ticker = new TimeTicker();
+            _time_ticker.TickEvent += Tick;
             startTimeClk.SetTime(new DateTime()); //00:00:00
             startTimeClk.ClockModified += ClockModified;
 
@@ -35,13 +35,13 @@ namespace TimeKeeper
             if (File.Exists(file))
             {
                 var ccf = ChargeCodeFile.ReadFile(file);
-                Timers.Clear();
+                _timers.Clear();
                 chargeNumberStack.Children.Clear();
-                CurrentTimer = null;
+                _current_timer = null;
                 foreach (var ccode in ccf.ChargeCode)
                 {
                     var telement = new TimerElement(ccode.Code, ccode.Description);
-                    Timers.Add(telement);
+                    _timers.Add(telement);
                     chargeNumberStack.Children.Add(telement);
                     telement.TimerActionPerformed += TimerActionCallback;
                 }
@@ -51,7 +51,7 @@ namespace TimeKeeper
 
         public void ClockModified(Clock obj, int h, int m, int s)
         {
-            if (obj == startTimeClk && h < 24) StartTime = new DateTime(StartTime.Year, StartTime.Month, StartTime.Day, h, m, s);
+            if (obj == startTimeClk && h < 24) _start_time = new DateTime(_start_time.Year, _start_time.Month, _start_time.Day, h, m, s);
         }
 
         public void Tick(DateTime t)
@@ -59,10 +59,10 @@ namespace TimeKeeper
             Dispatcher.Invoke(new Action(() =>
             {
                 currentTimeClk.SetTime(t);
-                totalTimeClk.SetTime(t - StartTime);
-                if (!WorkTimerPaused) CurrentTimer?.SetTime(t);
+                totalTimeClk.SetTime(t - _start_time);
+                if (!_work_timer_paused) _current_timer?.SetTime(t);
                 TimeSpan total = new TimeSpan();
-                foreach (var telm in Timers)
+                foreach (var telm in _timers)
                 {
                     total += telm.GetTime();
                 }
@@ -74,23 +74,23 @@ namespace TimeKeeper
         private void startBtn_Click(object sender, RoutedEventArgs e)
         {
             var t = DateTime.Now;
-            StartTime = new DateTime(t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second); //truncate off any milliseconds
-            startTimeClk.SetTime(StartTime);
+            _start_time = new DateTime(t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second); //truncate off any milliseconds
+            startTimeClk.SetTime(_start_time);
         }
 
         private void TimerActionCallback(TimerElement t, TimerElementActionEnum e)
         {
             switch (e)
             {
-                case TimerElementActionEnum.WorkOn: CurrentTimer = t; WorkTimerPaused = false; break;
+                case TimerElementActionEnum.WorkOn: _current_timer = t; _work_timer_paused = false; break;
                 //case TimerElementActionEnum.Pause:  break;
                 case TimerElementActionEnum.Remove:
-                    Timers.Remove(t);
+                    _timers.Remove(t);
                     chargeNumberStack.Children.Remove(t);
-                    if (t == CurrentTimer)
+                    if (t == _current_timer)
                     {
-                        WorkTimerPaused = true;
-                        CurrentTimer = null;
+                        _work_timer_paused = true;
+                        _current_timer = null;
                     }
 
                     break;
@@ -101,20 +101,20 @@ namespace TimeKeeper
         private void addBtn_Click(object sender, RoutedEventArgs e)
         {
             var telm = new TimerElement();
-            Timers.Add(telm);
+            _timers.Add(telm);
             telm.TimerActionPerformed += TimerActionCallback;
             chargeNumberStack.Children.Add(telm);
         }
 
         private void pauseBtn_Click(object sender, RoutedEventArgs e)
         {
-            WorkTimerPaused = true;
+            _work_timer_paused = true;
         }
 
         private void resetBtn_Click(object sender, RoutedEventArgs e)
         {
             chargedTimeClk.SetTime(new TimeSpan(0, 0, 0));
-            foreach (var telm in Timers)
+            foreach (var telm in _timers)
             {
                 telm.Clear();
             }
@@ -133,13 +133,13 @@ namespace TimeKeeper
             {
                 var name = ofd.FileName;
                 var ccf = ChargeCodeFile.ReadFile(name);
-                Timers.Clear();
+                _timers.Clear();
                 chargeNumberStack.Children.Clear();
-                CurrentTimer = null;
+                _current_timer = null;
                 foreach (var ccode in ccf.ChargeCode)
                 {
                     var telement = new TimerElement(ccode.Code, ccode.Description);
-                    Timers.Add(telement);
+                    _timers.Add(telement);
                     chargeNumberStack.Children.Add(telement);
                     telement.TimerActionPerformed += TimerActionCallback;
                 }
@@ -160,7 +160,7 @@ namespace TimeKeeper
             {
                 var name = sfd.FileName;
                 var charge_code_file = new ChargeCodeFile();
-                foreach (var timer in Timers)
+                foreach (var timer in _timers)
                 {
                     charge_code_file.ChargeCode.Add(new ChargeCode()
                     {
@@ -176,7 +176,7 @@ namespace TimeKeeper
         {
             var file = System.AppDomain.CurrentDomain.BaseDirectory + "\\default.chg";
             var charge_code_file = new ChargeCodeFile();
-            foreach (var timer in Timers)
+            foreach (var timer in _timers)
             {
                 charge_code_file.ChargeCode.Add(new ChargeCode()
                 {
@@ -191,11 +191,14 @@ namespace TimeKeeper
         {
             var file = System.AppDomain.CurrentDomain.BaseDirectory + "\\timelog.csv";
             var time_dict = new Dictionary<string, TimerElement>();
-            foreach (var timer in Timers)
+            foreach (var timer in _timers)
             {
-                if (!time_dict.ContainsKey(timer.Code))
+                if (timer.Code != null)
                 {
-                    time_dict.Add(timer.Code, timer);
+                    if (!time_dict.ContainsKey(timer.Code))
+                    {
+                        time_dict.Add(timer.Code, timer);
+                    }
                 }
 
             }

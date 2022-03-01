@@ -20,21 +20,21 @@ namespace TimeKeeper
     {
         public event ChangeEvent NumberRollOver;
         public event ChangeEvent NumberModified;
-        private ClockNumbers myNumber;
-        private ClockNumbers myUpperLimit = ClockNumbers.Nine;
-        private ClockNumbers myLowerLimit = ClockNumbers.Zero;
-        private bool isModifiable = true;
+        private ClockNumbers _number;
+        private ClockNumbers _upper_limit = ClockNumbers.Nine;
+        private ClockNumbers _lower_limit = ClockNumbers.Zero;
+        
         [Description("Set the Current Number"), Category("Clock Data")]
-        public ClockNumbers MyNumber
+        public ClockNumbers Number
         {
             get
             {
-                return myNumber;
+                return _number;
             }
             set
             {
-                myNumber = value;
-                numGrid.Background = BrushDictionary[myNumber];
+                _number = value;
+                numGrid.Background = BrushDictionary[_number];
             }
         }
         [Description("Set the Number Upper Limit"), Category("Clock Data")]
@@ -42,11 +42,11 @@ namespace TimeKeeper
         {
             get
             {
-                return myUpperLimit;
+                return _upper_limit;
             }
             set
             {
-                myUpperLimit = value;
+                _upper_limit = value;
             }
         }
         [Description("Set the Number Lower Limit"), Category("Clock Data")]
@@ -54,37 +54,39 @@ namespace TimeKeeper
         {
             get
             {
-                return myLowerLimit;
+                return _lower_limit;
             }
             set
             {
-                myLowerLimit = value;
+                _lower_limit = value;
             }
         }
-        Brush myColor;
+        
+        private Brush _color;
         [Description("Set the Number Color"), Category("Clock Data")]
-        public Brush MyColor
+        public Brush Color
         {
             get
             {
-                return myColor;
+                return _color;
             }
             set
             {
-                myColor = value;
+                _color = value;
                 foreach (var n in BrushDictionary.Keys)
                 {
-                    ((GeometryDrawing)((DrawingGroup)BrushDictionary[n].Drawing).Children[0]).Brush = MyColor;
+                    ((GeometryDrawing)((DrawingGroup)BrushDictionary[n].Drawing).Children[0]).Brush = Color;
                 }
 
             }
         }
 
+        private bool _is_modifiable = true;
         [Description("Can this be modified?"), Category("Clock Data")]
         public bool IsModifiable
         {
-            get { return isModifiable; }
-            set { isModifiable = value; }
+            get { return _is_modifiable; }
+            set { _is_modifiable = value; }
         }
 
         Dictionary<ClockNumbers, DrawingBrush> BrushDictionary;
@@ -115,44 +117,44 @@ namespace TimeKeeper
         {
             if (Enum.IsDefined(typeof(ClockNumbers), num))
             {
-                MyNumber = (ClockNumbers)num;
+                Number = (ClockNumbers)num;
             }
             else
             {
-                MyNumber = ClockNumbers.Zero;
+                Number = ClockNumbers.Zero;
             }
         }
         public int GetInteger()
         {
-            return (int)MyNumber;
+            return (int)Number;
         }
         public void IncrementNum()
         {
-            var n = MyNumber + 1;
-            if (Enum.IsDefined(typeof(ClockNumbers), n) && n <= myUpperLimit)
+            var n = Number + 1;
+            if (Enum.IsDefined(typeof(ClockNumbers), n) && n <= _upper_limit)
             {
-                MyNumber = n;
+                Number = n;
             }
             else
             {
-                MyNumber = myLowerLimit;
+                Number = _lower_limit;
                 NumberRollOver?.Invoke();
             }
-            numGrid.Background = BrushDictionary[MyNumber];
+            numGrid.Background = BrushDictionary[Number];
             NumberModified?.Invoke();
         }
         public void DecrementNum()
         {
-            var n = MyNumber - 1;
-            if (Enum.IsDefined(typeof(ClockNumbers), n) && n >= myLowerLimit)
+            var n = Number - 1;
+            if (Enum.IsDefined(typeof(ClockNumbers), n) && n >= _lower_limit)
             {
-                MyNumber = n;
+                Number = n;
             }
             else
             {
-                MyNumber = myUpperLimit;
+                Number = _upper_limit;
             }
-            numGrid.Background = BrushDictionary[MyNumber];
+            numGrid.Background = BrushDictionary[Number];
             NumberModified?.Invoke();
         }
 
@@ -168,7 +170,7 @@ namespace TimeKeeper
 
         private void numGrid_MouseEnter(object sender, MouseEventArgs e)
         {
-            if (isModifiable)
+            if (_is_modifiable)
             {
                 incBtn.Visibility = Visibility.Visible;
                 decBtn.Visibility = Visibility.Visible;
@@ -177,7 +179,7 @@ namespace TimeKeeper
 
         private void numGrid_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (isModifiable)
+            if (_is_modifiable)
             {
                 incBtn.Visibility = Visibility.Hidden;
                 decBtn.Visibility = Visibility.Hidden;

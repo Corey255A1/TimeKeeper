@@ -18,19 +18,19 @@ namespace TimeKeeper
     public partial class Clock : UserControl
     {
         public event ClockModifiedEvent ClockModified;
-        bool isClockType = true;
-        bool isModifiable = true;
+        private bool _is_clock_type = true;
+        
         [Description("Timer or Clock?"), Category("Clock Data")]
         public bool IsAClock
         {
             get
             {
-                return isClockType;
+                return _is_clock_type;
             }
             set
             {
-                isClockType = value;
-                if (isClockType == false)
+                _is_clock_type = value;
+                if (_is_clock_type == false)
                 {
                     apClk.Visibility = Visibility.Hidden;
                     mClk.Visibility = Visibility.Hidden;
@@ -43,41 +43,43 @@ namespace TimeKeeper
             }
         }
 
-        Brush numberColor;
+        private Brush _number_color;
         [Description("Digit Colors"), Category("Clock Data")]
         public Brush NumberColor
         {
             get
             {
-                return numberColor;
+                return _number_color;
             }
             set
             {
-                numberColor = value;
+                _number_color = value;
                 foreach (var e in theGrid.Children)
                 {
-                    if (e.GetType() == typeof(ClockNum)) ((ClockNum)e).MyColor = numberColor;
+                    if (e.GetType() == typeof(ClockNum)) ((ClockNum)e).Color = _number_color;
                 }
             }
         }
+
+        private bool _is_modifiable = true;
         [Description("Can this be modified?"), Category("Clock Data")]
         public bool IsModifiable
         {
-            get { return isModifiable; }
+            get { return _is_modifiable; }
             set
             {
-                isModifiable = value;
-                ClockNumberList.ForEach((t) => t.IsModifiable = isModifiable);
+                _is_modifiable = value;
+                _clock_number_list.ForEach((t) => t.IsModifiable = _is_modifiable);
             }
         }
 
-        List<ClockNum> ClockNumberList;
+        private List<ClockNum> _clock_number_list;
         public Clock()
         {
             InitializeComponent();
 
             //Make a list of the modifiable elements
-            ClockNumberList = new List<ClockNum>()
+            _clock_number_list = new List<ClockNum>()
             {
                 hour1Clk,hour2Clk,minute1Clk,minute2Clk,second1Clk,second2Clk,apClk
             };
@@ -89,7 +91,7 @@ namespace TimeKeeper
             second1Clk.NumberRollOver += minute2Clk.IncrementNum;
             second2Clk.NumberRollOver += second1Clk.IncrementNum;
 
-            foreach (var cn in ClockNumberList)
+            foreach (var cn in _clock_number_list)
             {
                 cn.NumberModified += ClockChanged;
             }
@@ -100,7 +102,7 @@ namespace TimeKeeper
 
         private void ClockChanged()
         {
-            bool isPM = apClk.MyNumber == ClockNumbers.P;
+            bool isPM = apClk.Number == ClockNumbers.P;
             int h = hour1Clk.GetInteger() * 10 + hour2Clk.GetInteger();
             if (isPM) h = h + 12;
             int m = minute1Clk.GetInteger() * 10 + minute2Clk.GetInteger();
@@ -119,11 +121,11 @@ namespace TimeKeeper
                 if (h >= 12)
                 {
                     if (h > 12) h = h - 12;
-                    apClk.MyNumber = ClockNumbers.P;
+                    apClk.Number = ClockNumbers.P;
                 }
                 else
                 {
-                    apClk.MyNumber = ClockNumbers.A;
+                    apClk.Number = ClockNumbers.A;
                 }
             }
 
