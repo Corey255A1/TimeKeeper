@@ -25,7 +25,9 @@ namespace CSCSV
 
         public void AddColumn(string header)
         {
-            _table.Add(header, new List<string>(_row_count));
+            var column = new List<string>(_row_count);
+            for(int r = 0; r < _row_count; r++) { column.Add(""); }
+            _table.Add(header, column);
             _header_list.Add(header);
         }
         public IEnumerable<string> Headers()
@@ -103,8 +105,7 @@ namespace CSCSV
                 }
                 output += _header_list[h] + "\n";
             }
-            int rows = _table.Count;
-            for (int r = 0; r < rows; ++r)
+            for (int r = 0; r < _row_count; ++r)
             {
                 int h = 0;
                 for (; h < _header_list.Count - 1; ++h)
@@ -158,8 +159,6 @@ namespace CSCSV
                 }
             }
             return table;
-
-
         }
     }
 }
