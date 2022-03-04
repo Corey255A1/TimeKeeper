@@ -11,9 +11,15 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Numbers.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <local:ClockNumbersEnumToResourceConverter x:Key="NumberToBrushConverter"
+                     Num0="{StaticResource Num0}" Num1="{StaticResource Num1}" Num2="{StaticResource Num2}"
+                     Num3="{StaticResource Num3}" Num4="{StaticResource Num4}" Num5="{StaticResource Num5}"
+                     Num6="{StaticResource Num6}" Num7="{StaticResource Num7}" Num8="{StaticResource Num8}"
+                     Num9="{StaticResource Num9}" NumA="{StaticResource NumA}" NumP="{StaticResource NumP}" 
+                     NumM="{StaticResource NumM}" NumCol="{StaticResource NumCol}"/>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid x:Name="numGrid" Background="{Binding Mode=OneWay, Source={StaticResource Num0}}" MouseEnter="numGrid_MouseEnter" MouseLeave="numGrid_MouseLeave">
+    <Grid x:Name="numGrid" Background="{Binding Number, Mode=OneWay, Converter={StaticResource NumberToBrushConverter}, FallbackValue=Zero}" MouseEnter="numGrid_MouseEnter" MouseLeave="numGrid_MouseLeave">
         <Grid.RowDefinitions>
             <RowDefinition Height="5*"/>
             <RowDefinition Height="10*"/>

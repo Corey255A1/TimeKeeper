@@ -43,23 +43,18 @@ namespace TimeKeeper
             }
         }
 
-        private Brush _number_color;
         [Description("Digit Colors"), Category("Clock Data")]
         public Brush NumberColor
         {
-            get
-            {
-                return _number_color;
-            }
-            set
-            {
-                _number_color = value;
-                foreach (var e in theGrid.Children)
-                {
-                    if (e.GetType() == typeof(ClockNum)) ((ClockNum)e).Color = _number_color;
-                }
-            }
+            get { return (Brush)GetValue(NumberColorProperty); }
+            set { SetValue(NumberColorProperty, value); }
         }
+
+        // Using a DependencyProperty as the backing store for NumberColor.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty NumberColorProperty =
+            DependencyProperty.Register("NumberColor", typeof(Brush), typeof(Clock), new PropertyMetadata(Brushes.Black));
+
+
 
         private bool _is_modifiable = true;
         [Description("Can this be modified?"), Category("Clock Data")]
@@ -73,9 +68,16 @@ namespace TimeKeeper
             }
         }
 
+        //private MutableTime _time;
+        //public MutableTime Time
+        //{
+        //    get => _time;
+        //}
+
         private List<ClockNum> _clock_number_list;
         public Clock()
         {
+            DataContext = this;
             InitializeComponent();
 
             //Make a list of the modifiable elements

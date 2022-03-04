@@ -17,7 +17,8 @@ namespace TimeKeeper
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyChange(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
-        private Regex _char_filter = new Regex("[^0-9.-]+");
+        //For filtering out non positive integer characters
+        private readonly Regex _integer_regex = new Regex("[^0-9]+");
 
         public MutableTime Time
         {
@@ -35,9 +36,10 @@ namespace TimeKeeper
             InitializeComponent();
         }
 
+        //Filter out non integer entries
         private void numsOnly_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            if (_char_filter.IsMatch(e.Text))
+            if (_integer_regex.IsMatch(e.Text))
             {
                 e.Handled = true;
             }

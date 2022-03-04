@@ -1,4 +1,9 @@
-﻿using System;
+﻿//CWunderlich 2022
+//A Class to store Hours/Minutes/Seconds
+//Allows modification and calculates roll over into
+//the next higher up time unit
+//90seconds = 1minute 30seconds
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;

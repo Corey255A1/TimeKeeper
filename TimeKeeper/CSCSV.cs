@@ -26,10 +26,28 @@ namespace CSCSV
         public void AddColumn(string header)
         {
             var column = new List<string>(_row_count);
+            //Fill in each row of the new column with an empty string
             for(int r = 0; r < _row_count; r++) { column.Add(""); }
             _table.Add(header, column);
             _header_list.Add(header);
         }
+        public int AddRow(int count = 1)
+        {
+            if (count > 0)
+            {
+                foreach (List<string> column in _table.Values)
+                {
+                    for (int c = 0; c < count; c++) { column.Add(""); }
+                }
+                _row_count += count;
+                //return the row index added
+                return _row_count - 1;
+            }
+            return -1;
+        }
+
+
+
         public IEnumerable<string> Headers()
         {
             return _header_list.AsEnumerable();
@@ -78,21 +96,6 @@ namespace CSCSV
             return null;
         }
 
-        public int NewRow(int count = 1)
-        {
-            if(count > 0)
-            {
-                foreach (List<string> column in _table.Values)
-                {
-                    for (int c = 0; c < count; c++) { column.Add(""); }
-                }
-                _row_count += count;
-                //return the row index added
-                return _row_count - 1;
-            }
-            return -1;
-        }
-
         public void WriteToFile(string filename)
         {
             string output = "";
@@ -117,7 +120,7 @@ namespace CSCSV
             File.WriteAllText(filename, output);
         }
 
-        public static Table LoadFromFile(string filename, bool has_header = true, char seperator = ',')
+        public static Table ReadFromFile(string filename, bool has_header = true, char seperator = ',')
         {
             var table = new Table(has_header, seperator);
             string[] lines = File.ReadAllText(filename).Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
@@ -150,7 +153,7 @@ namespace CSCSV
                     //Only add rows that have the right amount of columns
                     if (vals.Length == column_count)
                     {
-                        int row_idx = table.NewRow();
+                        int row_idx = table.AddRow();
                         for (int c = 0; c < column_count; ++c)
                         {
                             table.SetValue(c, row_idx, vals[c]);

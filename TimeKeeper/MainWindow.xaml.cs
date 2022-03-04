@@ -207,7 +207,7 @@ namespace TimeKeeper
             CSCSV.Table table = null;
             if (File.Exists(file))
             {
-                table = CSCSV.Table.LoadFromFile(file);
+                table = CSCSV.Table.ReadFromFile(file);
             }
             else
             {
@@ -233,7 +233,7 @@ namespace TimeKeeper
                 }
                 else // We will have to add the code..
                 {
-                    int row_idx = table.NewRow();
+                    int row_idx = table.AddRow();
                     table.SetValue("Charge Codes", row_idx, code);
                     table.SetValue(todays_column, row_idx, time_dict[code].GetTime().ToString());
                 }
