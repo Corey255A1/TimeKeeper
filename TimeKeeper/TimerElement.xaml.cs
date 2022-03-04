@@ -33,7 +33,13 @@ namespace TimeKeeper
         public string Description
         {
             get => _description;
-            set { _code = value; NotifyChange(nameof(Description)); }
+            set { _description = value; NotifyChange(nameof(Description)); }
+        }
+
+        private MutableTime _time = new MutableTime();
+        public MutableTime Time
+        {
+            get => _time;
         }
 
         public TimerElement()
@@ -50,21 +56,21 @@ namespace TimeKeeper
         {
             DataContext = this;
             InitializeComponent();
-            timerEdit.Clear();
+            _time.Clear();
         }
 
         public void Clear()
         {
-            timerEdit.Clear();
+            _time.Clear();
         }
         public void SetTime(DateTime t)
         {
-            timerEdit.IncrementTime(t - _last_time_received);
+            _time.IncrementTime(t - _last_time_received);
             _last_time_received = t;
         }
         public TimeSpan GetTime()
         {
-            return timerEdit.GetTime();
+            return _time.GetTime();
         }
 
         private void workOnBtn_Click(object sender, RoutedEventArgs e)

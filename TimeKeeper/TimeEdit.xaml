@@ -6,9 +6,9 @@
              xmlns:local="clr-namespace:TimeKeeper"
              mc:Ignorable="d" Height="59" Width="181.333">
     <Grid>
-        <TextBox x:Name="hoursBox" HorizontalAlignment="Left" Height="53" TextWrapping="Wrap" Text="999" VerticalAlignment="Top" Width="75" MaxLines="1" MaxLength="3" TabIndex="0" FontFamily="Segoe UI Black" FontSize="36" PreviewTextInput="numsOnly_PreviewTextInput" LostFocus="hoursBox_LostFocus" PreviewKeyDown="hoursBox_PreviewKeyDown"/>
-        <TextBox x:Name="minutesBox" HorizontalAlignment="Left" Height="53" TextWrapping="Wrap" Text="59" VerticalAlignment="Top" Width="52" MaxLines="1" MaxLength="2" TabIndex="0" FontFamily="Segoe UI Black" FontSize="36" Margin="75,0,0,0" PreviewTextInput="numsOnly_PreviewTextInput" LostFocus="minutesBox_LostFocus" PreviewKeyDown="minutesBox_PreviewKeyDown"/>
-        <TextBox x:Name="secondsBox" HorizontalAlignment="Left" Height="53" TextWrapping="Wrap" Text="59" VerticalAlignment="Top" Width="52" MaxLines="1" MaxLength="2" TabIndex="0" FontFamily="Segoe UI Black" FontSize="36" Margin="127,0,0,0" PreviewTextInput="numsOnly_PreviewTextInput" LostFocus="secondsBox_LostFocus" PreviewKeyDown="secondsBox_PreviewKeyDown"/>
+        <TextBox HorizontalAlignment="Left" Height="53" TextWrapping="Wrap" Text="{Binding Time.Hours, StringFormat=D3}" VerticalAlignment="Top" Width="75" MaxLines="1" MaxLength="3" TabIndex="0" FontFamily="Segoe UI Black" FontSize="36" PreviewKeyDown="TextBox_PreviewKeyDown" PreviewTextInput="numsOnly_PreviewTextInput" />
+        <TextBox HorizontalAlignment="Left" Height="53" TextWrapping="Wrap" Text="{Binding Time.Minutes, StringFormat=D2}" VerticalAlignment="Top" Width="52" MaxLines="1" MaxLength="2" TabIndex="0" FontFamily="Segoe UI Black" FontSize="36" Margin="75,0,0,0" PreviewKeyDown="TextBox_PreviewKeyDown" PreviewTextInput="numsOnly_PreviewTextInput"/>
+        <TextBox HorizontalAlignment="Left" Height="53" TextWrapping="Wrap" Text="{Binding Time.Seconds, StringFormat=D2}" VerticalAlignment="Top" Width="52" MaxLines="1" MaxLength="2" TabIndex="0" FontFamily="Segoe UI Black" FontSize="36" Margin="127,0,0,0" PreviewKeyDown="TextBox_PreviewKeyDown" PreviewTextInput="numsOnly_PreviewTextInput"/>
 
     </Grid>
 </UserControl>
