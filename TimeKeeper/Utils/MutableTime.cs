@@ -72,7 +72,7 @@ namespace TimeKeeper
             Minutes = 0;
             Hours = 0;
         }
-        public TimeSpan GetTime()
+        public TimeSpan ToTimeSpan()
         {
             return new TimeSpan(0, _hours, _minutes, (int)_seconds, (int)(_seconds - (int)_seconds) * 1000);
         }

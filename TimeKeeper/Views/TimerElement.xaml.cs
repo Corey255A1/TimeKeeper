@@ -14,33 +14,40 @@ namespace TimeKeeper
     /// </summary>
     public enum TimerElementActionEnum { WorkOn, Pause, Remove, Edit }
     public delegate void TimerElementAction(TimerElement t, TimerElementActionEnum e);
-    public partial class TimerElement : UserControl, INotifyPropertyChanged
+    public partial class TimerElement : UserControl
     {
-        public event TimerElementAction TimerActionPerformed;
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyChange(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        public event EventHandler Remove;
+        public event EventHandler WorkOn;
 
-        private DateTime _last_time_received;
+        //public event TimerElementAction TimerActionPerformed;
+        //public event PropertyChangedEventHandler PropertyChanged;
+        //private void NotifyChange(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
-        private string _code;
-        public string Code
-        {
-            get => _code;
-            set { _code = value; NotifyChange(nameof(Code)); }
-        }
+        //private DateTime _last_time_received;
 
-        private string _description;
-        public string Description
-        {
-            get => _description;
-            set { _description = value; NotifyChange(nameof(Description)); }
-        }
+        //private string _code;
+        //public string Code
+        //{
+        //    get => _code;
+        //    set { _code = value; NotifyChange(nameof(Code)); }
+        //}
 
-        private MutableTime _time = new MutableTime();
-        public MutableTime Time
-        {
-            get => _time;
-        }
+        //private string _description;
+        //public string Description
+        //{
+        //    get => _description;
+        //    set { _description = value; NotifyChange(nameof(Description)); }
+        //}
+
+        //public MutableTime Time
+        //{
+        //    get { return (MutableTime)GetValue(TimeProperty); }
+        //    set { SetValue(TimeProperty, value); }
+        //}
+
+        // Using a DependencyProperty as the backing store for Time.  This enables animation, styling, binding, etc...
+        //public static readonly DependencyProperty TimeProperty =
+        //    DependencyProperty.Register("Time", typeof(MutableTime), typeof(TimeEdit), new PropertyMetadata(new MutableTime()));
 
         public TimerElement()
         {
@@ -48,42 +55,42 @@ namespace TimeKeeper
         }
         public TimerElement(string code, string description)
         {
-            _code = code;
-            _description = description;
+            //_code = code;
+            //_description = description;
             Initialize();
         }
         private void Initialize()
         {
-            DataContext = this;
             InitializeComponent();
-            _time.Clear();
         }
 
         public void Clear()
         {
-            _time.Clear();
+            //Time.Clear();
         }
         public void SetTime(DateTime t)
         {
-            _time.IncrementTime(t - _last_time_received);
-            _last_time_received = t;
+           // Time.IncrementTime(t - _last_time_received);
+           // _last_time_received = t;
         }
         public TimeSpan GetTime()
         {
-            return _time.GetTime();
+            return new TimeSpan();
         }
 
         private void workOnBtn_Click(object sender, RoutedEventArgs e)
         {
+            WorkOn?.Invoke(this, null);
             //Set my last time received to Right now when the button was clicked. Start Time from now
-            var t = DateTime.Now;
-            _last_time_received = new DateTime(t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second); //truncate off any milliseconds
-            TimerActionPerformed?.Invoke(this, TimerElementActionEnum.WorkOn);
+          //  var t = DateTime.Now;
+          //  _last_time_received = new DateTime(t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second); //truncate off any milliseconds
+          //  TimerActionPerformed?.Invoke(this, TimerElementActionEnum.WorkOn);
         }
 
         private void removeBtn_Click(object sender, RoutedEventArgs e)
         {
-            TimerActionPerformed?.Invoke(this, TimerElementActionEnum.Remove);
+            Remove?.Invoke(this, null);
+           // TimerActionPerformed?.Invoke(this, TimerElementActionEnum.Remove);
 
         }
     }

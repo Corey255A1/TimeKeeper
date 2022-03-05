@@ -13,24 +13,82 @@
         </LinearGradientBrush>
     </Window.Background>
     <Grid>
-        <Rectangle Fill="Black" Height="47" Margin="10,10,10,0" Stroke="Black" VerticalAlignment="Top"/>
-        <local:Clock NumberColor="Red" x:Name="currentTimeClk" HorizontalAlignment="Left" Height="40" Margin="151,13,0,0" VerticalAlignment="Top" Width="321" Background="{x:Null}"  IsModifiable="False"/>
-        <local:Clock NumberColor="Green" x:Name="startTimeClk" HorizontalAlignment="Left" Height="40" Margin="151,62,0,0" VerticalAlignment="Top" Width="321" IsAClock="True"/>
-        <Button x:Name="setstartBtn" Content="SET" HorizontalAlignment="Left" Margin="507,63,0,0" VerticalAlignment="Top" Width="80" FontFamily="Segoe UI Black" FontSize="16" Background="#FF13CF00" Height="35" VerticalContentAlignment="Center" Click="startBtn_Click"/>
-        <local:Clock  NumberColor="Blue" x:Name="totalTimeClk" HorizontalAlignment="Left" Height="25" Margin="256,112,0,0" VerticalAlignment="Top" Width="204" IsAClock="False" IsModifiable="False"/>
-        <Label Content="START TIME" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Black" FontSize="16" Width="136" HorizontalContentAlignment="Right"/>
-        <Label Content="CURRENT TIME" HorizontalAlignment="Left" Margin="10,19,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Black" FontSize="16" Width="136" HorizontalContentAlignment="Right" Foreground="White"/>
-        <Label Content="DELTA" HorizontalAlignment="Left" Margin="139,109,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Black" FontSize="16" Width="117" HorizontalContentAlignment="Right"/>
-        <Button x:Name="addBtn" Content="Add" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FF00CFC6" Height="30" VerticalContentAlignment="Center" Click="addBtn_Click"/>
-        <ScrollViewer Margin="10,185,0,45" HorizontalAlignment="Left" Width="577" Background="#FFC7C7C7">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Height="40">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="145"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Rectangle Grid.Column="0" Grid.ColumnSpan="3" Fill="Black" Stroke="Black"/>
+            <Label Grid.Column="0" Content="CURRENT TIME" HorizontalAlignment="Right" FontFamily="Segoe UI Black" FontSize="16" Foreground="White"/>
+            <local:Clock Grid.Column="1" NumberColor="Red" x:Name="currentTimeClk" Background="{x:Null}" IsModifiable="False" Width="330" Height="Auto"/>
+        </Grid>
+        <Grid Grid.Row="1" Height="40">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="145"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="START TIME" HorizontalAlignment="Right" FontFamily="Segoe UI Black" FontSize="16"/>
+            <local:Clock Grid.Column="1" NumberColor="Green" x:Name="startTimeClk" IsAClock="True" Height="Auto" Width="330"/>
+            <Button Grid.Column="2" x:Name="setstartBtn" Content="SET" Width="80" FontFamily="Segoe UI Black" FontSize="16" Background="#FF13CF00" Height="35" Click="startBtn_Click"/>
+
+        </Grid>
+        <Grid Grid.Row="2" Margin="5" Height="35">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="145"/>
+                <ColumnDefinition Width="250"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="DELTA" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Segoe UI Black" FontSize="16"/>
+            <local:Clock Grid.Column="1" NumberColor="Blue" Grid.Row="2" x:Name="totalTimeClk" Height="Auto" IsAClock="False" IsModifiable="False"/>
+        </Grid>
+
+        <Grid Grid.Row="3" Height="35" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="145"/>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="80"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="CHARGED" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Segoe UI Black" FontSize="16"/>
+            <local:Clock Grid.Column="1" NumberColor="DarkGreen" x:Name="chargedTimeClk" Height="Auto" IsAClock="False"  IsModifiable="False"/>
+            <Button x:Name="pauseBtn" Grid.Column="2" Content="PAUSE" FontFamily="Segoe UI Black" Background="#FFC5E400" Foreground="Black" FontSize="16" Click="pauseBtn_Click"/>
+            <Button x:Name="resetBtn" Grid.Column="3" Content="RESET" FontFamily="Segoe UI Black" Background="#FFE46800" Foreground="Black" FontSize="16" Click="resetBtn_Click"/>
+
+        </Grid>
+        <Grid Grid.Row="4" Margin="5">
+            <ListView  ItemsSource="{Binding TimeCard.ChargeCodes}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <local:TimerElement Remove="TimerElement_Remove" WorkOn="TimerElement_WorkOn"></local:TimerElement>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Button x:Name="addBtn" Content="Add" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FF00CFC6" Height="30" VerticalContentAlignment="Center" Click="addBtn_Click"/>
+
+        </Grid>
+        
+        <!--<ScrollViewer Margin="10,185,0,45" HorizontalAlignment="Left" Width="577" Background="#FFC7C7C7">
             <StackPanel x:Name="chargeNumberStack" Margin="0,0,0,0"/>
-        </ScrollViewer>
-        <local:Clock NumberColor="DarkGreen" x:Name="chargedTimeClk" HorizontalAlignment="Left" Height="25" Margin="256,155,0,0" VerticalAlignment="Top" Width="202" IsAClock="False"  IsModifiable="False"/>
-        <Label Content="CHARGED" HorizontalAlignment="Left" Margin="166,152,0,0" VerticalAlignment="Top" FontFamily="Segoe UI Black" FontSize="16" Width="90" HorizontalContentAlignment="Right"/>
-        <Button x:Name="pauseBtn" Content="PAUSE" HorizontalAlignment="Left" Margin="507,145,0,0" VerticalAlignment="Top" Width="80" FontFamily="Segoe UI Black" Background="#FFC5E400" Foreground="Black" Height="35" FontSize="16" Click="pauseBtn_Click"/>
-        <Button x:Name="loadBtn" Content="Load" HorizontalAlignment="Left" Margin="85,0,0,10" VerticalAlignment="Bottom" Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FF00CF71" Height="30" VerticalContentAlignment="Center" Click="loadBtn_Click"/>
-        <Button x:Name="saveBtn" Content="Save" HorizontalAlignment="Left" Margin="160,0,0,10" VerticalAlignment="Bottom" Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FF00A9CF" Height="30" VerticalContentAlignment="Center" Click="saveBtn_Click"/>
-        <Button x:Name="resetBtn" Content="RESET" HorizontalAlignment="Left" Margin="422,145,0,0" VerticalAlignment="Top" Width="80" FontFamily="Segoe UI Black" Background="#FFE46800" Foreground="Black" Height="35" FontSize="16" Click="resetBtn_Click"/>
-        <Button x:Name="logBtn" Content="Log" HorizontalAlignment="Left" Margin="517,0,0,10" VerticalAlignment="Bottom" Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FFCD00FB" Height="30" VerticalContentAlignment="Center" Foreground="Black" Click="logBtn_Click"/>
+        </ScrollViewer>-->
+
+        <Grid Grid.Row="5" Margin="5" Height="40">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="80"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="loadBtn" Grid.Column="0" Content="Load" HorizontalAlignment="Left"  Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FF00CF71" VerticalContentAlignment="Center" Click="loadBtn_Click"/>
+            <Button x:Name="saveBtn" Grid.Column="1" Content="Save" HorizontalAlignment="Left" Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FF00A9CF" VerticalContentAlignment="Center" Click="saveBtn_Click"/>
+            <Button x:Name="logBtn" Grid.Column="2" Content="Log" HorizontalAlignment="Left" Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FFCD00FB" VerticalContentAlignment="Center" Foreground="Black" Click="logBtn_Click"/>
+        </Grid>
     </Grid>
 </Window>
