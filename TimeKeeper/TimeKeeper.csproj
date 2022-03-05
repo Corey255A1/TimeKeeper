@@ -69,28 +69,28 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ChargeCode.cs" />
-    <Compile Include="Clock.xaml.cs">
+    <Compile Include="Utils\ChargeCode.cs" />
+    <Compile Include="Views\Clock.xaml.cs">
       <DependentUpon>Clock.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ClockNum.xaml.cs">
+    <Compile Include="Views\ClockNum.xaml.cs">
       <DependentUpon>ClockNum.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converters.cs" />
-    <Compile Include="CSCSV.cs" />
-    <Compile Include="MutableTime.cs" />
-    <Compile Include="TimeEdit.xaml.cs">
+    <Compile Include="Views\Converters.cs" />
+    <Compile Include="Utils\CSCSV.cs" />
+    <Compile Include="Utils\MutableTime.cs" />
+    <Compile Include="Views\TimeEdit.xaml.cs">
       <DependentUpon>TimeEdit.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TimerElement.xaml.cs">
+    <Compile Include="Views\TimerElement.xaml.cs">
       <DependentUpon>TimerElement.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TimeTicker.cs" />
-    <Page Include="Clock.xaml">
+    <Compile Include="Utils\TimeTicker.cs" />
+    <Page Include="Views\Clock.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ClockNum.xaml">
+    <Page Include="Views\ClockNum.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -106,15 +106,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Numbers.xaml">
+    <Page Include="Views\Numbers.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TimeEdit.xaml">
+    <Page Include="Views\TimeEdit.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TimerElement.xaml">
+    <Page Include="Views\TimerElement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -156,6 +156,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
