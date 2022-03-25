@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TimeKeeper"
-             mc:Ignorable="d" Height="24.251" Width="219.933" Name="clockCtrl">
+             mc:Ignorable="d" Height="25" Name="clockCtrl">
     <UserControl.Resources>
         <local:BoolToVisibility x:Key="boolToVisible" Not="false" />
         <local:DateTimeToClockNumDigit x:Key="timeToClock" />
@@ -18,16 +18,16 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition x:Name="hour1Col" MinWidth="20" Width="20*"/>
-            <ColumnDefinition x:Name="hour2Col" MinWidth="20" Width="20*"/>
-            <ColumnDefinition x:Name="colon1Col" MinWidth="5" Width="5*"/>
-            <ColumnDefinition x:Name="minute1Col" MinWidth="20" Width="20*"/>
-            <ColumnDefinition x:Name="minute2Col" MinWidth="20" Width="20*"/>
-            <ColumnDefinition x:Name="colon2Col" MinWidth="5" Width="5*"/>
-            <ColumnDefinition x:Name="second1Col" MinWidth="20" Width="20*"/>
-            <ColumnDefinition x:Name="second2Col" MinWidth="20" Width="20*"/>
-            <ColumnDefinition x:Name="apCol" MinWidth="20" Width="20*"/>
-            <ColumnDefinition x:Name="mCol" MinWidth="20" Width="20*"/>
+            <ColumnDefinition x:Name="hour1Col" Width="20*"/>
+            <ColumnDefinition x:Name="hour2Col" Width="20*"/>
+            <ColumnDefinition x:Name="colon1Col" Width="5*"/>
+            <ColumnDefinition x:Name="minute1Col" Width="20*"/>
+            <ColumnDefinition x:Name="minute2Col" Width="20*"/>
+            <ColumnDefinition x:Name="colon2Col" Width="5*"/>
+            <ColumnDefinition x:Name="second1Col" Width="20*"/>
+            <ColumnDefinition x:Name="second2Col" Width="20*"/>
+            <ColumnDefinition x:Name="apCol" Width="20*"/>
+            <ColumnDefinition x:Name="mCol" Width="20*"/>
         </Grid.ColumnDefinitions>
         <local:ClockNum x:Name="hour1Clk" Number="{Binding Time, ElementName=clockCtrl, Converter={StaticResource timeToClock}, ConverterParameter={x:Static local:ClockSections.HourL}}" NumberUpperLimit="One" Grid.Row="1" Margin="2,0" NumberColor="{Binding NumberColor, ElementName=clockCtrl}" />
         <local:ClockNum x:Name="hour2Clk" Number="{Binding Time, ElementName=clockCtrl, Converter={StaticResource timeToClock}, ConverterParameter={x:Static local:ClockSections.HourR}}" NumberUpperLimit="Nine" Grid.Column="1" Grid.Row="1" Margin="2,0" NumberColor="{Binding NumberColor, ElementName=clockCtrl}"/>

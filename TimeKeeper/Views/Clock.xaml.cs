@@ -33,15 +33,15 @@ namespace TimeKeeper
             set
             {
                 _is_clock_type = value;
-                if (_is_clock_type == false)
+                if (!_is_clock_type)
                 {
-                    apClk.Visibility = Visibility.Hidden;
-                    mClk.Visibility = Visibility.Hidden;
+                    apCol.Width = new GridLength(0);
+                    mCol.Width = new GridLength(0);
                 }
                 else
                 {
-                    apClk.Visibility = Visibility.Visible;
-                    mClk.Visibility = Visibility.Visible;
+                    apCol.Width = new GridLength(20, GridUnitType.Star);
+                    mCol.Width = new GridLength(20, GridUnitType.Star);
                 }
                 NotifyChange(nameof(IsAClock));
             }

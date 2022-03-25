@@ -59,7 +59,7 @@
                 <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="CHARGED" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Segoe UI Black" FontSize="16"/>
-            <local:Clock Time="{Binding Controller.TotalWorkTime, ElementName=mainWindow}" Grid.Column="1" NumberColor="DarkGreen" x:Name="chargedTimeClk" Height="Auto" IsAClock="False"  IsModifiable="False"/>
+            <local:Clock  HorizontalAlignment="Stretch" Time="{Binding Controller.TotalWorkTime, ElementName=mainWindow}" Grid.Column="1" NumberColor="DarkGreen" x:Name="chargedTimeClk" Height="Auto" IsAClock="False"  IsModifiable="False"/>
             <Button x:Name="pauseBtn" Grid.Column="2" Content="PAUSE" FontFamily="Segoe UI Black" Background="#FFC5E400" Foreground="Black" FontSize="16" Click="pauseBtn_Click"/>
             <Button x:Name="resetBtn" Grid.Column="3" Content="RESET" FontFamily="Segoe UI Black" Background="#FFE46800" Foreground="Black" FontSize="16" Click="resetBtn_Click"/>
 

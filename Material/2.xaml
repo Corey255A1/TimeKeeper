@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<DrawingBrush x:Key="Layer_1" Stretch="Uniform">
+		<DrawingBrush.Drawing>
+			<DrawingGroup>
+				<DrawingGroup.Children>
+					<GeometryDrawing Brush="#FF0096FF" Geometry="F1 M 0,-6.10352e-005L 32,-6.10352e-005L 32,32L 0,32L 0,-6.10352e-005 Z "/>
+					<GeometryDrawing Brush="#FF000000" Geometry="F1 M 10.8227,21.235L 10.8227,23.44L 30.2707,23.44L 30.2707,31.6L 1,31.6L 1,21.1075C 1.28868,19.3825 2.08633,17.8975 3.39301,16.6525C 3.9653,16.1125 4.59457,15.675 5.28082,15.34C 5.96707,15.0051 6.77107,14.6776 7.69281,14.3575L 20.6987,10.0001C 21.1494,9.935 21.3419,9.66254 21.276,9.18256C 21.1798,8.76752 20.8784,8.56 20.372,8.56L 3.04355,8.56L 3.04355,0.399963L 25.3023,0.399963C 27.1712,1.03998 28.588,2.08624 29.5528,3.53876C 30.5176,4.99127 31,6.74005 31,8.78497C 31,10.54 30.5822,12.0638 29.7465,13.3563C 28.9109,14.6487 27.708,15.55 26.138,16.06L 10.8227,21.235 Z "/>
+				</DrawingGroup.Children>
+			</DrawingGroup>
+		</DrawingBrush.Drawing>
+	</DrawingBrush>
+</ResourceDictionary>

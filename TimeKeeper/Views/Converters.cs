@@ -71,10 +71,10 @@ namespace TimeKeeper
         {
             if (value is bool visibile)
             {
-                return visibile && !Not;
+                return (visibile && !Not) ? Visibility.Visible : Visibility.Hidden;
             }
 
-            return false;
+            return Visibility.Hidden;
         }
 
 
@@ -85,7 +85,7 @@ namespace TimeKeeper
                 return (Visibility.Visible == visibile) && !Not;
             }
 
-            return Visibility.Hidden;
+            return false;
         }
     }
 
