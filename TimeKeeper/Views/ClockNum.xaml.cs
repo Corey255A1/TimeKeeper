@@ -23,20 +23,34 @@ namespace TimeKeeper
         public event ChangeEvent NumberRollOver;
         public event ChangeEvent NumberModified;
 
-        private ClockNumbers _number;
-        [Description("Set the Current Number"), Category("Clock Data")]
+        //private ClockNumbers _number;
+        //[Description("Set the Current Number"), Category("Clock Data")]
+        //public ClockNumbers Number
+        //{
+        //    get
+        //    {
+        //        return _number;
+        //    }
+        //    set
+        //    {
+        //        _number = value;
+        //        NotifyChange(nameof(Number));
+        //    }
+        //}
+
+
+
         public ClockNumbers Number
         {
-            get
-            {
-                return _number;
-            }
-            set
-            {
-                _number = value;
-                NotifyChange(nameof(Number));
-            }
+            get { return (ClockNumbers)GetValue(NumberProperty); }
+            set { SetValue(NumberProperty, value); }
         }
+
+        // Using a DependencyProperty as the backing store for Number.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty NumberProperty =
+            DependencyProperty.Register("Number", typeof(ClockNumbers), typeof(ClockNum), new PropertyMetadata(ClockNumbers.Zero));
+
+
 
         private ClockNumbers _upper_limit = ClockNumbers.Nine;
         [Description("Set the Number Upper Limit"), Category("Clock Data")]

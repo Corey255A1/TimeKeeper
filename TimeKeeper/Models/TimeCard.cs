@@ -45,6 +45,14 @@ namespace TimeKeeper.Models
             _charge_codes.Remove(charge_code);
         }
 
+        public void Reset()
+        {
+            foreach(var charge_code in _charge_codes)
+            {
+                charge_code.Time.Clear();
+            }
+        }
+
 
         public void Load(string path)
         {

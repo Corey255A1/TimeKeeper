@@ -39,5 +39,15 @@ namespace TimeKeeper.Models
             Code = code;
             Description = description;
         }
+
+        public void SetTime(DateTime new_time)
+        {
+            if (_last_time_received == null)
+            {
+                _last_time_received = new_time;
+                return;
+            }
+            Time.IncrementTime(new_time - _last_time_received);
+        }
     }
 }

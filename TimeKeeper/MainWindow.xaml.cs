@@ -19,12 +19,6 @@ namespace TimeKeeper
     /// </summary>
     public partial class MainWindow : Window
     {
-        private TimeTicker _time_ticker;
-        private DateTime _start_time;
-        private bool _work_timer_paused = true;
-        private TimerElement _current_timer;
-        private List<TimerElement> _timers = new List<TimerElement>();
-
         private TimeCardController _controller;
         public TimeCardController Controller
         {
@@ -33,45 +27,15 @@ namespace TimeKeeper
 
         public MainWindow()
         {
-            _controller = new TimeCardController(System.AppDomain.CurrentDomain.BaseDirectory + "\\default.chg");
+            _controller = new TimeCardController(Dispatcher, System.AppDomain.CurrentDomain.BaseDirectory + "\\default.chg");
             DataContext = Controller;
             InitializeComponent();
-            currentTimeClk.SetTime(DateTime.Now);
-            _time_ticker = new TimeTicker();
-            _time_ticker.TickEvent += Tick;
-            startTimeClk.SetTime(new DateTime()); //00:00:00
-            startTimeClk.ClockModified += ClockModified;
-
-            
-        }
-
-        public void ClockModified(Clock obj, int h, int m, int s)
-        {
-            if (obj == startTimeClk && h < 24) _start_time = new DateTime(_start_time.Year, _start_time.Month, _start_time.Day, h, m, s);
-        }
-
-        public void Tick(DateTime t)
-        {
-            Dispatcher.Invoke(new Action(() =>
-            {
-                currentTimeClk.SetTime(t);
-                totalTimeClk.SetTime(t - _start_time);
-                if (_controller.WorkTimerRunning) _current_timer?.SetTime(t);
-                TimeSpan total = new TimeSpan();
-                foreach (var telm in _timers)
-                {
-                    total += telm.GetTime();
-                }
-                chargedTimeClk.SetTime(total);
-            }));
-
         }
 
         private void startBtn_Click(object sender, RoutedEventArgs e)
         {
             var t = DateTime.Now;
-            _start_time = new DateTime(t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second); //truncate off any milliseconds
-            startTimeClk.SetTime(_start_time);
+            _controller.StartDateTime = new DateTime(t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second); //truncate off any milliseconds
         }
         private void TimerElement_Remove(object sender, EventArgs e)
         {
@@ -98,10 +62,7 @@ namespace TimeKeeper
         private void resetBtn_Click(object sender, RoutedEventArgs e)
         {
             chargedTimeClk.SetTime(new TimeSpan(0, 0, 0));
-            foreach (var telm in _timers)
-            {
-                telm.Clear();
-            }
+            _controller.Reset();
         }
 
         private void loadBtn_Click(object sender, RoutedEventArgs e)
@@ -145,6 +106,9 @@ namespace TimeKeeper
             _controller.TimeCard.WriteCSV(file);
         }
 
-        
+        private void startTimeClk_ClockModified(int h, int m, int s)
+        {
+            Controller.SetStartTime(h, m, s);
+        }
     }
 }

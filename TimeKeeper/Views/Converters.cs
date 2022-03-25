@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 
 namespace TimeKeeper
 {
+
+    public enum ClockSections { HourL, HourR, MinuteL, MinuteR, SecondL, SecondR, AMPM}
     public class ClockNumbersEnumToResourceConverter : IValueConverter
     {
         public DrawingBrush Num0 { get; set; }
@@ -50,6 +53,68 @@ namespace TimeKeeper
             }
 
             return null;
+        }
+
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
+
+    public class BoolToVisibility : IValueConverter
+    {
+        public bool Not { get; set; } = false;
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is bool visibile)
+            {
+                return visibile && !Not;
+            }
+
+            return false;
+        }
+
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            if (value is Visibility visibile)
+            {
+                return (Visibility.Visible == visibile) && !Not;
+            }
+
+            return Visibility.Hidden;
+        }
+    }
+
+
+
+    public class DateTimeToClockNumDigit : IValueConverter
+    {
+        //HH:MM:SS
+        //01:02:03
+        public int HMS { get; set; } = 0;
+        public int Digit { get; set; } = 0;
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            
+            if (value is MutableTime time)
+            {
+                ClockSections section = (ClockSections)parameter;
+                switch (section)
+                {
+                    case ClockSections.HourL: return (ClockNumbers)(time.Hours / 10);
+                    case ClockSections.HourR: return (ClockNumbers)(time.Hours % 10);
+                    case ClockSections.MinuteL: return (ClockNumbers)(time.Minutes / 10);
+                    case ClockSections.MinuteR: return (ClockNumbers)(time.Minutes % 10);
+                    case ClockSections.SecondL: return (ClockNumbers)(time.Seconds / 10);
+                    case ClockSections.SecondR: return (ClockNumbers)(time.Seconds % 10);
+                }                
+            }
+
+            return ClockNumbers.Zero;
         }
 
 

@@ -11,12 +11,15 @@ using System.Windows.Media;
 namespace TimeKeeper
 {
 
-    public delegate void ClockModifiedEvent(Clock obj, int h, int m, int s);
+    public delegate void ClockModifiedEvent(int h, int m, int s);
     /// <summary>
     /// Interaction logic for Clock.xaml
     /// </summary>
-    public partial class Clock : UserControl
+    public partial class Clock : UserControl, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyChange(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
         public event ClockModifiedEvent ClockModified;
         private bool _is_clock_type = true;
         
@@ -40,6 +43,7 @@ namespace TimeKeeper
                     apClk.Visibility = Visibility.Visible;
                     mClk.Visibility = Visibility.Visible;
                 }
+                NotifyChange(nameof(IsAClock));
             }
         }
 
@@ -54,8 +58,6 @@ namespace TimeKeeper
         public static readonly DependencyProperty NumberColorProperty =
             DependencyProperty.Register("NumberColor", typeof(Brush), typeof(Clock), new PropertyMetadata(Brushes.Black));
 
-
-
         private bool _is_modifiable = true;
         [Description("Can this be modified?"), Category("Clock Data")]
         public bool IsModifiable
@@ -68,11 +70,19 @@ namespace TimeKeeper
             }
         }
 
-        //private MutableTime _time;
-        //public MutableTime Time
-        //{
-        //    get => _time;
-        //}
+
+
+        public MutableTime Time
+        {
+            get { return (DateTime)GetValue(TimeProperty); }
+            set { SetValue(TimeProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Time.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TimeProperty =
+            DependencyProperty.Register("Time", typeof(MutableTime), typeof(Clock), new PropertyMetadata(new MutableTime()));
+
+
 
         private List<ClockNum> _clock_number_list;
         public Clock()
@@ -109,7 +119,7 @@ namespace TimeKeeper
             if (isPM) h = h + 12;
             int m = minute1Clk.GetInteger() * 10 + minute2Clk.GetInteger();
             int s = second1Clk.GetInteger() * 10 + second2Clk.GetInteger();
-            ClockModified?.Invoke(this, h, m, s);
+            ClockModified?.Invoke(h, m, s);
 
         }
 

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace TimeKeeper
 {
-    public class MutableTime: INotifyPropertyChanged
+    public class MutableTime : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyChange(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
@@ -24,6 +24,7 @@ namespace TimeKeeper
             {
                 _hours = value;
                 NotifyChange(nameof(Hours));
+                NotifyChange(nameof(IsPM));
             }
         }
 
@@ -32,13 +33,7 @@ namespace TimeKeeper
             get => _minutes;
             set
             {
-                int m = value;
-                if (m > 59)
-                {
-                    Hours = _hours + (m / 60);
-                    m = m % 60;
-                }
-                _minutes = m;
+                _minutes = value;
                 NotifyChange(nameof(Minutes));
             }
         }
@@ -48,16 +43,26 @@ namespace TimeKeeper
             get => _seconds;
             set
             {
-                int s = value;
-                if (s > 59)
-                {
-                    Minutes = _minutes + (int)(s / 60);
-                    s = s % 60;
-                }
-                _seconds = s;
+                _seconds = value;
                 NotifyChange(nameof(Seconds));
             }
         }
+
+        public bool IsPM
+        {
+            get => Hours > 11;
+        }
+
+        public static MutableTime FromDateTime(DateTime time) => new MutableTime(time);
+        public static MutableTime FromDateTimeSpan(TimeSpan time_span) => new MutableTime(time_span);
+        public static implicit operator MutableTime(DateTime time) => MutableTime.FromDateTime(time);
+        public static implicit operator MutableTime(TimeSpan time_span) => MutableTime.FromDateTimeSpan(time_span);
+
+        public static MutableTime AddTimes(MutableTime a, MutableTime b) => new MutableTime(a.ToTimeSpan() + b.ToTimeSpan());
+        public static MutableTime SubtractTimes(MutableTime a, MutableTime b) => new MutableTime(a.ToTimeSpan() - b.ToTimeSpan());
+
+        public static MutableTime operator +(MutableTime a, MutableTime b) => MutableTime.AddTimes(a, b);
+        public static MutableTime operator -(MutableTime a, MutableTime b) => MutableTime.SubtractTimes(a, b);
 
         public MutableTime(){}
         public MutableTime(int hours, int minutes, int seconds)
@@ -65,6 +70,18 @@ namespace TimeKeeper
             Seconds = seconds;
             Minutes = minutes;
             Hours = hours;
+        }
+        public MutableTime(TimeSpan time_span)
+        {
+            Seconds = time_span.Seconds;
+            Minutes = time_span.Minutes;
+            Hours = time_span.Hours;
+        }
+        public MutableTime(DateTime time)
+        {
+            Seconds = time.Second;
+            Minutes = time.Minute;
+            Hours = time.Hour;
         }
         public void Clear()
         {
@@ -74,11 +91,38 @@ namespace TimeKeeper
         }
         public TimeSpan ToTimeSpan()
         {
-            return new TimeSpan(0, _hours, _minutes, (int)_seconds, (int)(_seconds - (int)_seconds) * 1000);
+            return new TimeSpan(0, _hours, _minutes, _seconds, 0);
         }
+
+        public void AddTime(MutableTime mut_time)
+        {
+            IncrementTime(mut_time.ToTimeSpan());
+        }
+        public void SubtractTime(MutableTime mut_time)
+        {
+            DecrementTime(mut_time.ToTimeSpan());
+        }
+
         public void IncrementTime(TimeSpan time_span)
         {
-            Seconds += (int)Math.Round(time_span.TotalSeconds);
+            var newTime = ToTimeSpan() + time_span;
+            Seconds = newTime.Seconds;
+            Minutes = newTime.Minutes;
+            Hours = newTime.Hours;
+        }
+        public void DecrementTime(TimeSpan time_span)
+        {
+            var newTime = ToTimeSpan() - time_span;
+            Seconds = newTime.Seconds;
+            Minutes = newTime.Minutes;
+            Hours = newTime.Hours;
+        }
+
+        public void SetDateTime(DateTime time)
+        {
+            Hours = time.Hour;
+            Minutes = time.Minute;
+            Seconds = time.Second;
         }
     }
 }

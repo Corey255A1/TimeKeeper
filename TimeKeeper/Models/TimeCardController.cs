@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace TimeKeeper.Models
 {
@@ -24,6 +25,10 @@ namespace TimeKeeper.Models
         }
 
         private TimeTicker _time_ticker = new TimeTicker();
+        public TimeTicker TimeTicker
+        {
+            get => _time_ticker;
+        }
 
         private ChargeCodeTimer _currently_working;
         public ChargeCodeTimer CurrentlyWorkingChargeCode
@@ -32,6 +37,7 @@ namespace TimeKeeper.Models
             set
             {
                 _currently_working = value;
+                NotifyChange(nameof(CurrentlyWorkingChargeCode));
             }
         }
 
@@ -42,32 +48,82 @@ namespace TimeKeeper.Models
             set
             {
                 _work_timer_running = value;
+                NotifyChange(nameof(WorkTimerRunning));
             }
         }
 
-        private DateTime _start_time = new DateTime();
-        public DateTime StartTime
+        private DateTime _start_datetime = new DateTime();
+        public DateTime StartDateTime
         {
-            get => _start_time;
+            get => _start_datetime;
             set
             {
-                _start_time = value;
+                _start_datetime = value;
+                NotifyChange(nameof(StartDateTime));
+                NotifyChange(nameof(StartTime));
             }
         }
-
-        private DateTime _current_time = DateTime.Now;
-        public DateTime CurrentTime
+        public MutableTime StartTime
         {
-            get => _current_time;
+            get => new MutableTime(_start_datetime);
+        }
+
+        private DateTime _current_datetime = DateTime.Now;
+        public DateTime CurrentDateTime
+        {
+            get => _current_datetime;
             set
             {
-                _current_time = value;
+                _current_datetime = value;
+                NotifyChange(nameof(CurrentDateTime));
+                NotifyChange(nameof(CurrentTime));
+            }
+        }
+        public MutableTime CurrentTime
+        {
+            get => new MutableTime(_current_datetime);
+        }
+
+        public MutableTime DeltaTime
+        {
+            get => _current_datetime - _start_datetime;
+        }
+
+        public MutableTime TotalWorkTime
+        {
+            get
+            {
+                var time_span = new MutableTime();
+                foreach (var charge_code in _time_card.ChargeCodes)
+                {
+                    time_span += charge_code.Time;
+                }
+                return time_span;
             }
         }
 
-        public TimeCardController(string initial_load_path)
+        private Dispatcher _dispatcher;
+        public TimeCardController(Dispatcher dispatcher, string initial_load_path)
         {
             TimeCard = new TimeCard(initial_load_path);
+            _dispatcher = dispatcher;
+            _time_ticker.TickEvent += _time_ticker_TickEvent;
+        }
+
+        private void _time_ticker_TickEvent(DateTime time)
+        {
+            _dispatcher.Invoke(()=> {
+                CurrentDateTime = time;
+                if (WorkTimerRunning) CurrentlyWorkingChargeCode?.SetTime(time);
+                NotifyChange(nameof(DeltaTime));
+                NotifyChange(nameof(TotalWorkTime));
+            });
+            
+        }
+
+        public void Reset()
+        {
+            _time_card.Reset();
         }
 
         public void AddNewChargeCode()
@@ -82,6 +138,11 @@ namespace TimeKeeper.Models
         public void WorkOnChargeCode(ChargeCodeTimer charge_code)
         {
             CurrentlyWorkingChargeCode = charge_code;
+        }
+
+        public void SetStartTime(int hour, int minute, int second)
+        {
+            _start_datetime = new DateTime(_start_datetime.Year, _start_datetime.Month, _start_datetime.Day, hour, minute, second);
         }
     }
 }

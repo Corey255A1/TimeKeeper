@@ -7,7 +7,7 @@ using System.Threading;
 namespace TimeKeeper
 {
     public delegate void TickCallback(DateTime time);
-    class TimeTicker
+    public class TimeTicker
     {
         public event TickCallback TickEvent;
 
@@ -16,7 +16,6 @@ namespace TimeKeeper
         {
             //wait until the nearst second for the first tick
             _ticker = new Timer(Tick, this, 1000 - DateTime.Now.Millisecond, 1000);
-
         }
         private void Tick(object obj)
         {
