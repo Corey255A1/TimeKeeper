@@ -45,6 +45,7 @@ namespace TimeKeeper
         private void TimerElement_WorkOn(object sender, EventArgs e)
         {
             _controller.WorkOnChargeCode((sender as FrameworkElement).DataContext as ChargeCodeTimer);
+            _controller.WorkTimerRunning = true;
         }
 
         private void addBtn_Click(object sender, RoutedEventArgs e)
@@ -61,7 +62,6 @@ namespace TimeKeeper
 
         private void resetBtn_Click(object sender, RoutedEventArgs e)
         {
-            chargedTimeClk.SetTime(new TimeSpan(0, 0, 0));
             _controller.Reset();
         }
 

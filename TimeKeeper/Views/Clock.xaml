@@ -29,7 +29,7 @@
             <ColumnDefinition x:Name="apCol" MinWidth="20" Width="20*"/>
             <ColumnDefinition x:Name="mCol" MinWidth="20" Width="20*"/>
         </Grid.ColumnDefinitions>
-        <local:ClockNum x:Name="hour1Clk" Number="{Binding Converter={StaticResource timeToClock}, ConverterParameter={x:Static local:ClockSections.HourL}}" NumberUpperLimit="One" Grid.Row="1" Margin="2,0" NumberColor="{Binding NumberColor, ElementName=clockCtrl}" />
+        <local:ClockNum x:Name="hour1Clk" Number="{Binding Time, ElementName=clockCtrl, Converter={StaticResource timeToClock}, ConverterParameter={x:Static local:ClockSections.HourL}}" NumberUpperLimit="One" Grid.Row="1" Margin="2,0" NumberColor="{Binding NumberColor, ElementName=clockCtrl}" />
         <local:ClockNum x:Name="hour2Clk" Number="{Binding Time, ElementName=clockCtrl, Converter={StaticResource timeToClock}, ConverterParameter={x:Static local:ClockSections.HourR}}" NumberUpperLimit="Nine" Grid.Column="1" Grid.Row="1" Margin="2,0" NumberColor="{Binding NumberColor, ElementName=clockCtrl}"/>
         <local:ClockNum Grid.Column="2" Margin="0" Grid.Row="1"  Number="Colon" NumberColor="{Binding NumberColor, ElementName=clockCtrl}" IsModifiable="False"/>
         <local:ClockNum x:Name="minute1Clk" Number="{Binding Time, ElementName=clockCtrl, Converter={StaticResource timeToClock}, ConverterParameter={x:Static local:ClockSections.MinuteL}}" NumberUpperLimit="Five" Grid.Column="3" Grid.Row="1" Margin="2,0" NumberColor="{Binding NumberColor, ElementName=clockCtrl}"/>

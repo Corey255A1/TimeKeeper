@@ -12,7 +12,7 @@ namespace TimeKeeper.Models
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyChange(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
-        private DateTime _last_time_received;
+        
 
         private string _code;
         public string Code
@@ -38,16 +38,6 @@ namespace TimeKeeper.Models
         {
             Code = code;
             Description = description;
-        }
-
-        public void SetTime(DateTime new_time)
-        {
-            if (_last_time_received == null)
-            {
-                _last_time_received = new_time;
-                return;
-            }
-            Time.IncrementTime(new_time - _last_time_received);
         }
     }
 }

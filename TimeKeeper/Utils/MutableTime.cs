@@ -73,15 +73,11 @@ namespace TimeKeeper
         }
         public MutableTime(TimeSpan time_span)
         {
-            Seconds = time_span.Seconds;
-            Minutes = time_span.Minutes;
-            Hours = time_span.Hours;
+            SetTimeSpan(time_span);
         }
         public MutableTime(DateTime time)
         {
-            Seconds = time.Second;
-            Minutes = time.Minute;
-            Hours = time.Hour;
+            SetDateTime(time);
         }
         public void Clear()
         {
@@ -92,6 +88,20 @@ namespace TimeKeeper
         public TimeSpan ToTimeSpan()
         {
             return new TimeSpan(0, _hours, _minutes, _seconds, 0);
+        }
+
+        public void SetTimeSpan(TimeSpan time_span)
+        {
+            Seconds = time_span.Seconds + (int)Math.Round(time_span.Milliseconds / 1000.0);
+            Minutes = time_span.Minutes;
+            Hours = time_span.Hours;
+        }
+
+        public void SetDateTime(DateTime time)
+        {
+            Hours = time.Hour;
+            Minutes = time.Minute;
+            Seconds = time.Second + (int)Math.Round(time.Millisecond / 1000.0);
         }
 
         public void AddTime(MutableTime mut_time)
@@ -105,24 +115,15 @@ namespace TimeKeeper
 
         public void IncrementTime(TimeSpan time_span)
         {
-            var newTime = ToTimeSpan() + time_span;
-            Seconds = newTime.Seconds;
-            Minutes = newTime.Minutes;
-            Hours = newTime.Hours;
+            var new_time = ToTimeSpan() + time_span;
+            SetTimeSpan(new_time);
         }
         public void DecrementTime(TimeSpan time_span)
         {
-            var newTime = ToTimeSpan() - time_span;
-            Seconds = newTime.Seconds;
-            Minutes = newTime.Minutes;
-            Hours = newTime.Hours;
+            var new_time = ToTimeSpan() - time_span;
+            SetTimeSpan(new_time);
         }
 
-        public void SetDateTime(DateTime time)
-        {
-            Hours = time.Hour;
-            Minutes = time.Minute;
-            Seconds = time.Second;
-        }
+
     }
 }

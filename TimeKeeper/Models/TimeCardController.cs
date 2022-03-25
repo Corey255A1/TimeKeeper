@@ -110,20 +110,20 @@ namespace TimeKeeper.Models
             _time_ticker.TickEvent += _time_ticker_TickEvent;
         }
 
-        private void _time_ticker_TickEvent(DateTime time)
+        private void _time_ticker_TickEvent(DateTime time, TimeSpan elapsed)
         {
             _dispatcher.Invoke(()=> {
                 CurrentDateTime = time;
-                if (WorkTimerRunning) CurrentlyWorkingChargeCode?.SetTime(time);
+                if (WorkTimerRunning) CurrentlyWorkingChargeCode?.Time.IncrementTime(elapsed);
                 NotifyChange(nameof(DeltaTime));
                 NotifyChange(nameof(TotalWorkTime));
             });
-            
         }
 
         public void Reset()
         {
             _time_card.Reset();
+            NotifyChange(nameof(TotalWorkTime));
         }
 
         public void AddNewChargeCode()
@@ -136,7 +136,7 @@ namespace TimeKeeper.Models
         }
 
         public void WorkOnChargeCode(ChargeCodeTimer charge_code)
-        {
+        {            
             CurrentlyWorkingChargeCode = charge_code;
         }
 
