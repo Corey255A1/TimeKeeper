@@ -89,7 +89,7 @@ namespace TimeKeeper
         {
             DataContext = this;
             InitializeComponent();
-
+            
             //Make a list of the modifiable elements
             _clock_number_list = new List<ClockNum>()
             {
@@ -107,58 +107,23 @@ namespace TimeKeeper
             {
                 cn.NumberModified += ClockChanged;
             }
-
-
-
         }
 
         private void ClockChanged()
         {
-            bool isPM = apClk.Number == ClockNumbers.P;
+            bool is_pm = apClk.Number == ClockNumbers.P;
             int h = hour1Clk.GetInteger() * 10 + hour2Clk.GetInteger();
-            if (isPM) h = h + 12;
+            
+            if (is_pm) h += 12;
+            if (IsAClock)
+            {
+                if (h >= 24) h -= 24;
+            }
             int m = minute1Clk.GetInteger() * 10 + minute2Clk.GetInteger();
             int s = second1Clk.GetInteger() * 10 + second2Clk.GetInteger();
             ClockModified?.Invoke(h, m, s);
 
         }
 
-        public void SetTime(DateTime time)
-        {
-            int h = time.Hour;
-            if (IsAClock)
-            {
-
-                //Not 24 Hour time.. maybe make it an option?
-                if (h >= 12)
-                {
-                    if (h > 12) h = h - 12;
-                    apClk.Number = ClockNumbers.P;
-                }
-                else
-                {
-                    apClk.Number = ClockNumbers.A;
-                }
-            }
-
-            SetTime(h, time.Minute, time.Second);
-
-        }
-        public void SetTime(TimeSpan ts)
-        {
-            SetTime(ts.Hours, ts.Minutes, ts.Seconds);
-        }
-
-        public void SetTime(int h, int m, int s)
-        {
-            hour2Clk.SetNumber(h % 10);
-            hour1Clk.SetNumber(h / 10);
-
-            minute2Clk.SetNumber(m % 10);
-            minute1Clk.SetNumber(m / 10);
-
-            second2Clk.SetNumber(s % 10);
-            second1Clk.SetNumber(s / 10);
-        }
     }
 }

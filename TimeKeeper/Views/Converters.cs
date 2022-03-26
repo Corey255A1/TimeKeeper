@@ -93,25 +93,27 @@ namespace TimeKeeper
 
     public class DateTimeToClockNumDigit : IValueConverter
     {
-        //HH:MM:SS
-        //01:02:03
-        public int HMS { get; set; } = 0;
-        public int Digit { get; set; } = 0;
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             
             if (value is MutableTime time)
             {
                 ClockSections section = (ClockSections)parameter;
+                var hour = time.Hours;
+                if (time.IsClock && time.IsPM)
+                {
+                    hour -= 12;
+                }
                 switch (section)
                 {
-                    case ClockSections.HourL: return (ClockNumbers)(time.Hours / 10);
-                    case ClockSections.HourR: return (ClockNumbers)(time.Hours % 10);
+                    case ClockSections.HourL: return (ClockNumbers)(hour / 10);
+                    case ClockSections.HourR: return (ClockNumbers)(hour % 10);
                     case ClockSections.MinuteL: return (ClockNumbers)(time.Minutes / 10);
                     case ClockSections.MinuteR: return (ClockNumbers)(time.Minutes % 10);
                     case ClockSections.SecondL: return (ClockNumbers)(time.Seconds / 10);
                     case ClockSections.SecondR: return (ClockNumbers)(time.Seconds % 10);
-                }                
+                    case ClockSections.AMPM: return time.IsPM ? ClockNumbers.P : ClockNumbers.A;
+                }
             }
 
             return ClockNumbers.Zero;

@@ -53,6 +53,13 @@ namespace TimeKeeper
             get => Hours > 11;
         }
 
+        private bool _is_clock = false;
+        public bool IsClock
+        {
+            get => _is_clock;
+            set { _is_clock = value; NotifyChange(nameof(IsClock)); }
+        }
+
         public static MutableTime FromDateTime(DateTime time) => new MutableTime(time);
         public static MutableTime FromDateTimeSpan(TimeSpan time_span) => new MutableTime(time_span);
         public static implicit operator MutableTime(DateTime time) => MutableTime.FromDateTime(time);
@@ -102,6 +109,7 @@ namespace TimeKeeper
             Hours = time.Hour;
             Minutes = time.Minute;
             Seconds = time.Second + (int)Math.Round(time.Millisecond / 1000.0);
+            IsClock = true;
         }
 
         public void AddTime(MutableTime mut_time)
