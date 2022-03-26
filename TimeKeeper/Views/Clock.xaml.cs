@@ -97,11 +97,11 @@ namespace TimeKeeper
             };
 
             //Connect all of the individual clock numbers controls into a clock
-            hour2Clk.NumberRollOver += hour1Clk.IncrementNum;
-            minute1Clk.NumberRollOver += hour2Clk.IncrementNum;
-            minute2Clk.NumberRollOver += minute1Clk.IncrementNum;
-            second1Clk.NumberRollOver += minute2Clk.IncrementNum;
-            second2Clk.NumberRollOver += second1Clk.IncrementNum;
+            hour2Clk.NumberRollOver += hour1Clk.RollOver;
+            minute1Clk.NumberRollOver += hour2Clk.RollOver;
+            minute2Clk.NumberRollOver += minute1Clk.RollOver;
+            second1Clk.NumberRollOver += minute2Clk.RollOver;
+            second2Clk.NumberRollOver += second1Clk.RollOver;
 
             foreach (var cn in _clock_number_list)
             {
@@ -109,18 +109,38 @@ namespace TimeKeeper
             }
         }
 
-        private void ClockChanged()
+        private int CompareAndGetClockNumChange(ClockNum ctrl, ClockNum changed_ctrl, ClockNumbers changed_value)
+        {
+            return ctrl == changed_ctrl ? (int)changed_value : ctrl.GetInteger();
+        }
+
+        private int CombineDigits(int digit1, int digit2)
+        {
+            return digit1 * 10 + digit2;
+        }
+
+        private void ClockChanged(ClockNum clock, ClockNumbers value)
         {
             bool is_pm = apClk.Number == ClockNumbers.P;
-            int h = hour1Clk.GetInteger() * 10 + hour2Clk.GetInteger();
+            if(clock == apClk)
+            {
+                is_pm = value == ClockNumbers.P;
+            }
+            int h = CombineDigits(
+                CompareAndGetClockNumChange(hour1Clk, clock, value),
+                CompareAndGetClockNumChange(hour2Clk, clock, value));
             
             if (is_pm) h += 12;
             if (IsAClock)
             {
                 if (h >= 24) h -= 24;
             }
-            int m = minute1Clk.GetInteger() * 10 + minute2Clk.GetInteger();
-            int s = second1Clk.GetInteger() * 10 + second2Clk.GetInteger();
+            int m = CombineDigits(
+                CompareAndGetClockNumChange(minute1Clk, clock, value),
+                CompareAndGetClockNumChange(minute2Clk, clock, value));
+            int s = CombineDigits(
+                CompareAndGetClockNumChange(second1Clk, clock, value),
+                CompareAndGetClockNumChange(second2Clk, clock, value));
             ClockModified?.Invoke(h, m, s);
 
         }

@@ -21,47 +21,47 @@
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Height="40">
+        <Grid Grid.Row="0" Height="48">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="145"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="350"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Rectangle Grid.Column="0" Grid.ColumnSpan="3" Fill="Black" Stroke="Black"/>
             <Label Grid.Column="0" Content="CURRENT TIME" HorizontalAlignment="Right" FontFamily="Segoe UI Black" FontSize="16" Foreground="White"/>
-            <local:Clock Time="{Binding Controller.CurrentTime, ElementName=mainWindow}" Grid.Column="1" NumberColor="Red" x:Name="currentTimeClk" Background="{x:Null}" IsModifiable="False" Width="330" Height="Auto"/>
+            <local:Clock Time="{Binding Controller.CurrentTime, ElementName=mainWindow}" Grid.Column="1" NumberColor="Red" x:Name="currentTimeClk" Background="{x:Null}" IsModifiable="False" Height="Auto"/>
         </Grid>
-        <Grid Grid.Row="1" Height="40">
+        <Grid Grid.Row="1" Height="48">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="145"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="350"/>
+                <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="START TIME" HorizontalAlignment="Right" FontFamily="Segoe UI Black" FontSize="16"/>
-            <local:Clock Grid.Column="1" Time="{Binding Controller.StartTime, ElementName=mainWindow}" ClockModified="startTimeClk_ClockModified" NumberColor="Green" x:Name="startTimeClk" IsAClock="True" Height="Auto" Width="330"/>
-            <Button Grid.Column="2" x:Name="setstartBtn" Content="SET" Width="80" FontFamily="Segoe UI Black" FontSize="16" Background="#FF13CF00" Height="35" Click="startBtn_Click"/>
-
+            <local:Clock Grid.Column="1" Time="{Binding Controller.StartTime, ElementName=mainWindow}" ClockModified="startTimeClk_ClockModified" NumberColor="Green" x:Name="startTimeClk" IsAClock="True" Height="Auto"/>
+            <Button Margin="5 0" Grid.Column="2" x:Name="setstartBtn" Content="SET" FontFamily="Segoe UI Black" FontSize="16" Background="#FF13CF00" Height="35" Click="startBtn_Click"/>
         </Grid>
-        <Grid Grid.Row="2" Margin="5" Height="35">
+        <Grid Grid.Row="2" Height="35">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="145"/>
                 <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="DELTA" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Segoe UI Black" FontSize="16"/>
-            <local:Clock Time="{Binding Controller.DeltaTime, ElementName=mainWindow}" Grid.Column="1" NumberColor="Blue" Grid.Row="2" x:Name="totalTimeClk" Height="Auto" IsAClock="False" IsModifiable="False"/>
+            <Label Grid.Column="0" Content="DELTA" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Segoe UI Black" FontSize="16" Margin="0"/>
+            <local:Clock  Margin="2" Time="{Binding Controller.DeltaTime, ElementName=mainWindow}" Grid.Column="1" NumberColor="Blue" x:Name="totalTimeClk" Height="Auto" IsAClock="False" IsModifiable="False"/>
         </Grid>
 
-        <Grid Grid.Row="3" Height="35" Margin="5">
+        <Grid Grid.Row="3" Height="35">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="145"/>
                 <ColumnDefinition Width="250"/>
-                <ColumnDefinition Width="80"/>
-                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="CHARGED" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Segoe UI Black" FontSize="16"/>
-            <local:Clock  HorizontalAlignment="Stretch" Time="{Binding Controller.TotalWorkTime, ElementName=mainWindow}" Grid.Column="1" NumberColor="DarkGreen" x:Name="chargedTimeClk" Height="Auto" IsAClock="False"  IsModifiable="False"/>
-            <Button x:Name="pauseBtn" Grid.Column="2" Content="PAUSE" FontFamily="Segoe UI Black" Background="#FFC5E400" Foreground="Black" FontSize="16" Click="pauseBtn_Click"/>
-            <Button x:Name="resetBtn" Grid.Column="3" Content="RESET" FontFamily="Segoe UI Black" Background="#FFE46800" Foreground="Black" FontSize="16" Click="resetBtn_Click"/>
+            <local:Clock  Margin="2" HorizontalAlignment="Stretch" Time="{Binding Controller.TotalWorkTime, ElementName=mainWindow}" Grid.Column="1" NumberColor="DarkGreen" x:Name="chargedTimeClk" Height="Auto" IsAClock="False"  IsModifiable="False"/>
+            <Button Margin="5 0" x:Name="pauseBtn" Grid.Column="2" Content="PAUSE" FontFamily="Segoe UI Black" Background="#FFC5E400" Foreground="Black" FontSize="16" Click="pauseBtn_Click"/>
+            <Button Margin="5 0" x:Name="resetBtn" Grid.Column="3" Content="RESET" FontFamily="Segoe UI Black" Background="#FFE46800" Foreground="Black" FontSize="16" Click="resetBtn_Click"/>
 
         </Grid>
         <Grid Grid.Row="4" Margin="5">
@@ -75,7 +75,7 @@
             <Button x:Name="addBtn" Content="Add" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FF00CFC6" Height="30" VerticalContentAlignment="Center" Click="addBtn_Click"/>
 
         </Grid>
-        
+
         <!--<ScrollViewer Margin="10,185,0,45" HorizontalAlignment="Left" Width="577" Background="#FFC7C7C7">
             <StackPanel x:Name="chargeNumberStack" Margin="0,0,0,0"/>
         </ScrollViewer>-->

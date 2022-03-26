@@ -108,7 +108,7 @@ namespace TimeKeeper
 
         private void startTimeClk_ClockModified(int h, int m, int s)
         {
-            Controller.SetStartTime(h, m, s);
+            Controller.AdjustStartTime(h, m, s);
         }
     }
 }

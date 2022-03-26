@@ -15,30 +15,13 @@ namespace TimeKeeper
     /// Interaction logic for ClockNum.xaml
     /// </summary>
     public enum ClockNumbers { Zero, One, Two, Three, Four, Five, Six, Seven, Eight, Nine, A, P, M, Colon };
-    public delegate void ChangeEvent();
+    public delegate void ClockNumberChanged(ClockNum clock, ClockNumbers value);
     public partial class ClockNum : UserControl, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyChange(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        public event ChangeEvent NumberRollOver;
-        public event ChangeEvent NumberModified;
-
-        //private ClockNumbers _number;
-        //[Description("Set the Current Number"), Category("Clock Data")]
-        //public ClockNumbers Number
-        //{
-        //    get
-        //    {
-        //        return _number;
-        //    }
-        //    set
-        //    {
-        //        _number = value;
-        //        NotifyChange(nameof(Number));
-        //    }
-        //}
-
-
+        public event ClockNumberChanged NumberRollOver;
+        public event ClockNumberChanged NumberModified;
 
         public ClockNumbers Number
         {
@@ -106,47 +89,32 @@ namespace TimeKeeper
             DataContext = this;
             InitializeComponent();
         }
-        public void SetNumber(int num)
-        {
-            if (Enum.IsDefined(typeof(ClockNumbers), num))
-            {
-                Number = (ClockNumbers)num;
-            }
-            else
-            {
-                Number = ClockNumbers.Zero;
-            }
-        }
         public int GetInteger()
         {
             return (int)Number;
         }
+        public void RollOver(ClockNum clock, ClockNumbers value)
+        {
+            IncrementNum();
+        }
         public void IncrementNum()
         {
             var n = Number + 1;
-            if (Enum.IsDefined(typeof(ClockNumbers), n) && n <= _upper_limit)
+            if (!Enum.IsDefined(typeof(ClockNumbers), n) || n > _upper_limit)
             {
-                Number = n;
+                n = _lower_limit;
+                NumberRollOver?.Invoke(this, n);
             }
-            else
-            {
-                Number = _lower_limit;
-                NumberRollOver?.Invoke();
-            }
-            NumberModified?.Invoke();
+            NumberModified?.Invoke(this, n);
         }
         public void DecrementNum()
         {
             var n = Number - 1;
-            if (Enum.IsDefined(typeof(ClockNumbers), n) && n >= _lower_limit)
+            if (!Enum.IsDefined(typeof(ClockNumbers), n) || n < _lower_limit)
             {
-                Number = n;
+                n = _upper_limit;
             }
-            else
-            {
-                Number = _upper_limit;
-            }
-            NumberModified?.Invoke();
+            NumberModified?.Invoke(this, n);
         }
 
         private void incBtn_Click(object sender, RoutedEventArgs e)

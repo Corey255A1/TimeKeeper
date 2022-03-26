@@ -140,9 +140,9 @@ namespace TimeKeeper.Models
             CurrentlyWorkingChargeCode = charge_code;
         }
 
-        public void SetStartTime(int hour, int minute, int second)
+        public void AdjustStartTime(int hour, int minute, int second)
         {
-            _start_datetime = new DateTime(_start_datetime.Year, _start_datetime.Month, _start_datetime.Day, hour, minute, second);
+            StartDateTime = new DateTime(_start_datetime.Year, _start_datetime.Month, _start_datetime.Day, hour, minute, second);
         }
     }
 }
