@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace TimeKeeper
 {
+    public enum ClockSections { HourL, HourR, MinuteL, MinuteR, SecondL, SecondR, AMPM }
     public class MutableTime : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

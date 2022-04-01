@@ -8,9 +8,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 
 namespace TimeKeeper
-{
-
-    public enum ClockSections { HourL, HourR, MinuteL, MinuteR, SecondL, SecondR, AMPM}
+{    
     public class ClockNumbersEnumToResourceConverter : IValueConverter
     {
         public DrawingBrush Num0 { get; set; }
@@ -100,9 +98,19 @@ namespace TimeKeeper
             {
                 ClockSections section = (ClockSections)parameter;
                 var hour = time.Hours;
-                if (time.IsClock && time.IsPM)
+                if (time.IsClock)
                 {
-                    hour -= 12;
+                    if (time.IsPM)
+                    {
+                        //12:xxPM
+                        if (hour != 12) 
+                            hour -= 12;
+                    }
+                    else
+                    {
+                        //12:xxAM
+                       if (hour == 0) hour = 12;
+                    }
                 }
                 switch (section)
                 {

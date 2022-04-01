@@ -38,8 +38,8 @@
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="START TIME" HorizontalAlignment="Right" FontFamily="Segoe UI Black" FontSize="16"/>
-            <local:Clock Grid.Column="1" Time="{Binding Controller.StartTime, ElementName=mainWindow}" ClockModified="startTimeClk_ClockModified" NumberColor="Green" x:Name="startTimeClk" IsAClock="True" Height="Auto"/>
-            <Button Margin="5 0" Grid.Column="2" x:Name="setstartBtn" Content="SET" FontFamily="Segoe UI Black" FontSize="16" Background="#FF13CF00" Height="35" Click="startBtn_Click"/>
+            <local:Clock Grid.Column="1" Time="{Binding Controller.StartTime, ElementName=mainWindow}" ClockModified="StartTimerModified" NumberColor="Green" x:Name="startTimeClk" IsAClock="True" Height="Auto"/>
+            <Button Margin="5 0" Grid.Column="2" x:Name="setstartBtn" Content="SET" FontFamily="Segoe UI Black" FontSize="16" Background="#FF13CF00" Height="35" Click="StartTimer_Clicked"/>
         </Grid>
         <Grid Grid.Row="2" Height="35">
             <Grid.ColumnDefinitions>
@@ -60,8 +60,8 @@
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="CHARGED" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Segoe UI Black" FontSize="16"/>
             <local:Clock  Margin="2" HorizontalAlignment="Stretch" Time="{Binding Controller.TotalWorkTime, ElementName=mainWindow}" Grid.Column="1" NumberColor="DarkGreen" x:Name="chargedTimeClk" Height="Auto" IsAClock="False"  IsModifiable="False"/>
-            <Button Margin="5 0" x:Name="pauseBtn" Grid.Column="2" Content="PAUSE" FontFamily="Segoe UI Black" Background="#FFC5E400" Foreground="Black" FontSize="16" Click="pauseBtn_Click"/>
-            <Button Margin="5 0" x:Name="resetBtn" Grid.Column="3" Content="RESET" FontFamily="Segoe UI Black" Background="#FFE46800" Foreground="Black" FontSize="16" Click="resetBtn_Click"/>
+            <Button Margin="5 0" x:Name="pauseBtn" Grid.Column="2" Content="PAUSE" FontFamily="Segoe UI Black" Background="#FFC5E400" Foreground="Black" FontSize="16" Click="PauseTimers_Clicked"/>
+            <Button Margin="5 0" x:Name="resetBtn" Grid.Column="3" Content="RESET" FontFamily="Segoe UI Black" Background="#FFE46800" Foreground="Black" FontSize="16" Click="ResetTimers_Clicked"/>
 
         </Grid>
         <Grid Grid.Row="4" Margin="5">
@@ -72,7 +72,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button x:Name="addBtn" Content="Add" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FF00CFC6" Height="30" VerticalContentAlignment="Center" Click="addBtn_Click"/>
+            <Button x:Name="addBtn" Content="Add" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FF00CFC6" Height="30" VerticalContentAlignment="Center" Click="AddNewChargeCode_Clicked"/>
 
         </Grid>
 
@@ -86,9 +86,9 @@
                 <ColumnDefinition Width="80"/>
                 <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="loadBtn" Grid.Column="0" Content="Load" HorizontalAlignment="Left"  Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FF00CF71" VerticalContentAlignment="Center" Click="loadBtn_Click"/>
-            <Button x:Name="saveBtn" Grid.Column="1" Content="Save" HorizontalAlignment="Left" Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FF00A9CF" VerticalContentAlignment="Center" Click="saveBtn_Click"/>
-            <Button x:Name="logBtn" Grid.Column="2" Content="Log" HorizontalAlignment="Left" Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FFCD00FB" VerticalContentAlignment="Center" Foreground="Black" Click="logBtn_Click"/>
+            <Button x:Name="loadBtn" Grid.Column="0" Content="Load" HorizontalAlignment="Left"  Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FF00CF71" VerticalContentAlignment="Center" Click="LoadLogButton_Clicked"/>
+            <Button x:Name="saveBtn" Grid.Column="1" Content="Save" HorizontalAlignment="Left" Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FF00A9CF" VerticalContentAlignment="Center" Click="SaveLogButton_Clicked"/>
+            <Button x:Name="logBtn" Grid.Column="2" Content="Log" HorizontalAlignment="Left" Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FFCD00FB" VerticalContentAlignment="Center" Foreground="Black" Click="LogBtn_Clicked"/>
         </Grid>
     </Grid>
 </Window>

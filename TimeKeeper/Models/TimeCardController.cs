@@ -136,7 +136,7 @@ namespace TimeKeeper.Models
         }
 
         public void WorkOnChargeCode(ChargeCodeTimer charge_code)
-        {            
+        {
             CurrentlyWorkingChargeCode = charge_code;
         }
 

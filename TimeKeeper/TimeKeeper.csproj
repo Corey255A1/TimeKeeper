@@ -73,6 +73,7 @@
     <Compile Include="Models\TimeCard.cs" />
     <Compile Include="Models\TimeCardController.cs" />
     <Compile Include="Utils\ChargeCode.cs" />
+    <Compile Include="Utils\ClockDigitizer.cs" />
     <Compile Include="Views\Clock.xaml.cs">
       <DependentUpon>Clock.xaml</DependentUpon>
     </Compile>

@@ -15,7 +15,15 @@ namespace TimeKeeper
     /// Interaction logic for ClockNum.xaml
     /// </summary>
     public enum ClockNumbers { Zero, One, Two, Three, Four, Five, Six, Seven, Eight, Nine, A, P, M, Colon };
-    public delegate void ClockNumberChanged(ClockNum clock, ClockNumbers value);
+    public class ClockNumberChangedArgs
+    {
+        public ClockNum Clock { get; set; }
+        public ClockNumbers NewValue { get; set; }
+        public ClockNumbers OldValue { get; set; }
+        public bool RolledOver { get; set; }
+        public int ValueDelta { get; set; }
+    }
+    public delegate void ClockNumberChanged(ClockNumberChangedArgs changed_args);
     public partial class ClockNum : UserControl, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -28,6 +36,15 @@ namespace TimeKeeper
             get { return (ClockNumbers)GetValue(NumberProperty); }
             set { SetValue(NumberProperty, value); }
         }
+
+        private ClockSections _clock_section = ClockSections.SecondR;
+
+        public ClockSections ClockSection
+        {
+            get => _clock_section;
+            set { _clock_section = value; NotifyChange(nameof(ClockSection)); }
+        }
+
 
         // Using a DependencyProperty as the backing store for Number.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty NumberProperty =
@@ -100,12 +117,22 @@ namespace TimeKeeper
         public void IncrementNum()
         {
             var n = Number + 1;
+            bool roll_over = false;
             if (!Enum.IsDefined(typeof(ClockNumbers), n) || n > _upper_limit)
             {
                 n = _lower_limit;
-                NumberRollOver?.Invoke(this, n);
+                roll_over = true;
             }
-            NumberModified?.Invoke(this, n);
+            var changed_args = new ClockNumberChangedArgs()
+            {
+                Clock = this,
+                OldValue = Number,
+                NewValue = n,
+                ValueDelta = 1,
+                RolledOver = roll_over
+            };
+            NumberModified?.Invoke(changed_args);
+            if (roll_over) NumberRollOver?.Invoke(changed_args);
         }
         public void DecrementNum()
         {
@@ -114,7 +141,15 @@ namespace TimeKeeper
             {
                 n = _upper_limit;
             }
-            NumberModified?.Invoke(this, n);
+            var changed_args = new ClockNumberChangedArgs()
+            {
+                Clock = this,
+                OldValue = Number,
+                NewValue = n,
+                ValueDelta = -1,
+                RolledOver = false
+            };
+            NumberModified?.Invoke(changed_args);
         }
 
         private void incBtn_Click(object sender, RoutedEventArgs e)

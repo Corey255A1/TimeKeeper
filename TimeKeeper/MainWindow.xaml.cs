@@ -32,7 +32,7 @@ namespace TimeKeeper
             InitializeComponent();
         }
 
-        private void startBtn_Click(object sender, RoutedEventArgs e)
+        private void StartTimer_Clicked(object sender, RoutedEventArgs e)
         {
             var t = DateTime.Now;
             _controller.StartDateTime = new DateTime(t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second); //truncate off any milliseconds
@@ -48,24 +48,24 @@ namespace TimeKeeper
             _controller.WorkTimerRunning = true;
         }
 
-        private void addBtn_Click(object sender, RoutedEventArgs e)
+        private void AddNewChargeCode_Clicked(object sender, RoutedEventArgs e)
         {
             _controller.AddNewChargeCode();
             //telm.TimerActionPerformed += TimerActionCallback;
             
         }
 
-        private void pauseBtn_Click(object sender, RoutedEventArgs e)
+        private void PauseTimers_Clicked(object sender, RoutedEventArgs e)
         {
             _controller.WorkTimerRunning = false;
         }
 
-        private void resetBtn_Click(object sender, RoutedEventArgs e)
+        private void ResetTimers_Clicked(object sender, RoutedEventArgs e)
         {
             _controller.Reset();
         }
 
-        private void loadBtn_Click(object sender, RoutedEventArgs e)
+        private void LoadLogButton_Clicked(object sender, RoutedEventArgs e)
         {
             var ofd = new Microsoft.Win32.OpenFileDialog
             {
@@ -80,7 +80,7 @@ namespace TimeKeeper
             }
         }
 
-        private void saveBtn_Click(object sender, RoutedEventArgs e)
+        private void SaveLogButton_Clicked(object sender, RoutedEventArgs e)
         {
             var sfd = new Microsoft.Win32.SaveFileDialog
             {
@@ -100,15 +100,15 @@ namespace TimeKeeper
             _controller.TimeCard.Save(file);
         }
 
-        private void logBtn_Click(object sender, RoutedEventArgs e)
+        private void LogBtn_Clicked(object sender, RoutedEventArgs e)
         {
             var file = System.AppDomain.CurrentDomain.BaseDirectory + "\\timelog.csv";
             _controller.TimeCard.WriteCSV(file);
         }
 
-        private void startTimeClk_ClockModified(int h, int m, int s)
+        private void StartTimerModified(int hour, int minute, int second)
         {
-            Controller.AdjustStartTime(h, m, s);
+            Controller.AdjustStartTime(hour, minute, second);
         }
     }
 }

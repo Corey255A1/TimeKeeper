@@ -8,10 +8,11 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using TimeKeeper.Utils;
 namespace TimeKeeper
 {
 
-    public delegate void ClockModifiedEvent(int h, int m, int s);
+    public delegate void ClockModifiedEvent(int hour, int minute, int second);
     /// <summary>
     /// Interaction logic for Clock.xaml
     /// </summary>
@@ -74,7 +75,7 @@ namespace TimeKeeper
 
         public MutableTime Time
         {
-            get { return (DateTime)GetValue(TimeProperty); }
+            get { return (MutableTime)GetValue(TimeProperty); }
             set { SetValue(TimeProperty, value); }
         }
 
@@ -96,22 +97,15 @@ namespace TimeKeeper
                 hour1Clk,hour2Clk,minute1Clk,minute2Clk,second1Clk,second2Clk,apClk
             };
 
-            //Connect all of the individual clock numbers controls into a clock
-            hour2Clk.NumberRollOver += hour1Clk.RollOver;
-            minute1Clk.NumberRollOver += hour2Clk.RollOver;
-            minute2Clk.NumberRollOver += minute1Clk.RollOver;
-            second1Clk.NumberRollOver += minute2Clk.RollOver;
-            second2Clk.NumberRollOver += second1Clk.RollOver;
-
             foreach (var cn in _clock_number_list)
             {
                 cn.NumberModified += ClockChanged;
             }
         }
 
-        private int CompareAndGetClockNumChange(ClockNum ctrl, ClockNum changed_ctrl, ClockNumbers changed_value)
+        private int CompareAndGetClockNumChange(ClockNum ctrl, ClockNum changed_ctrl, ClockNumbers changed_value, int current)
         {
-            return ctrl == changed_ctrl ? (int)changed_value : ctrl.GetInteger();
+            return ctrl == changed_ctrl ? (int)changed_value : current;
         }
 
         private int CombineDigits(int digit1, int digit2)
@@ -119,29 +113,34 @@ namespace TimeKeeper
             return digit1 * 10 + digit2;
         }
 
-        private void ClockChanged(ClockNum clock, ClockNumbers value)
+        private void ClockChanged(ClockNumberChangedArgs changed_args)
         {
-            bool is_pm = apClk.Number == ClockNumbers.P;
-            if(clock == apClk)
+            MutableTime new_time;
+            MutableTime curr_time = Time;
+            if (changed_args.Clock.ClockSection == ClockSections.AMPM)
             {
-                is_pm = value == ClockNumbers.P;
+                //Modifying the AMPM is just cycling by 12 hours
+                new_time = new MutableTime((Time.Hours + 12) % 24, Time.Minutes, Time.Seconds);
             }
-            int h = CombineDigits(
-                CompareAndGetClockNumChange(hour1Clk, clock, value),
-                CompareAndGetClockNumChange(hour2Clk, clock, value));
-            
-            if (is_pm) h += 12;
+            else
+            {
+                ClockDigitizer digitizer = new ClockDigitizer(Time);
+                switch (changed_args.Clock.ClockSection)
+                {
+                    case ClockSections.HourL: digitizer.HourLeft.Number += changed_args.ValueDelta; break;
+                    case ClockSections.HourR: digitizer.HourRight.Number += changed_args.ValueDelta; break;
+                    case ClockSections.MinuteL: digitizer.MinuteLeft.Number += changed_args.ValueDelta; break;
+                    case ClockSections.MinuteR: digitizer.MinuteRight.Number += changed_args.ValueDelta; break;
+                    case ClockSections.SecondL: digitizer.SecondLeft.Number += changed_args.ValueDelta; break;
+                    case ClockSections.SecondR: digitizer.SecondRight.Number += changed_args.ValueDelta; break;
+                }
+                new_time = digitizer.GetTime();
+            }
             if (IsAClock)
             {
-                if (h >= 24) h -= 24;
+                new_time.Hours = new_time.Hours % 24;
             }
-            int m = CombineDigits(
-                CompareAndGetClockNumChange(minute1Clk, clock, value),
-                CompareAndGetClockNumChange(minute2Clk, clock, value));
-            int s = CombineDigits(
-                CompareAndGetClockNumChange(second1Clk, clock, value),
-                CompareAndGetClockNumChange(second2Clk, clock, value));
-            ClockModified?.Invoke(h, m, s);
+            ClockModified?.Invoke(new_time.Hours, new_time.Minutes, new_time.Seconds);
 
         }
 
