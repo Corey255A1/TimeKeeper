@@ -5,7 +5,6 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.ComponentModel;
 
 namespace TimeKeeper
 {
@@ -70,8 +69,8 @@ namespace TimeKeeper
         }
         public void SetTime(DateTime t)
         {
-           // Time.IncrementTime(t - _last_time_received);
-           // _last_time_received = t;
+            // Time.IncrementTime(t - _last_time_received);
+            // _last_time_received = t;
         }
         public TimeSpan GetTime()
         {
@@ -82,15 +81,15 @@ namespace TimeKeeper
         {
             WorkOn?.Invoke(this, null);
             //Set my last time received to Right now when the button was clicked. Start Time from now
-          //  var t = DateTime.Now;
-          //  _last_time_received = new DateTime(t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second); //truncate off any milliseconds
-          //  TimerActionPerformed?.Invoke(this, TimerElementActionEnum.WorkOn);
+            //  var t = DateTime.Now;
+            //  _last_time_received = new DateTime(t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second); //truncate off any milliseconds
+            //  TimerActionPerformed?.Invoke(this, TimerElementActionEnum.WorkOn);
         }
 
         private void removeBtn_Click(object sender, RoutedEventArgs e)
         {
             Remove?.Invoke(this, null);
-           // TimerActionPerformed?.Invoke(this, TimerElementActionEnum.Remove);
+            // TimerActionPerformed?.Invoke(this, TimerElementActionEnum.Remove);
 
         }
     }

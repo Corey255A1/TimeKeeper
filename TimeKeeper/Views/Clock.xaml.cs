@@ -2,7 +2,6 @@
 //A combination of the clock numbers into a clock control
 //Can be Timer Style or Clock Style
 
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
@@ -23,7 +22,7 @@ namespace TimeKeeper
 
         public event ClockModifiedEvent ClockModified;
         private bool _is_clock_type = true;
-        
+
         [Description("Timer or Clock?"), Category("Clock Data")]
         public bool IsAClock
         {
@@ -90,7 +89,7 @@ namespace TimeKeeper
         {
             DataContext = this;
             InitializeComponent();
-            
+
             //Make a list of the modifiable elements
             _clock_number_list = new List<ClockNum>()
             {

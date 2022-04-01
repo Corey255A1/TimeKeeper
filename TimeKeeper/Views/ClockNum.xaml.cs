@@ -3,7 +3,6 @@
 //Implemented this way so that it can use vector 
 //rendered numbers rather than fonts
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;

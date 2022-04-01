@@ -1,6 +1,5 @@
 ﻿//Corey Wunderlich
 //A control that uses edit boxes to allow for quickly modifying a time element
-using System;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -30,7 +29,7 @@ namespace TimeKeeper
         public static readonly DependencyProperty TimeProperty =
             DependencyProperty.Register("Time", typeof(MutableTime), typeof(TimeEdit), new PropertyMetadata(new MutableTime()));
 
-       
+
         public TimeEdit()
         {
             InitializeComponent();
@@ -48,7 +47,7 @@ namespace TimeKeeper
         //Apply the time modifications when the Enter key is pressed
         private void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Enter)
+            if (e.Key == Key.Enter)
             {
                 var textbox = sender as TextBox;
                 DependencyProperty prop = TextBox.TextProperty;

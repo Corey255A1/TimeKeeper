@@ -1,14 +1,10 @@
-﻿//CWunderlich 2022
+﻿//Corey Wunderlich WunderVision 2022
 //A Class to store Hours/Minutes/Seconds
 //Allows modification and calculates roll over into
 //the next higher up time unit
 //90seconds = 1minute 30seconds
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TimeKeeper
 {
@@ -19,7 +15,8 @@ namespace TimeKeeper
         private void NotifyChange(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
         private int _hours = 0;
-        public int Hours {
+        public int Hours
+        {
             get => _hours;
             set
             {
@@ -30,7 +27,8 @@ namespace TimeKeeper
         }
 
         private int _minutes = 0;
-        public int Minutes {
+        public int Minutes
+        {
             get => _minutes;
             set
             {
@@ -40,7 +38,8 @@ namespace TimeKeeper
         }
 
         private int _seconds = 0;
-        public int Seconds {
+        public int Seconds
+        {
             get => _seconds;
             set
             {
@@ -72,7 +71,7 @@ namespace TimeKeeper
         public static MutableTime operator +(MutableTime a, MutableTime b) => MutableTime.AddTimes(a, b);
         public static MutableTime operator -(MutableTime a, MutableTime b) => MutableTime.SubtractTimes(a, b);
 
-        public MutableTime(){}
+        public MutableTime() { }
         public MutableTime(int hours, int minutes, int seconds)
         {
             Seconds = seconds;

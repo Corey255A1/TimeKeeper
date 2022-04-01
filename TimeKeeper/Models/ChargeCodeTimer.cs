@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿//Corey Wunderlich WunderVision 2022
+//The Properties of the ChargeCodeTimer
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TimeKeeper.Models
 {
-    public class ChargeCodeTimer: INotifyPropertyChanged
+    public class ChargeCodeTimer : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyChange(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-
-        
 
         private string _code;
         public string Code

@@ -1,10 +1,10 @@
-﻿using System;
+﻿//Corey Wunderlich WunderVision 2022
+//Reading and writing the TimeCard charge codes
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TimeKeeper.Models
 {
@@ -47,7 +47,7 @@ namespace TimeKeeper.Models
 
         public void Reset()
         {
-            foreach(var charge_code in _charge_codes)
+            foreach (var charge_code in _charge_codes)
             {
                 charge_code.Time.Clear();
             }

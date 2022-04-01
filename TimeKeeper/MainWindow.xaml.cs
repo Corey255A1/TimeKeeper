@@ -3,12 +3,7 @@
 //Ties all of the pieces of together and creates
 //The user interface.
 //
-//NOTE: Should probably move a lot of this
-//business logic out of the window class
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Windows;
 
 using TimeKeeper.Models;
@@ -51,8 +46,6 @@ namespace TimeKeeper
         private void AddNewChargeCode_Clicked(object sender, RoutedEventArgs e)
         {
             _controller.AddNewChargeCode();
-            //telm.TimerActionPerformed += TimerActionCallback;
-            
         }
 
         private void PauseTimers_Clicked(object sender, RoutedEventArgs e)

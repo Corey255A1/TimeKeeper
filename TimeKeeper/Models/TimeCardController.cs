@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿//Corey Wunderlich WunderVision 2022
+//Ties together the active charge numbers and the current timers
+using System;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Threading;
 
 namespace TimeKeeper.Models
@@ -112,7 +110,8 @@ namespace TimeKeeper.Models
 
         private void _time_ticker_TickEvent(DateTime time, TimeSpan elapsed)
         {
-            _dispatcher.Invoke(()=> {
+            _dispatcher.Invoke(() =>
+            {
                 CurrentDateTime = time;
                 if (WorkTimerRunning) CurrentlyWorkingChargeCode?.Time.IncrementTime(elapsed);
                 NotifyChange(nameof(DeltaTime));

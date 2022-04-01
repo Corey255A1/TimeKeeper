@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//Corey Wunderlich WunderVision 2022
+//Converts to control how certain values are displayed
+using System;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 
 namespace TimeKeeper
-{    
+{
     public class ClockNumbersEnumToResourceConverter : IValueConverter
     {
         public DrawingBrush Num0 { get; set; }
@@ -93,7 +91,7 @@ namespace TimeKeeper
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            
+
             if (value is MutableTime time)
             {
                 ClockSections section = (ClockSections)parameter;
@@ -103,13 +101,13 @@ namespace TimeKeeper
                     if (time.IsPM)
                     {
                         //12:xxPM
-                        if (hour != 12) 
+                        if (hour != 12)
                             hour -= 12;
                     }
                     else
                     {
                         //12:xxAM
-                       if (hour == 0) hour = 12;
+                        if (hour == 0) hour = 12;
                     }
                 }
                 switch (section)

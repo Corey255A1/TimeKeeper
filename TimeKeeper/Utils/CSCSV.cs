@@ -12,7 +12,7 @@ namespace CSCSV
         private Dictionary<string, List<string>> _table = new Dictionary<string, List<string>>();
         private List<string> _header_list = new List<string>();
         private int _row_count = 0;
-        public int RowCount { get => _row_count;  }
+        public int RowCount { get => _row_count; }
         public int ColumnCount { get => _table.Keys.Count; }
         public bool HasHeader { get; private set; } = true;
         private char _separator = ',';
@@ -27,7 +27,7 @@ namespace CSCSV
         {
             var column = new List<string>(_row_count);
             //Fill in each row of the new column with an empty string
-            for(int r = 0; r < _row_count; r++) { column.Add(""); }
+            for (int r = 0; r < _row_count; r++) { column.Add(""); }
             _table.Add(header, column);
             _header_list.Add(header);
         }
@@ -64,7 +64,7 @@ namespace CSCSV
             }
             return null;
         }
-       
+
         public bool SetValue(int column_idx, int row_idx, string value)
         {
             if (_header_list.Count > column_idx)

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿//Corey Wunderlich WunderVision 2022
+//Enable the control of incrementing and decrementing of inidividual digits of a number
 namespace TimeKeeper.Utils
 {
     public delegate void DigitRollOverCallback();
@@ -12,16 +8,18 @@ namespace TimeKeeper.Utils
         public static implicit operator Digit(int number) => new Digit(number, 9);
         public event DigitRollOverCallback DigitRollOver;
         private int _number = 0;
-        public int Number {
+        public int Number
+        {
             get => _number;
-            set {
+            set
+            {
                 _number = value;
-                if(_number > Max)
+                if (_number > Max)
                 {
                     _number = 0;
                     DigitRollOver?.Invoke();
                 }
-                else if(_number < 0)
+                else if (_number < 0)
                 {
                     _number = Max;
                 }
