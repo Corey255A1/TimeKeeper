@@ -7,6 +7,7 @@ namespace TimeKeeper.Utils
     {
         public static implicit operator Digit(int number) => new Digit(number, 9);
         public event DigitRollOverCallback DigitRollOver;
+        public event DigitRollOverCallback DigitRollUnder;
         private int _number = 0;
         public int Number
         {
@@ -22,6 +23,7 @@ namespace TimeKeeper.Utils
                 else if (_number < 0)
                 {
                     _number = Max;
+                    DigitRollUnder?.Invoke();
                 }
             }
         }
@@ -31,15 +33,12 @@ namespace TimeKeeper.Utils
             Number = number;
             Max = max;
         }
-        public void Increment()
-        {
-            Number = Number + 1;
-        }
-
+        public void Increment() => Number += 1;
+        public void Decrement() => Number -= 1;
     }
     public class ClockDigitizer
     {
-        public Digit HourLeft { get; private set; } = 0;
+        public Digit HourLeft { get; private set; } = new Digit(0, 2);
         public Digit HourRight { get; private set; } = 0;
         public Digit MinuteLeft { get; private set; } = new Digit(0, 5);
         public Digit MinuteRight { get; private set; } = 0;
@@ -66,6 +65,14 @@ namespace TimeKeeper.Utils
             MinuteRight.DigitRollOver += MinuteLeft.Increment;
             MinuteLeft.DigitRollOver += HourRight.Increment;
             HourRight.DigitRollOver += HourLeft.Increment;
+
+            SecondRight.DigitRollUnder += SecondLeft.Decrement;
+            //SecondLeft.DigitRollUnder += MinuteRight.Decrement;
+            MinuteRight.DigitRollUnder += MinuteLeft.Decrement;
+            //MinuteLeft.DigitRollUnder += HourRight.Decrement;
+            HourRight.DigitRollUnder += HourLeft.Decrement;
+            //Reset the Right side to 23 when the digit goes from 0 back to 2
+            HourLeft.DigitRollUnder += () => { HourRight.Number = 3; };
         }
         public MutableTime GetTime()
         {
