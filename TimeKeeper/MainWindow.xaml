@@ -13,15 +13,7 @@
         </LinearGradientBrush>
     </Window.Background>
     <Window.Resources>
-        <Style TargetType="Button">
-            <Setter Property="Margin" Value="4 0"/>
-            <Setter Property="Padding" Value="2"/>
-            <Setter Property="FontFamily" Value="Calibri"/>
-            <Setter Property="FontSize" Value="18"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Height" Value="35"/>
-            <Setter Property="Width" Value="Auto"/>
-        </Style>
+
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -50,7 +42,7 @@
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="START TIME" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Segoe UI Black" FontSize="16"/>
             <local:Clock Grid.Column="1" Time="{Binding Controller.StartTime, ElementName=mainWindow}" ClockModified="StartTimerModified" NumberColor="Green" x:Name="startTimeClk" IsAClock="True" Height="Auto"/>
-            <Button Grid.Column="2" x:Name="setstartBtn" Content="SET" Background="#FF13CF00" Click="StartTimer_Clicked"/>
+            <Button Grid.Column="2" Content="SET" Style="{StaticResource GreenButton}" Click="StartTimer_Clicked"/>
         </Grid>
         <Grid Grid.Row="2" Height="50">
             <Grid.ColumnDefinitions>
@@ -58,7 +50,7 @@
                 <ColumnDefinition Width="250"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="DELTA" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Segoe UI Black" FontSize="16" Margin="0"/>
+            <Label Grid.Column="0" Content="DELTA" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Segoe UI Black" FontSize="16" Margin="0"/>
             <local:Clock Margin="2" Time="{Binding Controller.DeltaTime, ElementName=mainWindow}" Grid.Column="1" NumberColor="Blue" x:Name="totalTimeClk" Height="Auto" IsAClock="False" IsModifiable="False"/>
         </Grid>
 
@@ -69,10 +61,10 @@
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="CHARGED" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Segoe UI Black" FontSize="16"/>
+            <Label Grid.Column="0" Content="CHARGED" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Segoe UI Black" FontSize="16"/>
             <local:Clock Margin="2" HorizontalAlignment="Stretch" Time="{Binding Controller.TotalWorkTime, ElementName=mainWindow}" Grid.Column="1" NumberColor="DarkGreen" x:Name="chargedTimeClk" Height="Auto" IsAClock="False"  IsModifiable="False"/>
-            <Button x:Name="pauseBtn" Grid.Column="2" Content="PAUSE" Background="#FFC5E400" Click="PauseTimers_Clicked"/>
-            <Button x:Name="resetBtn" Grid.Column="3" Content="RESET" Background="#FFE46800" Click="ResetTimers_Clicked"/>
+            <Button Grid.Column="2" Content="PAUSE"  Style="{StaticResource YellowButton}"  Click="PauseTimers_Clicked"/>
+            <Button Grid.Column="3" Content="RESET"  Style="{StaticResource OrangeButton}" Click="ResetTimers_Clicked"/>
 
         </Grid>
         <Grid Grid.Row="4" Margin="5">
@@ -87,20 +79,21 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button Grid.Row="1" x:Name="addBtn" Content="Add" VerticalAlignment="Bottom" Background="#FF00CFC6" Click="AddNewChargeCode_Clicked"/>
+            <Button Grid.Row="1" Content="Add" Style="{StaticResource GreenButton}" Click="AddNewChargeCode_Clicked"/>
         </Grid>
 
         <Grid Grid.Row="5" Margin="5" Height="40">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="35"/>
+                <ColumnDefinition Width="45"/>
                 <ColumnDefinition Width="80"/>
                 <ColumnDefinition Width="80"/>
                 <ColumnDefinition Width="159*"/>
                 <ColumnDefinition Width="208*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="loadBtn" Grid.Column="0" Content="Load" Background="#FF00CF71" Click="LoadLogButton_Clicked" Margin="5,2,5,2"/>
-            <Button x:Name="saveBtn" Grid.Column="1" Content="Save" Background="#FF00A9CF" Click="SaveLogButton_Clicked" Margin="5,2,5,2"/>
-            <Button x:Name="logBtn" Grid.Column="2" Content="Log" Background="#FFCD00FB" Click="LogBtn_Clicked" Margin="5,2,5,2"/>
+            <Button Grid.Column="0" Content="Load" Style="{StaticResource BlueButton}" Click="LoadLogButton_Clicked" Margin="5,2,5,2" Grid.ColumnSpan="2"/>
+            <Button Grid.Column="2" Content="Save" Style="{StaticResource LightGreenButton}" Click="SaveLogButton_Clicked" Margin="5,2,5,2"/>
+            <Button Grid.Column="3" Content="Log"  Style="{StaticResource OrangeButton}" Click="LogBtn_Clicked" Margin="5,2,5,2"/>
         </Grid>
     </Grid>
 </Window>

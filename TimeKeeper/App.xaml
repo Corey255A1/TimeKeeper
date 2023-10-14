@@ -4,6 +4,64 @@
              xmlns:local="clr-namespace:TimeKeeper"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Style TargetType="Button" x:Key="ShadowButton">
+            <Setter Property="Margin" Value="4 0"/>
+            <Setter Property="Padding" Value="2"/>
+            <Setter Property="FontFamily" Value="Calibri"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Width" Value="Auto"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Border CornerRadius="4" Background="{TemplateBinding Background}">
+                                <Border.BitmapEffect>
+                                    <DropShadowBitmapEffect Direction="320" Softness="0.2" ShadowDepth="3" Opacity="0.5" Color="Black"/>
+                                </Border.BitmapEffect>
+                            </Border>
+                            <Border CornerRadius="4" Background="{TemplateBinding Background}" >
+                                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="FontSize" Value="18"/>
+                    <Setter Property="Background" Value="LightBlue"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="AliceBlue"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="Button" BasedOn="{StaticResource ShadowButton}" x:Key="GreenButton">
+            <Setter Property="Background" Value="DarkGreen"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style TargetType="Button" BasedOn="{StaticResource ShadowButton}" x:Key="LightGreenButton">
+            <Setter Property="Background" Value="LightSeaGreen"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+        <Style TargetType="Button" BasedOn="{StaticResource ShadowButton}" x:Key="YellowButton">
+            <Setter Property="Background" Value="Yellow"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+        <Style TargetType="Button" BasedOn="{StaticResource ShadowButton}" x:Key="OrangeButton">
+            <Setter Property="Background" Value="Orange"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+        <Style TargetType="Button" BasedOn="{StaticResource ShadowButton}" x:Key="BlueButton">
+            <Setter Property="Background" Value="AliceBlue"/>
+            <Setter Property="Foreground" Value="Black"/>
+        </Style>
+        <Style TargetType="Button" BasedOn="{StaticResource ShadowButton}" x:Key="RedButton">
+            <Setter Property="Background" Value="DarkRed"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
     </Application.Resources>
 </Application>
