@@ -34,7 +34,15 @@ namespace TimeKeeper.Models
             get => _currently_working;
             set
             {
+                if (_currently_working != null)
+                {
+                    _currently_working.Active = false;
+                }
                 _currently_working = value;
+                if (_currently_working != null)
+                {
+                    _currently_working.Active = true;
+                }
                 NotifyChange(nameof(CurrentlyWorkingChargeCode));
             }
         }

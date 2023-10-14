@@ -5,13 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TimeKeeper"
         mc:Ignorable="d"
-        Title="Time Keeper: X-Treme" Height="704.81" Width="616.841" Closing="Window_Closing" x:Name="mainWindow">
+        Title="WunderVision Time Keeper" Height="760" Width="620" Closing="Window_Closing" x:Name="mainWindow">
     <Window.Background>
         <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
             <GradientStop Color="White" Offset="1"/>
             <GradientStop Color="White"/>
         </LinearGradientBrush>
     </Window.Background>
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="4 0"/>
+            <Setter Property="Padding" Value="2"/>
+            <Setter Property="FontFamily" Value="Calibri"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Width" Value="Auto"/>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -21,37 +32,37 @@
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Height="48">
+        <Grid Grid.Row="0" Height="50">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="145"/>
                 <ColumnDefinition Width="350"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Rectangle Grid.Column="0" Grid.ColumnSpan="3" Fill="Black" Stroke="Black"/>
-            <Label Grid.Column="0" Content="CURRENT TIME" HorizontalAlignment="Right" FontFamily="Segoe UI Black" FontSize="16" Foreground="White"/>
+            <Label Grid.Column="0" Content="CURRENT TIME" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Segoe UI Black" FontSize="16" Foreground="White"/>
             <local:Clock Time="{Binding Controller.CurrentTime, ElementName=mainWindow}" Grid.Column="1" NumberColor="Red" x:Name="currentTimeClk" Background="{x:Null}" IsModifiable="False" Height="Auto"/>
         </Grid>
-        <Grid Grid.Row="1" Height="48">
+        <Grid Grid.Row="1" Height="50">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="145"/>
                 <ColumnDefinition Width="350"/>
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" Content="START TIME" HorizontalAlignment="Right" FontFamily="Segoe UI Black" FontSize="16"/>
+            <Label Grid.Column="0" Content="START TIME" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Segoe UI Black" FontSize="16"/>
             <local:Clock Grid.Column="1" Time="{Binding Controller.StartTime, ElementName=mainWindow}" ClockModified="StartTimerModified" NumberColor="Green" x:Name="startTimeClk" IsAClock="True" Height="Auto"/>
-            <Button Margin="5 0" Grid.Column="2" x:Name="setstartBtn" Content="SET" FontFamily="Segoe UI Black" FontSize="16" Background="#FF13CF00" Height="35" Click="StartTimer_Clicked"/>
+            <Button Grid.Column="2" x:Name="setstartBtn" Content="SET" Background="#FF13CF00" Click="StartTimer_Clicked"/>
         </Grid>
-        <Grid Grid.Row="2" Height="35">
+        <Grid Grid.Row="2" Height="50">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="145"/>
                 <ColumnDefinition Width="250"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="DELTA" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Segoe UI Black" FontSize="16" Margin="0"/>
-            <local:Clock  Margin="2" Time="{Binding Controller.DeltaTime, ElementName=mainWindow}" Grid.Column="1" NumberColor="Blue" x:Name="totalTimeClk" Height="Auto" IsAClock="False" IsModifiable="False"/>
+            <local:Clock Margin="2" Time="{Binding Controller.DeltaTime, ElementName=mainWindow}" Grid.Column="1" NumberColor="Blue" x:Name="totalTimeClk" Height="Auto" IsAClock="False" IsModifiable="False"/>
         </Grid>
 
-        <Grid Grid.Row="3" Height="35">
+        <Grid Grid.Row="3" Height="50">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="145"/>
                 <ColumnDefinition Width="250"/>
@@ -59,12 +70,16 @@
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="CHARGED" HorizontalAlignment="Right" VerticalAlignment="Top" FontFamily="Segoe UI Black" FontSize="16"/>
-            <local:Clock  Margin="2" HorizontalAlignment="Stretch" Time="{Binding Controller.TotalWorkTime, ElementName=mainWindow}" Grid.Column="1" NumberColor="DarkGreen" x:Name="chargedTimeClk" Height="Auto" IsAClock="False"  IsModifiable="False"/>
-            <Button Margin="5 0" x:Name="pauseBtn" Grid.Column="2" Content="PAUSE" FontFamily="Segoe UI Black" Background="#FFC5E400" Foreground="Black" FontSize="16" Click="PauseTimers_Clicked"/>
-            <Button Margin="5 0" x:Name="resetBtn" Grid.Column="3" Content="RESET" FontFamily="Segoe UI Black" Background="#FFE46800" Foreground="Black" FontSize="16" Click="ResetTimers_Clicked"/>
+            <local:Clock Margin="2" HorizontalAlignment="Stretch" Time="{Binding Controller.TotalWorkTime, ElementName=mainWindow}" Grid.Column="1" NumberColor="DarkGreen" x:Name="chargedTimeClk" Height="Auto" IsAClock="False"  IsModifiable="False"/>
+            <Button x:Name="pauseBtn" Grid.Column="2" Content="PAUSE" Background="#FFC5E400" Click="PauseTimers_Clicked"/>
+            <Button x:Name="resetBtn" Grid.Column="3" Content="RESET" Background="#FFE46800" Click="ResetTimers_Clicked"/>
 
         </Grid>
         <Grid Grid.Row="4" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <ListView  ItemsSource="{Binding TimeCard.ChargeCodes}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -72,23 +87,20 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button x:Name="addBtn" Content="Add" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FF00CFC6" Height="30" VerticalContentAlignment="Center" Click="AddNewChargeCode_Clicked"/>
-
+            <Button Grid.Row="1" x:Name="addBtn" Content="Add" VerticalAlignment="Bottom" Background="#FF00CFC6" Click="AddNewChargeCode_Clicked"/>
         </Grid>
-
-        <!--<ScrollViewer Margin="10,185,0,45" HorizontalAlignment="Left" Width="577" Background="#FFC7C7C7">
-            <StackPanel x:Name="chargeNumberStack" Margin="0,0,0,0"/>
-        </ScrollViewer>-->
 
         <Grid Grid.Row="5" Margin="5" Height="40">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="80"/>
                 <ColumnDefinition Width="80"/>
                 <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="159*"/>
+                <ColumnDefinition Width="208*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="loadBtn" Grid.Column="0" Content="Load" HorizontalAlignment="Left"  Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FF00CF71" VerticalContentAlignment="Center" Click="LoadLogButton_Clicked"/>
-            <Button x:Name="saveBtn" Grid.Column="1" Content="Save" HorizontalAlignment="Left" Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FF00A9CF" VerticalContentAlignment="Center" Click="SaveLogButton_Clicked"/>
-            <Button x:Name="logBtn" Grid.Column="2" Content="Log" HorizontalAlignment="Left" Width="70" FontFamily="Segoe UI Black" FontSize="16" Background="#FFCD00FB" VerticalContentAlignment="Center" Foreground="Black" Click="LogBtn_Clicked"/>
+            <Button x:Name="loadBtn" Grid.Column="0" Content="Load" Background="#FF00CF71" Click="LoadLogButton_Clicked" Margin="5,2,5,2"/>
+            <Button x:Name="saveBtn" Grid.Column="1" Content="Save" Background="#FF00A9CF" Click="SaveLogButton_Clicked" Margin="5,2,5,2"/>
+            <Button x:Name="logBtn" Grid.Column="2" Content="Log" Background="#FFCD00FB" Click="LogBtn_Clicked" Margin="5,2,5,2"/>
         </Grid>
     </Grid>
 </Window>

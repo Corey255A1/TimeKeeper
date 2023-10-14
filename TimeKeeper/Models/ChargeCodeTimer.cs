@@ -23,6 +23,13 @@ namespace TimeKeeper.Models
             set { _description = value; NotifyChange(nameof(Description)); }
         }
 
+        private bool _active;
+        public bool Active
+        {
+            get => _active;
+            set { _active = value; NotifyChange(nameof(Active)); }
+        }
+
         private MutableTime _time = new MutableTime();
         public MutableTime Time
         {

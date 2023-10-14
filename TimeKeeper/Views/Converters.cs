@@ -1,6 +1,7 @@
 ﻿//Corey Wunderlich WunderVision 2022
 //Converts to control how certain values are displayed
 using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -82,6 +83,21 @@ namespace TimeKeeper
             }
 
             return false;
+        }
+    }
+
+    public class BoolToColor : IValueConverter
+    {
+        public SolidColorBrush TrueColor { get; set; }
+        public SolidColorBrush FalseColor { get; set; }
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return (value is bool colorBool && colorBool) ? TrueColor : FalseColor;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 
