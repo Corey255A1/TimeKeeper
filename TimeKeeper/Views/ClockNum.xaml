@@ -19,15 +19,15 @@
                      NumM="{StaticResource NumM}" NumCol="{StaticResource NumCol}"/>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid x:Name="numGrid"  MouseEnter="numGrid_MouseEnter" MouseLeave="numGrid_MouseLeave">
+    <Grid x:Name="numGrid"  MouseEnter="numberGridMouseEnter" MouseLeave="numberGridMouseLeave">
         <Grid.RowDefinitions>
             <RowDefinition Height="5*"/>
             <RowDefinition Height="10*"/>
             <RowDefinition Height="5*"/>
         </Grid.RowDefinitions>
         <Rectangle Grid.Row="0" Grid.RowSpan="3" Fill="{Binding Number, Mode=OneWay, Converter={StaticResource NumberToBrushConverter}, FallbackValue={x:Static local:ClockNumbers.Zero}}"></Rectangle>
-        <Button x:Name="incBtn" Content="" Grid.Row="0" VerticalContentAlignment="Center" FontSize="16" Click="incBtn_Click" Opacity="0.5" Background="White" BorderBrush="Black" Visibility="Hidden"/>
-        <Button x:Name="decBtn" Content="" Grid.Row="2" VerticalContentAlignment="Center" FontSize="16" Click="decBtn_Click" Opacity="0.5" Background="White" BorderBrush="Black" Visibility="Hidden"/>
+        <Button x:Name="incBtn" Content="" Grid.Row="0" VerticalContentAlignment="Center" FontSize="16" Click="incrementButtonClicked" Opacity="0.5" Background="White" BorderBrush="Black" Visibility="Hidden"/>
+        <Button x:Name="decBtn" Content="" Grid.Row="2" VerticalContentAlignment="Center" FontSize="16" Click="decrementButtonClicked" Opacity="0.5" Background="White" BorderBrush="Black" Visibility="Hidden"/>
 
     </Grid>
 </UserControl>

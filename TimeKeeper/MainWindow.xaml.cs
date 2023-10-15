@@ -27,12 +27,7 @@ namespace TimeKeeper
             InitializeComponent();
         }
 
-        private void StartTimer_Clicked(object sender, RoutedEventArgs e)
-        {
-            var t = DateTime.Now;
-            _controller.StartDateTime = new DateTime(t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second); //truncate off any milliseconds
-        }
-        private void TimerElement_Remove(object sender, EventArgs e)
+        private void TimerElementRemove(object sender, EventArgs e)
         {
             _controller.RemoveChargeCode((sender as FrameworkElement).DataContext as ChargeCodeTimer);
         }
@@ -40,7 +35,7 @@ namespace TimeKeeper
         private void TimerElement_WorkOn(object sender, EventArgs e)
         {
             _controller.WorkOnChargeCode((sender as FrameworkElement).DataContext as ChargeCodeTimer);
-            _controller.WorkTimerRunning = true;
+            _controller.IsWorkTimerRunning = true;
         }
 
         private void AddNewChargeCode_Clicked(object sender, RoutedEventArgs e)
@@ -48,42 +43,32 @@ namespace TimeKeeper
             _controller.AddNewChargeCode();
         }
 
-        private void PauseTimers_Clicked(object sender, RoutedEventArgs e)
-        {
-            _controller.WorkTimerRunning = false;
-        }
-
-        private void ResetTimers_Clicked(object sender, RoutedEventArgs e)
-        {
-            _controller.Reset();
-        }
-
         private void LoadLogButton_Clicked(object sender, RoutedEventArgs e)
         {
-            var ofd = new Microsoft.Win32.OpenFileDialog
+            var openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
                 FileName = "ChargeCodes",
                 DefaultExt = "chg",
                 Filter = "Charge Codes (.chg)|*.chg"
             };
 
-            if (ofd.ShowDialog() == true)
+            if (openFileDialog.ShowDialog() == true)
             {
-                _controller.TimeCard.Load(ofd.FileName);
+                _controller.TimeCard.Load(openFileDialog.FileName);
             }
         }
 
         private void SaveLogButton_Clicked(object sender, RoutedEventArgs e)
         {
-            var sfd = new Microsoft.Win32.SaveFileDialog
+            var saveFileDialog = new Microsoft.Win32.SaveFileDialog
             {
                 FileName = "ChargeCodes",
                 DefaultExt = "chg",
                 Filter = "Charge Codes (.chg)|*.chg"
             };
-            if (sfd.ShowDialog() == true)
+            if (saveFileDialog.ShowDialog() == true)
             {
-                _controller.TimeCard.Save(sfd.FileName);
+                _controller.TimeCard.Save(saveFileDialog.FileName);
             }
         }
 

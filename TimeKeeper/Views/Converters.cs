@@ -28,9 +28,9 @@ namespace TimeKeeper
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (value is ClockNumbers clock_enum)
+            if (value is ClockNumbers clockEnum)
             {
-                switch (clock_enum)
+                switch (clockEnum)
                 {
                     case ClockNumbers.Zero: return Num0;
                     case ClockNumbers.One: return Num1;

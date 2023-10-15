@@ -36,12 +36,12 @@ namespace TimeKeeper
             set { SetValue(NumberProperty, value); }
         }
 
-        private ClockSections _clock_section = ClockSections.SecondR;
+        private ClockSections _clockSection = ClockSections.SecondR;
 
         public ClockSections ClockSection
         {
-            get => _clock_section;
-            set { _clock_section = value; NotifyChange(nameof(ClockSection)); }
+            get => _clockSection;
+            set { _clockSection = value; NotifyChange(nameof(ClockSection)); }
         }
 
 
@@ -51,31 +51,31 @@ namespace TimeKeeper
 
 
 
-        private ClockNumbers _upper_limit = ClockNumbers.Nine;
+        private ClockNumbers _upperLimit = ClockNumbers.Nine;
         [Description("Set the Number Upper Limit"), Category("Clock Data")]
         public ClockNumbers NumberUpperLimit
         {
             get
             {
-                return _upper_limit;
+                return _upperLimit;
             }
             set
             {
-                _upper_limit = value;
+                _upperLimit = value;
             }
         }
 
-        private ClockNumbers _lower_limit = ClockNumbers.Zero;
+        private ClockNumbers _lowerLimit = ClockNumbers.Zero;
         [Description("Set the Number Lower Limit"), Category("Clock Data")]
         public ClockNumbers NumberLowerLimit
         {
             get
             {
-                return _lower_limit;
+                return _lowerLimit;
             }
             set
             {
-                _lower_limit = value;
+                _lowerLimit = value;
             }
         }
 
@@ -92,12 +92,12 @@ namespace TimeKeeper
 
 
 
-        private bool _is_modifiable = true;
+        private bool _isModifiable = true;
         [Description("Can this be modified?"), Category("Clock Data")]
         public bool IsModifiable
         {
-            get { return _is_modifiable; }
-            set { _is_modifiable = value; }
+            get { return _isModifiable; }
+            set { _isModifiable = value; }
         }
 
         public ClockNum()
@@ -111,68 +111,68 @@ namespace TimeKeeper
         }
         public void RollOver(ClockNum clock, ClockNumbers value)
         {
-            IncrementNum();
+            IncrementNumber();
         }
-        public void IncrementNum()
+        public void IncrementNumber()
         {
-            var n = Number + 1;
-            bool roll_over = false;
-            if (!Enum.IsDefined(typeof(ClockNumbers), n) || n > _upper_limit)
+            var newNumber = Number + 1;
+            bool hasRolledOver = false;
+            if (!Enum.IsDefined(typeof(ClockNumbers), newNumber) || newNumber > _upperLimit)
             {
-                n = _lower_limit;
-                roll_over = true;
+                newNumber = _lowerLimit;
+                hasRolledOver = true;
             }
-            var changed_args = new ClockNumberChangedArgs()
+            var changedArgs = new ClockNumberChangedArgs()
             {
                 Clock = this,
                 OldValue = Number,
-                NewValue = n,
+                NewValue = newNumber,
                 ValueDelta = 1,
-                RolledOver = roll_over
+                RolledOver = hasRolledOver
             };
-            NumberModified?.Invoke(changed_args);
-            if (roll_over) NumberRollOver?.Invoke(changed_args);
+            NumberModified?.Invoke(changedArgs);
+            if (hasRolledOver) NumberRollOver?.Invoke(changedArgs);
         }
-        public void DecrementNum()
+        public void DecrementNumber()
         {
-            var n = Number - 1;
-            if (!Enum.IsDefined(typeof(ClockNumbers), n) || n < _lower_limit)
+            var newNumber = Number - 1;
+            if (!Enum.IsDefined(typeof(ClockNumbers), newNumber) || newNumber < _lowerLimit)
             {
-                n = _upper_limit;
+                newNumber = _upperLimit;
             }
             var changed_args = new ClockNumberChangedArgs()
             {
                 Clock = this,
                 OldValue = Number,
-                NewValue = n,
+                NewValue = newNumber,
                 ValueDelta = -1,
                 RolledOver = false
             };
             NumberModified?.Invoke(changed_args);
         }
 
-        private void incBtn_Click(object sender, RoutedEventArgs e)
+        private void incrementButtonClicked(object sender, RoutedEventArgs e)
         {
-            IncrementNum();
+            IncrementNumber();
         }
 
-        private void decBtn_Click(object sender, RoutedEventArgs e)
+        private void decrementButtonClicked(object sender, RoutedEventArgs e)
         {
-            DecrementNum();
+            DecrementNumber();
         }
 
-        private void numGrid_MouseEnter(object sender, MouseEventArgs e)
+        private void numberGridMouseEnter(object sender, MouseEventArgs e)
         {
-            if (_is_modifiable)
+            if (_isModifiable)
             {
                 incBtn.Visibility = Visibility.Visible;
                 decBtn.Visibility = Visibility.Visible;
             }
         }
 
-        private void numGrid_MouseLeave(object sender, MouseEventArgs e)
+        private void numberGridMouseLeave(object sender, MouseEventArgs e)
         {
-            if (_is_modifiable)
+            if (_isModifiable)
             {
                 incBtn.Visibility = Visibility.Hidden;
                 decBtn.Visibility = Visibility.Hidden;

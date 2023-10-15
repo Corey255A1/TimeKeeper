@@ -17,7 +17,7 @@ namespace TimeKeeper
         private void NotifyChange(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
         //For filtering out non positive integer characters
-        private readonly Regex _integer_regex = new Regex("[^0-9]+");
+        private readonly Regex _integerRegex = new Regex("[^0-9]+");
 
         public MutableTime Time
         {
@@ -36,22 +36,22 @@ namespace TimeKeeper
         }
 
         //Filter out non integer entries
-        private void numsOnly_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void numbersOnlyPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            if (_integer_regex.IsMatch(e.Text))
+            if (_integerRegex.IsMatch(e.Text))
             {
                 e.Handled = true;
             }
         }
 
         //Apply the time modifications when the Enter key is pressed
-        private void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void TextBoxPreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
                 var textbox = sender as TextBox;
-                DependencyProperty prop = TextBox.TextProperty;
-                BindingExpression binding = BindingOperations.GetBindingExpression(textbox, prop);
+                DependencyProperty property = TextBox.TextProperty;
+                BindingExpression binding = BindingOperations.GetBindingExpression(textbox, property);
                 if (binding != null)
                     binding.UpdateSource();
             }

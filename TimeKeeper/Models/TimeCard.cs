@@ -10,27 +10,28 @@ namespace TimeKeeper.Models
 {
     public class TimeCard
     {
-        private string _charge_number_file_path;
-        private ObservableCollection<ChargeCodeTimer> _charge_codes = new ObservableCollection<ChargeCodeTimer>();
+        private string _chargeNumberFilePath;
+
+        private ObservableCollection<ChargeCodeTimer> _chargeCodes = new ObservableCollection<ChargeCodeTimer>();
         public ObservableCollection<ChargeCodeTimer> ChargeCodes
         {
-            get => _charge_codes;
+            get => _chargeCodes;
         }
 
         public TimeCard(string initial_load_path)
         {
-            _charge_number_file_path = initial_load_path;
+            _chargeNumberFilePath = initial_load_path;
             Initialize();
         }
         public void Initialize()
         {
-            if (File.Exists(_charge_number_file_path))
+            if (File.Exists(_chargeNumberFilePath))
             {
-                var ccf = ChargeCodeFile.ReadFile(_charge_number_file_path);
-                _charge_codes.Clear();
+                var ccf = ChargeCodeFile.ReadFile(_chargeNumberFilePath);
+                _chargeCodes.Clear();
                 foreach (var ccode in ccf.ChargeCode)
                 {
-                    _charge_codes.Add(new ChargeCodeTimer(ccode.Code, ccode.Description));
+                    _chargeCodes.Add(new ChargeCodeTimer(ccode.Code, ccode.Description));
                 }
             }
         }
@@ -38,58 +39,58 @@ namespace TimeKeeper.Models
 
         public void AddNewChargeCode()
         {
-            _charge_codes.Add(new ChargeCodeTimer("NEWCODE", ""));
+            _chargeCodes.Add(new ChargeCodeTimer("NEWCODE", ""));
         }
-        public void RemoveChargeCode(ChargeCodeTimer charge_code)
+        public void RemoveChargeCode(ChargeCodeTimer chargeCode)
         {
-            _charge_codes.Remove(charge_code);
+            _chargeCodes.Remove(chargeCode);
         }
 
         public void Reset()
         {
-            foreach (var charge_code in _charge_codes)
+            foreach (var chargeCode in _chargeCodes)
             {
-                charge_code.Time.Clear();
+                chargeCode.Time.Clear();
             }
         }
 
 
         public void Load(string path)
         {
-            _charge_number_file_path = path;
+            _chargeNumberFilePath = path;
             Initialize();
         }
 
         public void Save(string path)
         {
-            var charge_code_file = new ChargeCodeFile();
-            foreach (var timer in _charge_codes)
+            var chargeCodeFile = new ChargeCodeFile();
+            foreach (var chargeCodeTimer in _chargeCodes)
             {
-                charge_code_file.ChargeCode.Add(new ChargeCode()
+                chargeCodeFile.ChargeCode.Add(new ChargeCode()
                 {
-                    Code = timer.Code,
-                    Description = timer.Description
+                    Code = chargeCodeTimer.Code,
+                    Description = chargeCodeTimer.Description
                 });
             }
-            charge_code_file.WriteFile(path);
+            chargeCodeFile.WriteFile(path);
         }
 
         public void WriteCSV(string path)
         {
-            var time_dict = new Dictionary<string, ChargeCodeTimer>();
-            foreach (var timer in _charge_codes)
+            var chargeCodeTimerDict = new Dictionary<string, ChargeCodeTimer>();
+            foreach (var timer in _chargeCodes)
             {
                 if (timer.Code != null)
                 {
-                    if (!time_dict.ContainsKey(timer.Code))
+                    if (!chargeCodeTimerDict.ContainsKey(timer.Code))
                     {
-                        time_dict.Add(timer.Code, timer);
+                        chargeCodeTimerDict.Add(timer.Code, timer);
                     }
                 }
 
             }
-            DateTime current_time = DateTime.Now;
-            string todays_column = current_time.ToShortDateString();
+            DateTime currentTime = DateTime.Now;
+            string todayColumn = currentTime.ToShortDateString();
             CSCSV.Table table = null;
             if (File.Exists(path))
             {
@@ -99,34 +100,36 @@ namespace TimeKeeper.Models
             {
                 table = new CSCSV.Table();
             }
+
             if (!table.ContainsHeader("Charge Codes"))
             {
                 table.AddColumn("Charge Codes");
             }
+
             //If this table doesn't have a column for today, add one
-            if (!table.ContainsHeader(todays_column))
+            if (!table.ContainsHeader(todayColumn))
             {
-                table.AddColumn(todays_column);
+                table.AddColumn(todayColumn);
             }
-            List<string> chargecodes = table.GetColumn("Charge Codes").ToList();
-            foreach (string code in time_dict.Keys)
+
+            List<string> chargeCodes = table.GetColumn("Charge Codes").ToList();
+            foreach (string code in chargeCodeTimerDict.Keys)
             {
-                int idx = chargecodes.IndexOf(code);
+                int chargeCodeIdx = chargeCodes.IndexOf(code);
                 //If the code is already in the list, set the time.
-                if (idx >= 0)
+                if (chargeCodeIdx >= 0)
                 {
-                    table.SetValue(todays_column, idx, time_dict[code].Time.ToTimeSpan().ToString());
+                    table.SetValue(todayColumn, chargeCodeIdx, chargeCodeTimerDict[code].Time.ToTimeSpan().ToString());
                 }
                 else // We will have to add the code..
                 {
-                    int row_idx = table.AddRow();
-                    table.SetValue("Charge Codes", row_idx, code);
-                    table.SetValue(todays_column, row_idx, time_dict[code].Time.ToTimeSpan().ToString());
+                    int rowIdx = table.AddRow();
+                    table.SetValue("Charge Codes", rowIdx, code);
+                    table.SetValue(todayColumn, rowIdx, chargeCodeTimerDict[code].Time.ToTimeSpan().ToString());
                 }
             }
             table.WriteToFile(path);
         }
-
 
     }
 }

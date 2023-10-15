@@ -30,21 +30,21 @@ namespace TimeKeeper
 
         public static ChargeCodeFile ReadFile(string filename)
         {
-            XmlSerializer xs = new XmlSerializer(typeof(ChargeCodeFile));
+            XmlSerializer serializer = new XmlSerializer(typeof(ChargeCodeFile));
             using (var reader = new StreamReader(filename))
             {
-                var ccf = (ChargeCodeFile)xs.Deserialize(reader);
+                var chargeCodeFile = (ChargeCodeFile)serializer.Deserialize(reader);
 
-                return ccf;
+                return chargeCodeFile;
             }
 
         }
         public void WriteFile(string filename)
         {
-            XmlSerializer xs = new XmlSerializer(typeof(ChargeCodeFile));
+            XmlSerializer serializer = new XmlSerializer(typeof(ChargeCodeFile));
             using (var writer = new StreamWriter(filename))
             {
-                xs.Serialize(writer, this);
+                serializer.Serialize(writer, this);
             }
 
         }

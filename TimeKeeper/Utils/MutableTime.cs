@@ -53,17 +53,18 @@ namespace TimeKeeper
             get => Hours > 11;
         }
 
-        private bool _is_clock = false;
+        //Whether or not this should be a Clock 12/24(AM/PM) or act as a Timer
+        private bool _isClock = false;
         public bool IsClock
         {
-            get => _is_clock;
-            set { _is_clock = value; NotifyChange(nameof(IsClock)); }
+            get => _isClock;
+            set { _isClock = value; NotifyChange(nameof(IsClock)); }
         }
 
         public static MutableTime FromDateTime(DateTime time) => new MutableTime(time);
-        public static MutableTime FromDateTimeSpan(TimeSpan time_span) => new MutableTime(time_span);
+        public static MutableTime FromDateTimeSpan(TimeSpan timeSpan) => new MutableTime(timeSpan);
         public static implicit operator MutableTime(DateTime time) => MutableTime.FromDateTime(time);
-        public static implicit operator MutableTime(TimeSpan time_span) => MutableTime.FromDateTimeSpan(time_span);
+        public static implicit operator MutableTime(TimeSpan timeSpan) => MutableTime.FromDateTimeSpan(timeSpan);
 
         public static MutableTime AddTimes(MutableTime a, MutableTime b) => new MutableTime(a.ToTimeSpan() + b.ToTimeSpan());
         public static MutableTime SubtractTimes(MutableTime a, MutableTime b) => new MutableTime(a.ToTimeSpan() - b.ToTimeSpan());
@@ -78,9 +79,9 @@ namespace TimeKeeper
             Minutes = minutes;
             Hours = hours;
         }
-        public MutableTime(TimeSpan time_span)
+        public MutableTime(TimeSpan timeSpan)
         {
-            SetTimeSpan(time_span);
+            SetTimeSpan(timeSpan);
         }
         public MutableTime(DateTime time)
         {
@@ -112,24 +113,24 @@ namespace TimeKeeper
             IsClock = true;
         }
 
-        public void AddTime(MutableTime mut_time)
+        public void AddTime(MutableTime mutableTime)
         {
-            IncrementTime(mut_time.ToTimeSpan());
+            IncrementTime(mutableTime.ToTimeSpan());
         }
-        public void SubtractTime(MutableTime mut_time)
+        public void SubtractTime(MutableTime mutableTime)
         {
-            DecrementTime(mut_time.ToTimeSpan());
+            DecrementTime(mutableTime.ToTimeSpan());
         }
 
-        public void IncrementTime(TimeSpan time_span)
+        public void IncrementTime(TimeSpan timeSpan)
         {
-            var new_time = ToTimeSpan() + time_span;
-            SetTimeSpan(new_time);
+            var newTimeSpan = ToTimeSpan() + timeSpan;
+            SetTimeSpan(newTimeSpan);
         }
-        public void DecrementTime(TimeSpan time_span)
+        public void DecrementTime(TimeSpan timeSpan)
         {
-            var new_time = ToTimeSpan() - time_span;
-            SetTimeSpan(new_time);
+            var newTimeSpan = ToTimeSpan() - timeSpan;
+            SetTimeSpan(newTimeSpan);
         }
 
 

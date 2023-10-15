@@ -2,8 +2,9 @@
 //Ties together the active charge numbers and the current timers
 using System;
 using System.ComponentModel;
+using System.Windows.Input;
 using System.Windows.Threading;
-
+using TimeKeeper.Utils;
 namespace TimeKeeper.Models
 {
     public class TimeCardController : INotifyPropertyChanged
@@ -11,145 +12,167 @@ namespace TimeKeeper.Models
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyChange(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
-        private TimeCard _time_card;
+        private TimeCard _timeCard;
         public TimeCard TimeCard
         {
-            get => _time_card;
+            get => _timeCard;
             set
             {
-                _time_card = value;
+                _timeCard = value;
                 NotifyChange(nameof(TimeCard));
             }
         }
 
-        private TimeTicker _time_ticker = new TimeTicker();
+        public ICommand SetTimeCommand { get; set; }
+        public ICommand PauseTimerCommand { get; set; }
+        public ICommand ResetTimerCommand { get; set; }
+
+        private TimeTicker _timeTicker = new TimeTicker();
         public TimeTicker TimeTicker
         {
-            get => _time_ticker;
+            get => _timeTicker;
         }
 
-        private ChargeCodeTimer _currently_working;
+        private ChargeCodeTimer _currentlyWorkingChargeCode;
         public ChargeCodeTimer CurrentlyWorkingChargeCode
         {
-            get => _currently_working;
+            get => _currentlyWorkingChargeCode;
             set
             {
-                if (_currently_working != null)
+                if (_currentlyWorkingChargeCode != null)
                 {
-                    _currently_working.Active = false;
+                    _currentlyWorkingChargeCode.Active = false;
                 }
-                _currently_working = value;
-                if (_currently_working != null)
+                _currentlyWorkingChargeCode = value;
+                if (_currentlyWorkingChargeCode != null)
                 {
-                    _currently_working.Active = true;
+                    _currentlyWorkingChargeCode.Active = true;
                 }
                 NotifyChange(nameof(CurrentlyWorkingChargeCode));
             }
         }
 
-        private bool _work_timer_running = false;
-        public bool WorkTimerRunning
+        private bool _isWorkTimerRunning = false;
+        public bool IsWorkTimerRunning
         {
-            get => _work_timer_running;
+            get => _isWorkTimerRunning;
             set
             {
-                _work_timer_running = value;
-                NotifyChange(nameof(WorkTimerRunning));
+                _isWorkTimerRunning = value;
+                NotifyChange(nameof(IsWorkTimerRunning));
             }
         }
 
-        private DateTime _start_datetime = new DateTime();
+        private DateTime _startDateTime = new DateTime();
         public DateTime StartDateTime
         {
-            get => _start_datetime;
+            get => _startDateTime;
             set
             {
-                _start_datetime = value;
+                _startDateTime = value;
                 NotifyChange(nameof(StartDateTime));
                 NotifyChange(nameof(StartTime));
             }
         }
         public MutableTime StartTime
         {
-            get => new MutableTime(_start_datetime);
+            get => new MutableTime(_startDateTime);
         }
 
-        private DateTime _current_datetime = DateTime.Now;
+        private DateTime _currentDateTime = DateTime.Now;
         public DateTime CurrentDateTime
         {
-            get => _current_datetime;
+            get => _currentDateTime;
             set
             {
-                _current_datetime = value;
+                _currentDateTime = value;
                 NotifyChange(nameof(CurrentDateTime));
                 NotifyChange(nameof(CurrentTime));
             }
         }
         public MutableTime CurrentTime
         {
-            get => new MutableTime(_current_datetime);
+            get => new MutableTime(_currentDateTime);
         }
 
         public MutableTime DeltaTime
         {
-            get => _current_datetime - _start_datetime;
+            get => _currentDateTime - _startDateTime;
         }
 
         public MutableTime TotalWorkTime
         {
             get
             {
-                var time_span = new MutableTime();
-                foreach (var charge_code in _time_card.ChargeCodes)
+                var mutableTimeSpan = new MutableTime();
+                foreach (var chargeCode in _timeCard.ChargeCodes)
                 {
-                    time_span += charge_code.Time;
+                    mutableTimeSpan += chargeCode.Time;
                 }
-                return time_span;
+                return mutableTimeSpan;
             }
         }
 
         private Dispatcher _dispatcher;
-        public TimeCardController(Dispatcher dispatcher, string initial_load_path)
+        public TimeCardController(Dispatcher dispatcher, string initialLoadPath)
         {
-            TimeCard = new TimeCard(initial_load_path);
+            TimeCard = new TimeCard(initialLoadPath);
             _dispatcher = dispatcher;
-            _time_ticker.TickEvent += _time_ticker_TickEvent;
+            _timeTicker.TickEvent += TimeTickerTickEvent;
+
+
+            SetTimeCommand = new GenericCommand(SetTime);
+            PauseTimerCommand = new GenericCommand(PauseTimer);
+            ResetTimerCommand = new GenericCommand(Reset);
         }
 
-        private void _time_ticker_TickEvent(DateTime time, TimeSpan elapsed)
+        private void TimeTickerTickEvent(DateTime time, TimeSpan elapsed)
         {
             _dispatcher.Invoke(() =>
             {
                 CurrentDateTime = time;
-                if (WorkTimerRunning) CurrentlyWorkingChargeCode?.Time.IncrementTime(elapsed);
+                if (IsWorkTimerRunning) CurrentlyWorkingChargeCode?.Time.IncrementTime(elapsed);
                 NotifyChange(nameof(DeltaTime));
                 NotifyChange(nameof(TotalWorkTime));
             });
         }
 
+
+        public void SetTime()
+        {
+            var timeNow = DateTime.Now;
+            StartDateTime = new DateTime(timeNow.Year, timeNow.Month, timeNow.Day, timeNow.Hour, timeNow.Minute, timeNow.Second); //truncate off any milliseconds
+        }
+
+        public void PauseTimer()
+        {
+            IsWorkTimerRunning = false;
+        }
+
         public void Reset()
         {
-            _time_card.Reset();
+            _timeCard.Reset();
             NotifyChange(nameof(TotalWorkTime));
         }
 
         public void AddNewChargeCode()
         {
-            _time_card.AddNewChargeCode();
-        }
-        public void RemoveChargeCode(ChargeCodeTimer charge_code)
-        {
-            _time_card.RemoveChargeCode(charge_code);
+            _timeCard.AddNewChargeCode();
         }
 
-        public void WorkOnChargeCode(ChargeCodeTimer charge_code)
+        public void RemoveChargeCode(ChargeCodeTimer chargeCode)
         {
-            CurrentlyWorkingChargeCode = charge_code;
+            _timeCard.RemoveChargeCode(chargeCode);
+        }
+
+        public void WorkOnChargeCode(ChargeCodeTimer chargeCode)
+        {
+            CurrentlyWorkingChargeCode = chargeCode;
         }
 
         public void AdjustStartTime(int hour, int minute, int second)
         {
-            StartDateTime = new DateTime(_start_datetime.Year, _start_datetime.Month, _start_datetime.Day, hour, minute, second);
+            StartDateTime = new DateTime(_startDateTime.Year, _startDateTime.Month, _startDateTime.Day, hour, minute, second);
         }
     }
 }

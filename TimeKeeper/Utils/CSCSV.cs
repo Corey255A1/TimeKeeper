@@ -10,157 +10,177 @@ namespace CSCSV
     {
         //Key off header
         private Dictionary<string, List<string>> _table = new Dictionary<string, List<string>>();
-        private List<string> _header_list = new List<string>();
-        private int _row_count = 0;
-        public int RowCount { get => _row_count; }
+        public int RowCount
+        {
+            get
+            {
+                if (_table.Count == 0)
+                {
+                    return 0;
+                }
+
+                return _table.Values.Take(1).Count();
+            }
+        }
+
         public int ColumnCount { get => _table.Keys.Count; }
+
+        public IEnumerable<string> Headers => _table.Keys;
         public bool HasHeader { get; private set; } = true;
+
         private char _separator = ',';
         public char Separator { get => _separator; }
-        public Table(bool has_header = true, char separator = ',')
+
+        public Table(bool hasHeader = true, char separator = ',')
         {
-            HasHeader = has_header;
+            HasHeader = hasHeader;
             _separator = separator;
         }
 
         public void AddColumn(string header)
         {
-            var column = new List<string>(_row_count);
+            int rowCount = RowCount;
+            var column = new List<string>(rowCount);
             //Fill in each row of the new column with an empty string
-            for (int r = 0; r < _row_count; r++) { column.Add(""); }
-            _table.Add(header, column);
-            _header_list.Add(header);
-        }
-        public int AddRow(int count = 1)
-        {
-            if (count > 0)
+            for (int rowIdx = 0; rowIdx < rowCount; rowIdx++)
             {
-                foreach (List<string> column in _table.Values)
-                {
-                    for (int c = 0; c < count; c++) { column.Add(""); }
-                }
-                _row_count += count;
-                //return the row index added
-                return _row_count - 1;
+                column.Add("");
             }
-            return -1;
+            _table.Add(header, column);
         }
-
-
-
-        public IEnumerable<string> Headers()
+        public int AddRow(int numberOfRowsToAdd = 1)
         {
-            return _header_list.AsEnumerable();
+            if (numberOfRowsToAdd < 0)
+            {
+                return -1;
+            }
+
+            foreach (List<string> column in _table.Values)
+            {
+                for (int rowAddIdx = 0; rowAddIdx < numberOfRowsToAdd; rowAddIdx++)
+                {
+                    column.Add("");
+                }
+            }
+            return RowCount;
         }
+
         public bool ContainsHeader(string header)
         {
             return _table.ContainsKey(header);
         }
         public List<string> GetColumn(string header)
         {
-            if (_table.ContainsKey(header))
+            if (!_table.ContainsKey(header))
             {
-                return _table[header];
+                return null;
             }
-            return null;
+            return _table[header];
         }
 
-        public bool SetValue(int column_idx, int row_idx, string value)
+        public bool SetValue(int columnIdx, int rowIdx, string value)
         {
-            if (_header_list.Count > column_idx)
+            if (columnIdx < 0 || columnIdx >= ColumnCount)
             {
-                var header = _header_list[column_idx];
-                return SetValue(header, row_idx, value);
+                return false;
             }
-            return false;
 
+            var header = Headers.ElementAt(columnIdx);
+            return SetValue(header, rowIdx, value);
         }
-        public bool SetValue(string header, int row_idx, string value)
+        public bool SetValue(string header, int rowIdx, string value)
         {
-            if (_table[header].Count > row_idx)
+            if (rowIdx >= _table[header].Count)
             {
-                _table[header][row_idx] = value;
-                return true;
+                return false;
             }
-            return false;
+
+            _table[header][rowIdx] = value;
+            return true;
         }
-        public string GetValue(string header, int row_idx)
+        public string GetValue(string header, int rowIdx)
         {
-            if (_table.ContainsKey(header))
+            if (!_table.ContainsKey(header))
             {
-                if (_table[header].Count > row_idx)
-                {
-                    return _table[header][row_idx];
-                }
+                return null;
             }
-            return null;
+            if (rowIdx >= _table[header].Count)
+            {
+                return null;
+            }
+
+            return _table[header][rowIdx];
         }
 
         public void WriteToFile(string filename)
         {
             string output = "";
+            var headerList = Headers.ToList();
             if (HasHeader)
             {
-                int h = 0;
-                for (; h < _header_list.Count - 1; ++h)
+                int headerIdx = 0;
+                for (; headerIdx < headerList.Count - 1; ++headerIdx)
                 {
-                    output += _header_list[h] + Separator;
+                    output += headerList[headerIdx] + Separator;
                 }
-                output += _header_list[h] + "\n";
+                output += headerList[headerIdx] + "\n";
             }
-            for (int r = 0; r < _row_count; ++r)
+            for (int rowIdx = 0; rowIdx < RowCount; ++rowIdx)
             {
-                int h = 0;
-                for (; h < _header_list.Count - 1; ++h)
+                int headerIdx = 0;
+                for (; headerIdx < headerList.Count - 1; ++headerIdx)
                 {
-                    output += _table[_header_list[h]][r] + Separator;
+                    output += _table[headerList[headerIdx]][rowIdx] + Separator;
                 }
-                output += _table[_header_list[h]][r] + "\n";
+                output += _table[headerList[headerIdx]][rowIdx] + "\n";
             }
             File.WriteAllText(filename, output);
         }
 
-        public static Table ReadFromFile(string filename, bool has_header = true, char seperator = ',')
+        public static Table ReadFromFile(string filename, bool hasHeader = true, char valueSeparator = ',')
         {
-            var table = new Table(has_header, seperator);
+            var table = new Table(hasHeader, valueSeparator);
             string[] lines = File.ReadAllText(filename).Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            int line_index = 0;
-            if (lines.Length > 0)
+            int lineIdx = 0;
+            if (lines.Length <= 0)
             {
-                string[] header_line = lines[0].Split(seperator);
-                if (table.HasHeader)
+                return table;
+            }
+
+            string[] headerLine = lines[0].Split(valueSeparator);
+            if (table.HasHeader)
+            {
+                //If we have a header, use the strings as the header text
+                foreach (string header in headerLine)
                 {
-                    //If we have a header, use the strings as the header text
-                    foreach (string header in header_line)
-                    {
-                        table.AddColumn(header.Trim());
-                    }
-                    //Don't add this row to our data rows
-                    line_index++;
+                    table.AddColumn(header.Trim());
                 }
-                else
+                //Don't add this row to our data rows
+                lineIdx++;
+            }
+            else
+            {
+                //else add generic numbers for the columns
+                for (int i = 0; i < headerLine.Length; ++i)
                 {
-                    //else add generic numbers for the columns
-                    for (int i = 0; i < header_line.Length; ++i)
-                    {
-                        table.AddColumn(i.ToString());
-                    }
+                    table.AddColumn(i.ToString());
                 }
-                int column_count = table.ColumnCount;
-                for (; line_index < lines.Length; ++line_index)
+            }
+            int columnCount = table.ColumnCount;
+            for (; lineIdx < lines.Length; ++lineIdx)
+            {
+                string[] separatedValues = lines[lineIdx].Split(valueSeparator);
+                //Only add rows that have the right amount of columns
+                if (separatedValues.Length == columnCount)
                 {
-                    string[] vals = lines[line_index].Split(seperator);
-                    //Only add rows that have the right amount of columns
-                    if (vals.Length == column_count)
+                    int rowIdx = table.AddRow();
+                    for (int c = 0; c < columnCount; ++c)
                     {
-                        int row_idx = table.AddRow();
-                        for (int c = 0; c < column_count; ++c)
-                        {
-                            table.SetValue(c, row_idx, vals[c]);
-                        }
+                        table.SetValue(c, rowIdx, separatedValues[c]);
                     }
                 }
             }
+
             return table;
         }
     }

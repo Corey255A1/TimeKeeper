@@ -42,12 +42,12 @@ namespace TimeKeeper
             return new TimeSpan();
         }
 
-        private void workOnBtn_Click(object sender, RoutedEventArgs e)
+        private void WorkOnBtnClick(object sender, RoutedEventArgs e)
         {
             WorkOn?.Invoke(this, null);
         }
 
-        private void removeBtn_Click(object sender, RoutedEventArgs e)
+        private void RemoveBtnClick(object sender, RoutedEventArgs e)
         {
             Remove?.Invoke(this, null);
         }

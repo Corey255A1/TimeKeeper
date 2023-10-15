@@ -42,7 +42,7 @@
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="START TIME" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Segoe UI Black" FontSize="16"/>
             <local:Clock Grid.Column="1" Time="{Binding Controller.StartTime, ElementName=mainWindow}" ClockModified="StartTimerModified" NumberColor="Green" x:Name="startTimeClk" IsAClock="True" Height="Auto"/>
-            <Button Grid.Column="2" Content="SET" Style="{StaticResource GreenButton}" Click="StartTimer_Clicked"/>
+            <Button Grid.Column="2" Content="SET" Style="{StaticResource GreenButton}" Command="{Binding SetTimeCommand}"/>
         </Grid>
         <Grid Grid.Row="2" Height="50">
             <Grid.ColumnDefinitions>
@@ -63,8 +63,8 @@
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="CHARGED" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Segoe UI Black" FontSize="16"/>
             <local:Clock Margin="2" HorizontalAlignment="Stretch" Time="{Binding Controller.TotalWorkTime, ElementName=mainWindow}" Grid.Column="1" NumberColor="DarkGreen" x:Name="chargedTimeClk" Height="Auto" IsAClock="False"  IsModifiable="False"/>
-            <Button Grid.Column="2" Content="PAUSE"  Style="{StaticResource YellowButton}"  Click="PauseTimers_Clicked"/>
-            <Button Grid.Column="3" Content="RESET"  Style="{StaticResource OrangeButton}" Click="ResetTimers_Clicked"/>
+            <Button Grid.Column="2" Content="PAUSE"  Style="{StaticResource YellowButton}"  Command="{Binding PauseTimerCommand}"/>
+            <Button Grid.Column="3" Content="RESET"  Style="{StaticResource OrangeButton}" Command="{Binding ResetTimerCommand}"/>
 
         </Grid>
         <Grid Grid.Row="4" Margin="5">
@@ -75,7 +75,7 @@
             <ListView  ItemsSource="{Binding TimeCard.ChargeCodes}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <local:TimerElement Remove="TimerElement_Remove" WorkOn="TimerElement_WorkOn"></local:TimerElement>
+                        <local:TimerElement Remove="TimerElementRemove" WorkOn="TimerElement_WorkOn"></local:TimerElement>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

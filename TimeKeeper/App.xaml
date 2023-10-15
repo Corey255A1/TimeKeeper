@@ -56,7 +56,7 @@
             <Setter Property="Foreground" Value="Black"/>
         </Style>
         <Style TargetType="Button" BasedOn="{StaticResource ShadowButton}" x:Key="BlueButton">
-            <Setter Property="Background" Value="AliceBlue"/>
+            <Setter Property="Background" Value="LightBlue"/>
             <Setter Property="Foreground" Value="Black"/>
         </Style>
         <Style TargetType="Button" BasedOn="{StaticResource ShadowButton}" x:Key="RedButton">

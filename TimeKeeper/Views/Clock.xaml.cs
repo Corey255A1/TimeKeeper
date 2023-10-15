@@ -21,27 +21,28 @@ namespace TimeKeeper
         private void NotifyChange(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
         public event ClockModifiedEvent ClockModified;
-        private bool _is_clock_type = true;
+
+        private bool _isAClock = true;
 
         [Description("Timer or Clock?"), Category("Clock Data")]
         public bool IsAClock
         {
             get
             {
-                return _is_clock_type;
+                return _isAClock;
             }
             set
             {
-                _is_clock_type = value;
-                if (!_is_clock_type)
+                _isAClock = value;
+                if (!_isAClock)
                 {
-                    apCol.Width = new GridLength(0);
-                    mCol.Width = new GridLength(0);
+                    letterAorPColumn.Width = new GridLength(0);
+                    letterMColumn.Width = new GridLength(0);
                 }
                 else
                 {
-                    apCol.Width = new GridLength(20, GridUnitType.Star);
-                    mCol.Width = new GridLength(20, GridUnitType.Star);
+                    letterAorPColumn.Width = new GridLength(20, GridUnitType.Star);
+                    letterMColumn.Width = new GridLength(20, GridUnitType.Star);
                 }
                 NotifyChange(nameof(IsAClock));
             }
@@ -66,7 +67,7 @@ namespace TimeKeeper
             set
             {
                 _is_modifiable = value;
-                _clock_number_list.ForEach((t) => t.IsModifiable = _is_modifiable);
+                _clockNumberList.ForEach((t) => t.IsModifiable = _is_modifiable);
             }
         }
 
@@ -84,27 +85,27 @@ namespace TimeKeeper
 
 
 
-        private List<ClockNum> _clock_number_list;
+        private List<ClockNum> _clockNumberList;
         public Clock()
         {
             DataContext = this;
             InitializeComponent();
 
             //Make a list of the modifiable elements
-            _clock_number_list = new List<ClockNum>()
+            _clockNumberList = new List<ClockNum>()
             {
                 hour1Clk,hour2Clk,minute1Clk,minute2Clk,second1Clk,second2Clk,apClk
             };
 
-            foreach (var cn in _clock_number_list)
+            foreach (var clockNumber in _clockNumberList)
             {
-                cn.NumberModified += ClockChanged;
+                clockNumber.NumberModified += ClockChanged;
             }
         }
 
-        private int CompareAndGetClockNumChange(ClockNum ctrl, ClockNum changed_ctrl, ClockNumbers changed_value, int current)
+        private int CompareAndGetClockNumChange(ClockNum control, ClockNum controlThatChanged, ClockNumbers changedValue, int current)
         {
-            return ctrl == changed_ctrl ? (int)changed_value : current;
+            return control == controlThatChanged ? (int)changedValue : current;
         }
 
         private int CombineDigits(int digit1, int digit2)
@@ -112,34 +113,34 @@ namespace TimeKeeper
             return digit1 * 10 + digit2;
         }
 
-        private void ClockChanged(ClockNumberChangedArgs changed_args)
+        private void ClockChanged(ClockNumberChangedArgs changedArgs)
         {
-            MutableTime new_time;
-            MutableTime curr_time = Time;
-            if (changed_args.Clock.ClockSection == ClockSections.AMPM)
+            MutableTime newTime;
+            MutableTime currentTime = Time;
+            if (changedArgs.Clock.ClockSection == ClockSections.AMPM)
             {
                 //Modifying the AMPM is just cycling by 12 hours
-                new_time = new MutableTime((Time.Hours + 12) % 24, Time.Minutes, Time.Seconds);
+                newTime = new MutableTime((Time.Hours + 12) % 24, Time.Minutes, Time.Seconds);
             }
             else
             {
                 ClockDigitizer digitizer = new ClockDigitizer(Time);
-                switch (changed_args.Clock.ClockSection)
+                switch (changedArgs.Clock.ClockSection)
                 {
-                    case ClockSections.HourL: digitizer.HourLeft.Number += changed_args.ValueDelta; break;
-                    case ClockSections.HourR: digitizer.HourRight.Number += changed_args.ValueDelta; break;
-                    case ClockSections.MinuteL: digitizer.MinuteLeft.Number += changed_args.ValueDelta; break;
-                    case ClockSections.MinuteR: digitizer.MinuteRight.Number += changed_args.ValueDelta; break;
-                    case ClockSections.SecondL: digitizer.SecondLeft.Number += changed_args.ValueDelta; break;
-                    case ClockSections.SecondR: digitizer.SecondRight.Number += changed_args.ValueDelta; break;
+                    case ClockSections.HourL: digitizer.HourLeft.Number += changedArgs.ValueDelta; break;
+                    case ClockSections.HourR: digitizer.HourRight.Number += changedArgs.ValueDelta; break;
+                    case ClockSections.MinuteL: digitizer.MinuteLeft.Number += changedArgs.ValueDelta; break;
+                    case ClockSections.MinuteR: digitizer.MinuteRight.Number += changedArgs.ValueDelta; break;
+                    case ClockSections.SecondL: digitizer.SecondLeft.Number += changedArgs.ValueDelta; break;
+                    case ClockSections.SecondR: digitizer.SecondRight.Number += changedArgs.ValueDelta; break;
                 }
-                new_time = digitizer.GetTime();
+                newTime = digitizer.GetTime();
             }
             if (IsAClock)
             {
-                new_time.Hours = new_time.Hours % 24;
+                newTime.Hours = newTime.Hours % 24;
             }
-            ClockModified?.Invoke(new_time.Hours, new_time.Minutes, new_time.Seconds);
+            ClockModified?.Invoke(newTime.Hours, newTime.Minutes, newTime.Seconds);
 
         }
 
