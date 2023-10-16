@@ -24,27 +24,28 @@
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Height="50">
+        <Grid Grid.Row="0" Height="40" Margin="0 0 0 4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="145"/>
-                <ColumnDefinition Width="350"/>
+                <ColumnDefinition Width="326"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Rectangle Grid.Column="0" Grid.ColumnSpan="3" Fill="Black" Stroke="Black"/>
             <Label Grid.Column="0" Content="CURRENT TIME" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Segoe UI Black" FontSize="16" Foreground="White"/>
             <local:Clock Time="{Binding Controller.CurrentTime, ElementName=mainWindow}" Grid.Column="1" NumberColor="Red" x:Name="currentTimeClk" Background="{x:Null}" IsModifiable="False" Height="Auto"/>
         </Grid>
-        <Grid Grid.Row="1" Height="50">
+        <Grid Grid.Row="1" Height="40" Margin="0 4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="145"/>
-                <ColumnDefinition Width="350"/>
+                <ColumnDefinition Width="326"/>
+                <ColumnDefinition Width="24"/>
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Content="START TIME" HorizontalAlignment="Right" VerticalAlignment="Center" FontFamily="Segoe UI Black" FontSize="16"/>
             <local:Clock Grid.Column="1" Time="{Binding Controller.StartTime, ElementName=mainWindow}" ClockModified="StartTimerModified" NumberColor="Green" x:Name="startTimeClk" IsAClock="True" Height="Auto"/>
-            <Button Grid.Column="2" Content="SET" Style="{StaticResource GreenButton}" Command="{Binding SetTimeCommand}"/>
+            <Button Grid.Column="3" Content="SET" Style="{StaticResource GreenButton}" Command="{Binding SetTimeCommand}"/>
         </Grid>
-        <Grid Grid.Row="2" Height="50">
+        <Grid Grid.Row="2" Height="40" Margin="0 4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="145"/>
                 <ColumnDefinition Width="250"/>
@@ -54,7 +55,7 @@
             <local:Clock Margin="2" Time="{Binding Controller.DeltaTime, ElementName=mainWindow}" Grid.Column="1" NumberColor="Blue" x:Name="totalTimeClk" Height="Auto" IsAClock="False" IsModifiable="False"/>
         </Grid>
 
-        <Grid Grid.Row="3" Height="50">
+        <Grid Grid.Row="3" Height="40" Margin="0 4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="145"/>
                 <ColumnDefinition Width="250"/>
