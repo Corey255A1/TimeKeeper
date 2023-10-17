@@ -36,7 +36,7 @@ namespace TimeKeeper
         }
 
         //Filter out non integer entries
-        private void numbersOnlyPreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void NumbersOnlyPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             if (_integerRegex.IsMatch(e.Text))
             {

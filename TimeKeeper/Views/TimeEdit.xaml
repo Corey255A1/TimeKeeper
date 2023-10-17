@@ -4,11 +4,37 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TimeKeeper"
-             mc:Ignorable="d" Height="59" Width="181.333">
-    <Grid>
-        <TextBox HorizontalAlignment="Left" Height="53" TextWrapping="Wrap" Text="{Binding Time.Hours, StringFormat=D3}" VerticalAlignment="Top" Width="75" MaxLines="1" MaxLength="3" TabIndex="0" FontFamily="Segoe UI Black" FontSize="36" PreviewKeyDown="TextBoxPreviewKeyDown" PreviewTextInput="numbersOnlyPreviewTextInput" />
-        <TextBox HorizontalAlignment="Left" Height="53" TextWrapping="Wrap" Text="{Binding Time.Minutes, StringFormat=D2}" VerticalAlignment="Top" Width="52" MaxLines="1" MaxLength="2" TabIndex="0" FontFamily="Segoe UI Black" FontSize="36" Margin="75,0,0,0" PreviewKeyDown="TextBoxPreviewKeyDown" PreviewTextInput="numbersOnlyPreviewTextInput"/>
-        <TextBox HorizontalAlignment="Left" Height="53" TextWrapping="Wrap" Text="{Binding Time.Seconds, StringFormat=D2}" VerticalAlignment="Top" Width="52" MaxLines="1" MaxLength="2" TabIndex="0" FontFamily="Segoe UI Black" FontSize="36" Margin="127,0,0,0" PreviewKeyDown="TextBoxPreviewKeyDown" PreviewTextInput="numbersOnlyPreviewTextInput"/>
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Calibri"/>
+            <Setter Property="FontWeight" Value="ExtraBlack"/>
+            <Setter Property="FontSize" Value="38"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontFamily" Value="Calibri"/>
+            <Setter Property="FontWeight" Value="ExtraBlack"/>
+            <Setter Property="FontSize" Value="38"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3.5*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="2.5*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="2.5*"/>
+        </Grid.ColumnDefinitions>
+        <TextBox Grid.Column="0" Text="{Binding Time.Hours, StringFormat=D3, FallbackValue=999}" MaxLines="1" MaxLength="3" TabIndex="0"   PreviewKeyDown="TextBoxPreviewKeyDown" PreviewTextInput="NumbersOnlyPreviewTextInput" />
+        <TextBlock Grid.Column="1">:</TextBlock>
+        <TextBox Grid.Column="2" Text="{Binding Time.Minutes, StringFormat=D2, FallbackValue=00}" MaxLines="1" MaxLength="2" TabIndex="1" PreviewKeyDown="TextBoxPreviewKeyDown" PreviewTextInput="NumbersOnlyPreviewTextInput"/>
+        <TextBlock Grid.Column="3">:</TextBlock>
+        <TextBox Grid.Column="4" Text="{Binding Time.Seconds, StringFormat=D2, FallbackValue=00}" MaxLines="1" MaxLength="2" TabIndex="2" PreviewKeyDown="TextBoxPreviewKeyDown" PreviewTextInput="NumbersOnlyPreviewTextInput"/>
 
     </Grid>
 </UserControl>
