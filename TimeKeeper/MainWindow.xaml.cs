@@ -32,7 +32,7 @@ namespace TimeKeeper
             _controller.RemoveChargeCode((sender as FrameworkElement).DataContext as ChargeCodeTimer);
         }
 
-        private void TimerElement_WorkOn(object sender, EventArgs e)
+        private void TimerElementWorkOn(object sender, EventArgs e)
         {
             _controller.WorkOnChargeCode((sender as FrameworkElement).DataContext as ChargeCodeTimer);
             _controller.IsWorkTimerRunning = true;

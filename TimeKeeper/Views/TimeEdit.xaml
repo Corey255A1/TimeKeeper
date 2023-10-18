@@ -22,15 +22,15 @@
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
         </Style>
     </UserControl.Resources>
-    <Grid Background="White">
+    <Grid Background="Transparent">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3.5*"/>
+            <ColumnDefinition Width="2.5*"/>
             <ColumnDefinition Width="0.5*"/>
             <ColumnDefinition Width="2.5*"/>
             <ColumnDefinition Width="0.5*"/>
             <ColumnDefinition Width="2.5*"/>
         </Grid.ColumnDefinitions>
-        <TextBox Grid.Column="0" Text="{Binding Time.Hours, StringFormat=D3, FallbackValue=999}" MaxLines="1" MaxLength="3" TabIndex="0"   PreviewKeyDown="TextBoxPreviewKeyDown" PreviewTextInput="NumbersOnlyPreviewTextInput" />
+        <TextBox Grid.Column="0" Text="{Binding Time.Hours, StringFormat=D2, FallbackValue=99}" MaxLines="1" MaxLength="3" TabIndex="0"   PreviewKeyDown="TextBoxPreviewKeyDown" PreviewTextInput="NumbersOnlyPreviewTextInput" />
         <TextBlock Grid.Column="1">:</TextBlock>
         <TextBox Grid.Column="2" Text="{Binding Time.Minutes, StringFormat=D2, FallbackValue=00}" MaxLines="1" MaxLength="2" TabIndex="1" PreviewKeyDown="TextBoxPreviewKeyDown" PreviewTextInput="NumbersOnlyPreviewTextInput"/>
         <TextBlock Grid.Column="3">:</TextBlock>
