@@ -9,17 +9,18 @@
         <Style TargetType="TextBlock">
             <Setter Property="FontFamily" Value="Calibri"/>
             <Setter Property="FontWeight" Value="ExtraBlack"/>
-            <Setter Property="FontSize" Value="38"/>
+            <Setter Property="FontSize" Value="32"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
         <Style TargetType="TextBox">
-            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="BorderThickness" Value="0 0 0 0"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="FontFamily" Value="Calibri"/>
             <Setter Property="FontWeight" Value="ExtraBlack"/>
-            <Setter Property="FontSize" Value="38"/>
+            <Setter Property="FontSize" Value="32"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Bottom"/>
         </Style>
     </UserControl.Resources>
     <Grid Background="Transparent">
@@ -30,11 +31,15 @@
             <ColumnDefinition Width="0.5*"/>
             <ColumnDefinition Width="2.5*"/>
         </Grid.ColumnDefinitions>
-        <TextBox Grid.Column="0" Text="{Binding Time.Hours, StringFormat=D2, FallbackValue=99}" MaxLines="1" MaxLength="3" TabIndex="0"   PreviewKeyDown="TextBoxPreviewKeyDown" PreviewTextInput="NumbersOnlyPreviewTextInput" />
+        <Border Background="White" Grid.ColumnSpan="6" CornerRadius="4">
+            <Border.BitmapEffect>
+                <DropShadowBitmapEffect Direction="320" ShadowDepth="3" Opacity="0.5" Color="Black"/>
+            </Border.BitmapEffect>
+        </Border>
+        <TextBox Grid.Column="0" Text="{Binding Time.Hours, StringFormat=D2, FallbackValue=99}" MaxLength="3" TabIndex="0"  PreviewKeyDown="TextBoxPreviewKeyDown" PreviewTextInput="NumbersOnlyPreviewTextInput" />
         <TextBlock Grid.Column="1">:</TextBlock>
-        <TextBox Grid.Column="2" Text="{Binding Time.Minutes, StringFormat=D2, FallbackValue=00}" MaxLines="1" MaxLength="2" TabIndex="1" PreviewKeyDown="TextBoxPreviewKeyDown" PreviewTextInput="NumbersOnlyPreviewTextInput"/>
+        <TextBox Grid.Column="2" Text="{Binding Time.Minutes, StringFormat=D2, FallbackValue=00}" MaxLength="2" TabIndex="1" PreviewKeyDown="TextBoxPreviewKeyDown" PreviewTextInput="NumbersOnlyPreviewTextInput"/>
         <TextBlock Grid.Column="3">:</TextBlock>
-        <TextBox Grid.Column="4" Text="{Binding Time.Seconds, StringFormat=D2, FallbackValue=00}" MaxLines="1" MaxLength="2" TabIndex="2" PreviewKeyDown="TextBoxPreviewKeyDown" PreviewTextInput="NumbersOnlyPreviewTextInput"/>
-
+        <TextBox Grid.Column="4" Text="{Binding Time.Seconds, StringFormat=D2, FallbackValue=00}" MaxLength="2" TabIndex="2" PreviewKeyDown="TextBoxPreviewKeyDown" PreviewTextInput="NumbersOnlyPreviewTextInput"/>
     </Grid>
 </UserControl>
