@@ -26,6 +26,8 @@ namespace TimeKeeper.Models
         public ICommand SetTimeCommand { get; set; }
         public ICommand PauseTimerCommand { get; set; }
         public ICommand ResetTimerCommand { get; set; }
+        public ICommand AddNewChargeCodeCommand { get; set; }
+
 
         private TimeTicker _timeTicker = new TimeTicker();
         public TimeTicker TimeTicker
@@ -117,6 +119,7 @@ namespace TimeKeeper.Models
         public TimeCardController(Dispatcher dispatcher, string initialLoadPath)
         {
             TimeCard = new TimeCard(initialLoadPath);
+            TimeCard.ChargeCodes.CollectionChanged += ChargeCodesCollectionChanged;
             _dispatcher = dispatcher;
             _timeTicker.TickEvent += TimeTickerTickEvent;
 
@@ -124,6 +127,21 @@ namespace TimeKeeper.Models
             SetTimeCommand = new GenericCommand(SetTime);
             PauseTimerCommand = new GenericCommand(PauseTimer);
             ResetTimerCommand = new GenericCommand(Reset);
+            AddNewChargeCodeCommand = new GenericCommand(AddNewChargeCode);
+
+            TimeCard.LoadRecentChargeNumbers();
+        }
+
+        private void ChargeCodesCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            {
+                foreach (ChargeCodeTimer chargeCode in e.NewItems)
+                {
+                    chargeCode.Removed += RemoveChargeCode;
+                    chargeCode.WorkOn += WorkOnChargeCode;
+                }
+            }
         }
 
         private void TimeTickerTickEvent(DateTime time, TimeSpan elapsed)
@@ -157,7 +175,7 @@ namespace TimeKeeper.Models
 
         public void AddNewChargeCode()
         {
-            _timeCard.AddNewChargeCode();
+            _ = _timeCard.AddNewChargeCode();
         }
 
         public void RemoveChargeCode(ChargeCodeTimer chargeCode)
@@ -168,6 +186,7 @@ namespace TimeKeeper.Models
         public void WorkOnChargeCode(ChargeCodeTimer chargeCode)
         {
             CurrentlyWorkingChargeCode = chargeCode;
+            IsWorkTimerRunning = true;
         }
 
         public void AdjustStartTime(int hour, int minute, int second)

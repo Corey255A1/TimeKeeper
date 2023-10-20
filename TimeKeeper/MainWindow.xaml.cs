@@ -27,22 +27,6 @@ namespace TimeKeeper
             InitializeComponent();
         }
 
-        private void TimerElementRemove(object sender, EventArgs e)
-        {
-            _controller.RemoveChargeCode((sender as FrameworkElement).DataContext as ChargeCodeTimer);
-        }
-
-        private void TimerElementWorkOn(object sender, EventArgs e)
-        {
-            _controller.WorkOnChargeCode((sender as FrameworkElement).DataContext as ChargeCodeTimer);
-            _controller.IsWorkTimerRunning = true;
-        }
-
-        private void AddNewChargeCode_Clicked(object sender, RoutedEventArgs e)
-        {
-            _controller.AddNewChargeCode();
-        }
-
         private void LoadLogButton_Clicked(object sender, RoutedEventArgs e)
         {
             var openFileDialog = new Microsoft.Win32.OpenFileDialog
@@ -72,12 +56,6 @@ namespace TimeKeeper
             }
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            var file = System.AppDomain.CurrentDomain.BaseDirectory + "\\default.chg";
-            _controller.TimeCard.Save(file);
-        }
-
         private void LogBtn_Clicked(object sender, RoutedEventArgs e)
         {
             var file = System.AppDomain.CurrentDomain.BaseDirectory + "\\timelog.csv";
@@ -87,6 +65,24 @@ namespace TimeKeeper
         private void StartTimerModified(int hour, int minute, int second)
         {
             Controller.AdjustStartTime(hour, minute, second);
+        }
+
+
+        private void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var file = System.AppDomain.CurrentDomain.BaseDirectory + "\\default.chg";
+            _controller.TimeCard.Save(file);
+        }
+
+        private void MainWindowMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if(e.ChangedButton != System.Windows.Input.MouseButton.Left) { return; }
+            this.DragMove();
+        }
+
+        private void CloseButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

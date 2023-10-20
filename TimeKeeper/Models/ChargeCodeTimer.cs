@@ -1,9 +1,12 @@
 ﻿//Corey Wunderlich WunderVision 2022
 //The Properties of the ChargeCodeTimer
 using System.ComponentModel;
+using System.Windows.Input;
+using TimeKeeper.Utils;
 
 namespace TimeKeeper.Models
 {
+    public delegate void ChargeCodeCallback(ChargeCodeTimer timer);
     public class ChargeCodeTimer : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -36,10 +39,26 @@ namespace TimeKeeper.Models
             get => _time;
         }
 
+        public ICommand RemoveCommand { get; private set; }
+        public ICommand WorkOnCommand { get; private set; }
+
+        public event ChargeCodeCallback Removed;
+        public event ChargeCodeCallback WorkOn;
+
         public ChargeCodeTimer(string code, string description)
         {
             Code = code;
             Description = description;
+
+            RemoveCommand = new GenericCommand(() =>
+            {
+                Removed?.Invoke(this);
+            });
+
+            WorkOnCommand = new GenericCommand(() =>
+            {
+                WorkOn?.Invoke(this);
+            });
         }
     }
 }

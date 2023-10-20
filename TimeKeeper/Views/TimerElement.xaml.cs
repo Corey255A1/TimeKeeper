@@ -15,9 +15,6 @@ namespace TimeKeeper
     public delegate void TimerElementAction(TimerElement t, TimerElementActionEnum e);
     public partial class TimerElement : UserControl
     {
-        public event EventHandler Remove;
-        public event EventHandler WorkOn;
-
         public TimerElement()
         {
             Initialize();
@@ -40,16 +37,6 @@ namespace TimeKeeper
         public TimeSpan GetTime()
         {
             return new TimeSpan();
-        }
-
-        private void WorkOnBtnClick(object sender, RoutedEventArgs e)
-        {
-            WorkOn?.Invoke(this, null);
-        }
-
-        private void RemoveBtnClick(object sender, RoutedEventArgs e)
-        {
-            Remove?.Invoke(this, null);
         }
     }
 }

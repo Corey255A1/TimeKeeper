@@ -21,25 +21,27 @@ namespace TimeKeeper.Models
         public TimeCard(string initial_load_path)
         {
             _chargeNumberFilePath = initial_load_path;
-            Initialize();
         }
-        public void Initialize()
+
+        public void LoadRecentChargeNumbers()
         {
             if (File.Exists(_chargeNumberFilePath))
             {
-                var ccf = ChargeCodeFile.ReadFile(_chargeNumberFilePath);
+                var chargeCodeFile = ChargeCodeFile.ReadFile(_chargeNumberFilePath);
                 _chargeCodes.Clear();
-                foreach (var ccode in ccf.ChargeCode)
+                foreach (var chargeCode in chargeCodeFile.ChargeCode)
                 {
-                    _chargeCodes.Add(new ChargeCodeTimer(ccode.Code, ccode.Description));
+                    _chargeCodes.Add(new ChargeCodeTimer(chargeCode.Code, chargeCode.Description));
                 }
             }
         }
 
 
-        public void AddNewChargeCode()
+        public ChargeCodeTimer AddNewChargeCode()
         {
-            _chargeCodes.Add(new ChargeCodeTimer("NEWCODE", ""));
+            var chargeCode = new ChargeCodeTimer("NEWCODE", "Description of work.");
+            _chargeCodes.Add(chargeCode);
+            return chargeCode;
         }
         public void RemoveChargeCode(ChargeCodeTimer chargeCode)
         {
@@ -58,7 +60,7 @@ namespace TimeKeeper.Models
         public void Load(string path)
         {
             _chargeNumberFilePath = path;
-            Initialize();
+            LoadRecentChargeNumbers();
         }
 
         public void Save(string path)
