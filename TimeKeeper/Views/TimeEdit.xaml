@@ -22,6 +22,26 @@
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Bottom"/>
         </Style>
+        <ControlTemplate x:Key="HighlightTextBox" TargetType="{x:Type TextBoxBase}">
+            <Border x:Name="border" Background="{TemplateBinding Background}" 
+            BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+            SnapsToDevicePixels="True">
+                <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="false">
+                    <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.MouseOver.Border}"/>
+                    <Setter Property="Background" TargetName="border" Value="{StaticResource TextBox.MouseOver.Border}"/>
+                </Trigger>
+                <Trigger Property="IsKeyboardFocused" Value="true">
+                    <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.Focus.Border}"/>
+                    <Setter Property="Background" TargetName="border" Value="{StaticResource TextBox.Focus.Border}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
     </UserControl.Resources>
     <Grid Background="Transparent">
         <Grid.ColumnDefinitions>
@@ -36,10 +56,10 @@
                 <DropShadowBitmapEffect Direction="320" ShadowDepth="3" Opacity="0.5" Color="Black"/>
             </Border.BitmapEffect>
         </Border>
-        <TextBox Grid.Column="0" Text="{Binding Time.Hours, StringFormat=D2, FallbackValue=99}" MaxLength="3" TabIndex="0"  PreviewKeyDown="TextBoxPreviewKeyDown" PreviewTextInput="NumbersOnlyPreviewTextInput" />
+        <TextBox Template="{StaticResource HighlightTextBox}" Grid.Column="0" Text="{Binding Time.Hours, StringFormat=D2, FallbackValue=99}" MaxLength="3" TabIndex="0"  PreviewKeyDown="TextBoxPreviewKeyDown" PreviewTextInput="NumbersOnlyPreviewTextInput" />
         <TextBlock Grid.Column="1">:</TextBlock>
-        <TextBox Grid.Column="2" Text="{Binding Time.Minutes, StringFormat=D2, FallbackValue=00}" MaxLength="2" TabIndex="1" PreviewKeyDown="TextBoxPreviewKeyDown" PreviewTextInput="NumbersOnlyPreviewTextInput"/>
+        <TextBox Template="{StaticResource HighlightTextBox}" Grid.Column="2" Text="{Binding Time.Minutes, StringFormat=D2, FallbackValue=00}" MaxLength="2" TabIndex="1" PreviewKeyDown="TextBoxPreviewKeyDown" PreviewTextInput="NumbersOnlyPreviewTextInput"/>
         <TextBlock Grid.Column="3">:</TextBlock>
-        <TextBox Grid.Column="4" Text="{Binding Time.Seconds, StringFormat=D2, FallbackValue=00}" MaxLength="2" TabIndex="2" PreviewKeyDown="TextBoxPreviewKeyDown" PreviewTextInput="NumbersOnlyPreviewTextInput"/>
+        <TextBox Template="{StaticResource HighlightTextBox}" Grid.Column="4" Text="{Binding Time.Seconds, StringFormat=D2, FallbackValue=00}" MaxLength="2" TabIndex="2" PreviewKeyDown="TextBoxPreviewKeyDown" PreviewTextInput="NumbersOnlyPreviewTextInput"/>
     </Grid>
 </UserControl>

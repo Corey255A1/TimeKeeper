@@ -53,7 +53,11 @@ namespace TimeKeeper
                 DependencyProperty property = TextBox.TextProperty;
                 BindingExpression binding = BindingOperations.GetBindingExpression(textbox, property);
                 if (binding != null)
+                {
                     binding.UpdateSource();
+                }
+                FocusManager.SetFocusedElement(FocusManager.GetFocusScope(textbox), null);
+                Keyboard.ClearFocus();
             }
         }
     }

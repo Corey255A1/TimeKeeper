@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:TimeKeeper"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FFB0D7FF"/>
+        <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF95FFA6"/>
         <Style TargetType="Button" x:Key="ShadowButton">
             <Setter Property="Margin" Value="4 0"/>
             <Setter Property="Padding" Value="2"/>

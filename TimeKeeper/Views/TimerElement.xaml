@@ -13,8 +13,6 @@
             <Setter Property="FontFamily" Value="Calibri"/>
             <Setter Property="FontSize" Value="16"/>
         </Style>
-        <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>
-        <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5"/>
         <ControlTemplate x:Key="ShadowTextBox" TargetType="{x:Type TextBoxBase}">
             <Border x:Name="border" Background="{TemplateBinding Background}" 
                     BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
@@ -30,9 +28,11 @@
                 </Trigger>
                 <Trigger Property="IsMouseOver" Value="true">
                     <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.MouseOver.Border}"/>
+                    <Setter Property="Background" TargetName="border" Value="{StaticResource TextBox.MouseOver.Border}"/>
                 </Trigger>
                 <Trigger Property="IsKeyboardFocused" Value="true">
                     <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.Focus.Border}"/>
+                    <Setter Property="Background" TargetName="border" Value="{StaticResource TextBox.Focus.Border}"/>
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
