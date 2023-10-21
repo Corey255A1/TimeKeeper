@@ -105,9 +105,9 @@
                     <ColumnDefinition Width="159*"/>
                     <ColumnDefinition Width="208*"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Content="Load" Style="{StaticResource BlueButton}" Click="LoadLogButton_Clicked" Margin="5,2,5,2" Grid.ColumnSpan="2"/>
-                <Button Grid.Column="2" Content="Save" Style="{StaticResource LightGreenButton}" Click="SaveLogButton_Clicked" Margin="5,2,5,2"/>
-                <Button Grid.Column="3" Content="Log"  Style="{StaticResource OrangeButton}" Click="LogBtn_Clicked" Margin="5,2,5,2"/>
+                <Button Grid.Column="0" Content="Load" Style="{StaticResource BlueButton}" Click="LoadLogButtonClicked" Margin="5,2,5,2" Grid.ColumnSpan="2"/>
+                <Button Grid.Column="2" Content="Save" Style="{StaticResource LightGreenButton}" Click="SaveLogButtonClicked" Margin="5,2,5,2"/>
+                <Button Grid.Column="3" Content="Log"  Style="{StaticResource OrangeButton}" Click="LogButtonClicked" Margin="5,2,5,2"/>
             </Grid>
         </Grid>
     </Border>

@@ -10,7 +10,9 @@ namespace TimeKeeper.Models
 {
     public class TimeCard
     {
-        private string _chargeNumberFilePath;
+        public const string ChargeCodeFileExtension = "chg";
+        public const string DefaultChargeCodeFileName = "default." + ChargeCodeFileExtension;
+        private string _chargeCodeFilePath;
 
         private ObservableCollection<ChargeCodeTimer> _chargeCodes = new ObservableCollection<ChargeCodeTimer>();
         public ObservableCollection<ChargeCodeTimer> ChargeCodes
@@ -20,14 +22,14 @@ namespace TimeKeeper.Models
 
         public TimeCard(string initial_load_path)
         {
-            _chargeNumberFilePath = initial_load_path;
+            _chargeCodeFilePath = initial_load_path;
         }
 
         public void LoadRecentChargeNumbers()
         {
-            if (File.Exists(_chargeNumberFilePath))
+            if (File.Exists(_chargeCodeFilePath))
             {
-                var chargeCodeFile = ChargeCodeFile.ReadFile(_chargeNumberFilePath);
+                var chargeCodeFile = ChargeCodeFile.ReadFile(_chargeCodeFilePath);
                 _chargeCodes.Clear();
                 foreach (var chargeCode in chargeCodeFile.ChargeCode)
                 {
@@ -59,7 +61,7 @@ namespace TimeKeeper.Models
 
         public void Load(string path)
         {
-            _chargeNumberFilePath = path;
+            _chargeCodeFilePath = path;
             LoadRecentChargeNumbers();
         }
 

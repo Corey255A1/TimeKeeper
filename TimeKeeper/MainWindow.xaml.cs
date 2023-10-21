@@ -4,6 +4,7 @@
 //The user interface.
 //
 using System;
+using System.IO;
 using System.Windows;
 
 using TimeKeeper.Models;
@@ -22,18 +23,18 @@ namespace TimeKeeper
 
         public MainWindow()
         {
-            _controller = new TimeCardController(Dispatcher, System.AppDomain.CurrentDomain.BaseDirectory + "\\default.chg");
+            _controller = new TimeCardController(Dispatcher, Path.Combine(AppDomain.CurrentDomain.BaseDirectory, TimeCard.DefaultChargeCodeFileName));
             DataContext = Controller;
             InitializeComponent();
         }
 
-        private void LoadLogButton_Clicked(object sender, RoutedEventArgs e)
+        private void LoadLogButtonClicked(object sender, RoutedEventArgs e)
         {
             var openFileDialog = new Microsoft.Win32.OpenFileDialog
             {
                 FileName = "ChargeCodes",
-                DefaultExt = "chg",
-                Filter = "Charge Codes (.chg)|*.chg"
+                DefaultExt = TimeCard.ChargeCodeFileExtension,
+                Filter = String.Format("Charge Codes (.{0})|*.{0}", TimeCard.ChargeCodeFileExtension)
             };
 
             if (openFileDialog.ShowDialog() == true)
@@ -42,13 +43,13 @@ namespace TimeKeeper
             }
         }
 
-        private void SaveLogButton_Clicked(object sender, RoutedEventArgs e)
+        private void SaveLogButtonClicked(object sender, RoutedEventArgs e)
         {
             var saveFileDialog = new Microsoft.Win32.SaveFileDialog
             {
                 FileName = "ChargeCodes",
-                DefaultExt = "chg",
-                Filter = "Charge Codes (.chg)|*.chg"
+                DefaultExt = TimeCard.ChargeCodeFileExtension,
+                Filter = String.Format("Charge Codes (.{0})|*.{0}", TimeCard.ChargeCodeFileExtension)
             };
             if (saveFileDialog.ShowDialog() == true)
             {
@@ -56,9 +57,9 @@ namespace TimeKeeper
             }
         }
 
-        private void LogBtn_Clicked(object sender, RoutedEventArgs e)
+        private void LogButtonClicked(object sender, RoutedEventArgs e)
         {
-            var file = System.AppDomain.CurrentDomain.BaseDirectory + "\\timelog.csv";
+            var file = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "timelog.csv");
             _controller.TimeCard.WriteCSV(file);
         }
 
@@ -67,16 +68,15 @@ namespace TimeKeeper
             Controller.AdjustStartTime(hour, minute, second);
         }
 
-
         private void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            var file = System.AppDomain.CurrentDomain.BaseDirectory + "\\default.chg";
+            var file = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, TimeCard.DefaultChargeCodeFileName);
             _controller.TimeCard.Save(file);
         }
 
         private void MainWindowMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if(e.ChangedButton != System.Windows.Input.MouseButton.Left) { return; }
+            if (e.ChangedButton != System.Windows.Input.MouseButton.Left) { return; }
             this.DragMove();
         }
 
