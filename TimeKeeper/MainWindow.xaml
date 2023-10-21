@@ -20,7 +20,7 @@
         </Style>
 
     </Window.Resources>
-    <Border Background="GhostWhite" CornerRadius="24" Padding="8" BorderBrush="Black" BorderThickness="0">
+    <Border Background="GhostWhite" CornerRadius="24" Padding="8" BorderBrush="Black" BorderThickness="1">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
