@@ -72,7 +72,7 @@
                     <ColumnDefinition Width="100"/>
                     <ColumnDefinition Width="100"/>
                 </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" Content="Chargable Time"/>
+                <Label Grid.Column="0" Content="Chargeable Time"/>
                 <local:Clock Margin="2" HorizontalAlignment="Stretch" Time="{Binding Controller.TotalWorkTime, ElementName=mainWindow}" Grid.Column="1" NumberColor="DarkGreen" x:Name="chargedTimeClk" Height="Auto" IsAClock="False"  IsModifiable="False"/>
                 <Button Grid.Column="2" Content="Pause"  Style="{StaticResource YellowButton}"  Command="{Binding PauseTimerCommand}"/>
                 <Button Grid.Column="3" Content="Reset"  Style="{StaticResource OrangeButton}" Command="{Binding ResetTimerCommand}"/>
