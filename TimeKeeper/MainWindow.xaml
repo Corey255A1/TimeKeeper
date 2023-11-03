@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TimeKeeper"
         mc:Ignorable="d"
-        Title="WunderVision Time Keeper" Height="860" MinWidth="640" Width="640" Closing="WindowClosing" x:Name="mainWindow" 
+        Title="WunderVision Time Keeper" Height="Auto" MinWidth="640" Width="640" Closing="WindowClosing" x:Name="mainWindow" 
         WindowStyle="None" AllowsTransparency="True" MouseDown="MainWindowMouseDown">
     <Window.Background>
         <SolidColorBrush Color="Transparent"/>
@@ -20,7 +20,7 @@
         </Style>
 
     </Window.Resources>
-    <Border Background="GhostWhite" CornerRadius="24" Padding="8" BorderBrush="Black" BorderThickness="1">
+    <Border Background="GhostWhite" CornerRadius="24" Padding="8" BorderBrush="Black" BorderThickness="1" VerticalAlignment="Top">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -28,8 +28,9 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition/>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="10"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <Button Style="{StaticResource RedButton}" Width="32" Height="32" Margin="8" HorizontalAlignment="Right" Content="X" Click="CloseButtonClick"/>
@@ -42,7 +43,7 @@
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="0" Grid.ColumnSpan="3" Background="Black" CornerRadius="8"/>
                 <Label Grid.Column="0" Content="Current Time" Foreground="White"/>
-                <local:Clock Margin="0 5" Time="{Binding Controller.CurrentTime, ElementName=mainWindow}" Grid.Column="1" NumberColor="Red" x:Name="currentTimeClk" Background="{x:Null}" IsModifiable="False" Height="Auto"/>
+                <local:Clock Margin="0 5" Time="{Binding Controller.CurrentTime, ElementName=mainWindow}" Grid.Column="1" NumberColor="Red" Background="{x:Null}" IsModifiable="False" Height="Auto"/>
             </Grid>
             <Grid Grid.Row="2" Height="40" Margin="0 4">
                 <Grid.ColumnDefinitions>
@@ -52,7 +53,7 @@
                     <ColumnDefinition Width="100"/>
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" Content="Start Time"/>
-                <local:Clock Grid.Column="1" Time="{Binding Controller.StartTime, ElementName=mainWindow}" ClockModified="StartTimerModified" NumberColor="Green" x:Name="startTimeClk" IsAClock="True" Height="Auto"/>
+                <local:Clock Grid.Column="1" Time="{Binding Controller.StartTime, ElementName=mainWindow}" ClockModified="StartTimerModified" NumberColor="Green" IsAClock="True" Height="Auto"/>
                 <Button Grid.Column="3" Content="Set" Style="{StaticResource GreenButton}" Command="{Binding SetTimeCommand}"/>
             </Grid>
             <Grid Grid.Row="3" Height="40" Margin="0 4">
@@ -62,7 +63,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" Content="Time Since Start"/>
-                <local:Clock Margin="2" Time="{Binding Controller.DeltaTime, ElementName=mainWindow}" Grid.Column="1" NumberColor="Blue" x:Name="totalTimeClk" Height="Auto" IsAClock="False" IsModifiable="False"/>
+                <local:Clock Margin="2" Time="{Binding Controller.DeltaTime, ElementName=mainWindow}" Grid.Column="1" NumberColor="Blue" Height="Auto" IsAClock="False" IsModifiable="False"/>
             </Grid>
 
             <Grid Grid.Row="4" Height="40" Margin="0 4">
@@ -73,14 +74,14 @@
                     <ColumnDefinition Width="100"/>
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" Content="Chargeable Time"/>
-                <local:Clock Margin="2" HorizontalAlignment="Stretch" Time="{Binding Controller.TotalWorkTime, ElementName=mainWindow}" Grid.Column="1" NumberColor="DarkGreen" x:Name="chargedTimeClk" Height="Auto" IsAClock="False"  IsModifiable="False"/>
+                <local:Clock Margin="2" HorizontalAlignment="Stretch" Time="{Binding Controller.TotalWorkTime, ElementName=mainWindow}" Grid.Column="1" NumberColor="DarkGreen" Height="Auto" IsAClock="False"  IsModifiable="False"/>
                 <Button Grid.Column="2" Content="Pause"  Style="{StaticResource YellowButton}"  Command="{Binding PauseTimerCommand}"/>
                 <Button Grid.Column="3" Content="Reset"  Style="{StaticResource OrangeButton}" Command="{Binding ResetTimerCommand}"/>
 
             </Grid>
             <Grid Grid.Row="5" Margin="5">
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
+                    <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <ScrollViewer>
@@ -96,7 +97,7 @@
                 <Button Grid.Row="1" Content="Add" Style="{StaticResource GreenButton}" Command="{Binding AddNewChargeCodeCommand}"/>
             </Grid>
 
-            <Grid Grid.Row="6" Margin="5" Height="40">
+            <Grid Grid.Row="6" Margin="5" Height="Auto">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="35"/>
                     <ColumnDefinition Width="45"/>
@@ -109,6 +110,17 @@
                 <Button Grid.Column="2" Content="Save" Style="{StaticResource LightGreenButton}" Click="SaveLogButtonClicked" Margin="5,2,5,2"/>
                 <Button Grid.Column="3" Content="Log"  Style="{StaticResource OrangeButton}" Click="LogButtonClicked" Margin="5,2,5,2"/>
             </Grid>
+            <Rectangle Grid.Row="7" Width="100" Height="Auto" Fill="Black" MouseDown="GripperMouseDown" MouseUp="GripperMouseUp" MouseMove="GripperMouseMove">
+                <Rectangle.Style>
+                    <Style TargetType="Rectangle">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Cursor" Value="ScrollNS" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Rectangle.Style>
+            </Rectangle>
         </Grid>
     </Border>
 </Window>

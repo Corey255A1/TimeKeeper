@@ -103,16 +103,6 @@ namespace TimeKeeper
             }
         }
 
-        private int CompareAndGetClockNumChange(ClockNum control, ClockNum controlThatChanged, ClockNumbers changedValue, int current)
-        {
-            return control == controlThatChanged ? (int)changedValue : current;
-        }
-
-        private int CombineDigits(int digit1, int digit2)
-        {
-            return digit1 * 10 + digit2;
-        }
-
         private void ClockChanged(ClockNumberChangedArgs changedArgs)
         {
             MutableTime newTime;

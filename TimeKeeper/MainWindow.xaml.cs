@@ -6,7 +6,7 @@
 using System;
 using System.IO;
 using System.Windows;
-
+using System.Windows.Input;
 using TimeKeeper.Models;
 namespace TimeKeeper
 {
@@ -20,6 +20,8 @@ namespace TimeKeeper
         {
             get => _controller;
         }
+
+        private bool _isResizingHeight = false;
 
         public MainWindow()
         {
@@ -83,6 +85,33 @@ namespace TimeKeeper
         private void CloseButtonClick(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void GripperMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+            _isResizingHeight = true;
+            Mouse.Capture((IInputElement)sender);
+        }
+
+        private void GripperMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (_isResizingHeight)
+            {
+                e.Handled = true;
+                _isResizingHeight = false;
+                Mouse.Capture(null);
+            }
+        }
+
+        private void GripperMouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if(_isResizingHeight)
+            {
+                Point relativeLocation = e.GetPosition((IInputElement)sender);
+                Console.Write(relativeLocation);
+                Height += relativeLocation.Y;
+            }
         }
     }
 }
